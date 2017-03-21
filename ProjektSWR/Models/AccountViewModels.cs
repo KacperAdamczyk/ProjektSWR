@@ -33,7 +33,7 @@ namespace ProjektSWR.Models
         public string Code { get; set; }
         public string ReturnUrl { get; set; }
 
-        [Display(Name = "Pamiętaj w tej przeglądarce?")]
+        [Display(Name = "Pamiętaj w tej przeglądarce")]
         public bool RememberBrowser { get; set; }
 
         public bool RememberMe { get; set; }
@@ -42,14 +42,14 @@ namespace ProjektSWR.Models
     public class ForgotViewModel
     {
         [Required]
-        [Display(Name = "Nazwa użytkownika")]
+        [Display(Name = "Email")]
         public string Email { get; set; }
     }
 
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Nazwa użytkownika")]
+        [Display(Name = "Email")]
         [EmailAddress]
         public string Email { get; set; }
 
@@ -58,20 +58,15 @@ namespace ProjektSWR.Models
         [Display(Name = "Hasło")]
         public string Password { get; set; }
 
-        [Display(Name = "Zapamiętaj mnie?")]
+        [Display(Name = "Pamiętaj mnie")]
         public bool RememberMe { get; set; }
-
-        [Required]
-        [Display(Name = "Imię")]
-        [EmailAddress]
-        public string Name { get; set; }
     }
 
     public class RegisterViewModel
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Nazwa użytkownika")]
+        [Display(Name = "Email")]
         public string Email { get; set; }
 
         [Required]
@@ -80,11 +75,9 @@ namespace ProjektSWR.Models
         [Display(Name = "Hasło")]
         public string Password { get; set; }
 
-
-
         [DataType(DataType.Password)]
         [Display(Name = "Powtórz hasło")]
-        [Compare("Password", ErrorMessage = "Hasła nie są takie same.")]
+        [Compare("Password", ErrorMessage = "Hasła nie sa takie same.")]
         public string ConfirmPassword { get; set; }
     }
 
@@ -92,7 +85,7 @@ namespace ProjektSWR.Models
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Nazwa użytkownika")]
+        [Display(Name = "Email")]
         public string Email { get; set; }
 
         [Required]
@@ -102,8 +95,8 @@ namespace ProjektSWR.Models
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "Hasła nie są takie same.")]
+        [Display(Name = "Powtórz hasło")]
+        [Compare("Password", ErrorMessage = "THasła nie sa takie same.")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }
@@ -113,7 +106,7 @@ namespace ProjektSWR.Models
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Nazwa użytkownika")]
+        [Display(Name = "Email")]
         public string Email { get; set; }
     }
 }
