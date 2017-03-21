@@ -6,9 +6,126 @@
 <h2>@ViewBag.Title</h2>
 
 <p class="text-success">@ViewBag.StatusMessage</p>
-<div>
-    <h4>Zmień ustawienia swojego konta</h4>
-    <hr />
+
+<style>
+    #mainbeam {
+        height: 27px;
+        text-align: left;
+        font-family: 'Roboto', sans-serif;
+        color: white;
+        background-color: #003c82;
+        margin-bottom: auto;
+        margin-top: auto;
+        padding-left: 5px;
+    }
+
+    #space {
+        height: auto;
+        width: auto;
+        font-family: 'Roboto', sans-serif;
+        text-align: left;
+        padding-top: 20px;
+    }
+
+    #pool {
+    }
+
+    #buttons {
+        margin: auto;
+        text-align: right;
+    }
+
+    #text {
+        float: left;
+        width: 125px;
+    }
+</style>
+
+</br></br>
+<center><h1>@ViewBag.Message</h1></center>
+<div id="mainbeam">
+    <h3>Dane osobowe:</h3>
+</div>
+<div id="space">
+    <div id="pool">
+        <p>
+            <div id="text">Imię:</div>
+            <div id="textfield"><input type="text" name="imie"></div>
+        </p>
+    </div>
+    <div id="pool">
+        <p>
+            <div id="text">Nazwisko:</div>
+            <div id="textfield"><input type="text" name="nazwisko"></div>
+        </p>
+    </div>
+    <div id="pool">
+        <p>
+            <div id="text">Nr telefonu:</div>
+            <div id="textfield"><input type="text" name="tel"></div>
+        </p>
+    </div>
+    <div id="pool">
+        <p>
+            <div id="text">E-mail:</div>
+            <div id="textfield"><input type="text" name="mail"></div>
+        </p>
+    </div>
+    <div id="pool">
+        <p>
+            <div id="text">St. naukowy:</div>
+            <div id="textfield"><input type="text" name="stopien"></div>
+        </p>
+    </div>
+    <div id="pool">
+        <p>
+            <div id="text">Wydział:</div>
+            <div id="textfield"><input type="text" name="wydz"></div>
+        </p>
+    </div>
+    <div id="pool">
+        <p>
+            <div id="text">Katedra:</div>
+            <div id="textfield"><input type="text" name="kat"></div>
+        </p>
+    </div>
+    <div id="buttons">
+        <p>
+            <input type="submit" value="Zatwierdź" />
+            <input type="submit" value="Anuluj" />
+        </p>
+    </div>
+</div>
+<div id="mainbeam">
+    <h3>Zmiana hasła:</h3>
+</div>
+<div id="space">
+    <!--
+    <div id="pool">
+        <p>
+            <div id="text">Stare hasło:</div>
+            <div id="textfield"><input type="text" name="oldpass"></div>
+        </p>
+    </div>
+    <div id="pool">
+        <p>
+            <div id="text">Nowe hasło:</div>
+            <div id="textfield"><input type="text" name="newpass"></div>
+        </p>
+    </div>
+    <div id="pool">
+        <p>
+            <div id="text">Potwierdź hasło:</div>
+            <div id="textfield"><input type="text" name="confpass"></div>
+        </p>
+    </div>
+    <div id="buttons">
+        <p>
+            <input type="submit" value="Zatwierdź" />
+            <input type="submit" value="Anuluj" />
+        </p>
+    </div>
+        -->
     <dl class="dl-horizontal">
         <dt>Hasło:</dt>
         <dd>
@@ -23,10 +140,28 @@
             }
             ]
         </dd>
-        <dt>External Logins:</dt>
-        <dd>
-            @Model.Logins.Count [
-            @Html.ActionLink("Manage", "ManageLogins") ]
-        </dd>
     </dl>
+</div>
+<div id="mainbeam">
+    <h3>Dane osobowe (opcjonalnie):</h3>
+</div>
+<div id="space">
+    <div id="pool">
+        <p>
+            <div id="text">Opis:</div>
+            <div id="textfield"><input type="text" name="opis"></div>
+        </p>
+    </div>
+    <div id="pool">
+        <p>
+            <div id="text">Data urodzenia:</div>
+            <div id="textfield"><input type="text" name="date"></div>
+        </p>
+    </div>
+    <div id="buttons">
+        <p>
+            <input type="submit" value="Zatwierdź" />
+            <input type="submit" value="Anuluj" />
+        </p>
+    </div>
 </div>
