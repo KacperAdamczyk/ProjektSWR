@@ -2,43 +2,28 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     Scripts.Render("~/bundles/bootstrap");
 }
+
+<link rel="stylesheet" type="text/css" href="~/Content/Msg.css">
 <script src='~/Scripts/jquery-3.1.1.min.js'></script>
 <script src="~/Scripts/tinymce/tinymce.min.js"></script>
-<link rel="stylesheet" type="text/css" href="~/Content/msg.css">
-<link rel="stylesheet" type="text/css" href="~/Content/bootstrap.min.css">
-
-<script>
-tinymce.init({
-  selector: 'textarea',
-  height: 500,
-  menubar: false,
-  plugins: [
-    'advlist autolink lists link image charmap print preview anchor',
-    'searchreplace visualblocks code fullscreen',
-    'insertdatetime media table contextmenu paste code'
-  ],
-  toolbar: 'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-  content_css: '//www.tinymce.com/css/codepen.min.css'
-}); </script>
-<div id="messages">
+<script src="~/Scripts/textboard.js"></script>
+<div class="messages">
     <ul>
         <li><a class="active" href="#new">Nowa wiadomość</a></li>
-        <li><a href="#skrzynka">Skrzynka odbiorcza</a></li>
-
+        <li><a href="#mailbox">Skrzynka odbiorcza</a></li>
     </ul>
-
-    <div style="margin-left:25%;padding:1px 16px;height:1000px;">
+    <div id="msgboard">
         <form>
             <div class="input-group">
                 <span class="input-group-addon">Odbiorca</span>
-                <input id="msg" type="text" class="form-control" name="msg" placeholder="Additional Info">
+                <input id="To" type="text" class="form-control" name="msg" placeholder="">
             </div>
             <div class="input-group">
                 <span class="input-group-addon">Temat</span>
-                <input id="msg" type="text" class="form-control" name="msg" placeholder="Additional Info">
+                <input id="Subject" type="text" class="form-control" name="msg" placeholder="">
             </div>
         </form>
         <textarea></textarea>
         <button type="button" class="btn btn-default">Wyślij</button>
-    </div><br />
+    </div>
 </div>
