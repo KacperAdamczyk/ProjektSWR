@@ -36,12 +36,5 @@ namespace ProjektSWR.Controllers
 
             return View();
         }
-
-        public ActionResult UserPanel()
-        {
-            ViewBag.Message = "Panel użytkownika";
-            ViewBag.Title = "UserPanel";
-            return View();
-        }
     }
 }
