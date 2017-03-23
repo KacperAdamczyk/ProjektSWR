@@ -1,0 +1,47 @@
+﻿#mainbeam {
+    height: 27px;
+    text-align: left;
+    font-family: 'Roboto', sans-serif;
+    color: white;
+    background-color: #003c82;
+    margin-bottom: auto;
+    margin-top: auto;
+    padding-left: 5px;
+    clear: both;
+}
+
+#space {
+    height: auto;
+    width: auto;
+    font-family: 'Roboto', sans-serif;
+    text-align: left;
+    padding-top: 20px;
+}
+
+#pool {
+    margin: auto;
+}
+
+#buttons {
+    margin: auto;
+    text-align: right;
+    float: right;
+}
+
+#text {
+    float: left;
+    width: 125px;
+}
+
+#photo {
+    height: 150px;
+    width: 105px;
+    border: solid;
+    float: left;
+}
+
+#swimmingpool {
+    padding: 3px;
+    padding-left: 110px;
+    padding-top: 0px;
+}
