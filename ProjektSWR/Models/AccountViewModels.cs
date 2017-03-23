@@ -49,8 +49,7 @@ namespace ProjektSWR.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email")]
-        [EmailAddress]
+        [Display(Name = "Nazwa użytkownika")]
         public string Email { get; set; }
 
         [Required]
@@ -65,8 +64,7 @@ namespace ProjektSWR.Models
     public class RegisterViewModel
     {
         [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
+        [Display(Name = "Nazwa użytkownika")]
         public string Email { get; set; }
 
         [Required]
