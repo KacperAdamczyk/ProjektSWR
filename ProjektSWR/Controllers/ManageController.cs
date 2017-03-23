@@ -32,9 +32,9 @@ namespace ProjektSWR.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -57,7 +57,7 @@ namespace ProjektSWR.Controllers
             ViewBag.Message = "Panel użytkownika";
             ViewBag.Title = "UserPanel";
             ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed." : "";
+                message == ManageMessageId.ChangePasswordSuccess ? "Hasło zostało zmienione pomyślnie." : "";
 
             var userId = User.Identity.GetUserId();
             var model = new IndexViewModel
@@ -135,26 +135,6 @@ namespace ProjektSWR.Controllers
         // POST: /Manage/SetPassword
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> SetPassword(SetPasswordViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var result = await UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
-                if (result.Succeeded)
-                {
-                    var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-                    if (user != null)
-                    {
-                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                    }
-                    return RedirectToAction("Index", new { Message = ManageMessageId.SetPasswordSuccess });
-                }
-                AddErrors(result);
-            }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
 
         //
         // GET: /Manage/LinkLoginCallback
@@ -180,7 +160,7 @@ namespace ProjektSWR.Controllers
             base.Dispose(disposing);
         }
 
-#region Helpers
+        #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
@@ -218,6 +198,6 @@ namespace ProjektSWR.Controllers
             Error
         }
 
-#endregion
+        #endregion
     }
 }
