@@ -1,6 +1,7 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
     Scripts.Render("~/bundles/bootstrap");
+    ViewBag.Title = "Wiadomości";
 }
 
 <link rel="stylesheet" type="text/css" href="~/Content/Msg.css">
@@ -8,19 +9,19 @@
 <script src="~/Scripts/tinymce/tinymce.min.js"></script>
 <script src="~/Scripts/textboard.js"></script>
 <div class="messages">
-    <ul>
-        <li><a class="active" href="#new">Nowa wiadomość</a></li>
-        <li><a href="#mailbox">Skrzynka odbiorcza</a></li>
-    </ul>
-    <div id="msgboard">
+        <ul>
+            <li><a class="active" href="#new">Nowa wiadomość</a></li>
+            <li><a href="#mailbox">Skrzynka odbiorcza</a></li>
+        </ul>
+   <div id="msgboard">
         <form>
             <div class="input-group">
                 <span class="input-group-addon">Odbiorca</span>
-                <input id="To" type="text" class="form-control" name="msg" placeholder="">
+                <input id="To" type="text" class="form-control">
             </div>
             <div class="input-group">
                 <span class="input-group-addon">Temat</span>
-                <input id="Subject" type="text" class="form-control" name="msg" placeholder="">
+                <input id="Subject" type="text" class="form-control">
             </div>
         </form>
         <textarea></textarea>

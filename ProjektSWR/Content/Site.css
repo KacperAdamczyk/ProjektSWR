@@ -52,7 +52,7 @@ textarea {
 }
 
 footer {
-    height: 90px;
+    max-height: 90px;
     color: white;
     background-color: #003c82;
     padding-left: 150px;
