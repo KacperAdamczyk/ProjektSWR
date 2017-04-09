@@ -1,7 +1,9 @@
 
 .messages ul {
+    position: relative;
     list-style-type: none;
     margin: 0px;
+    margin-top: 0px;
     padding: 0px;
     background-color: #f1f1f1;
     max-width: 20%;
@@ -30,5 +32,6 @@
     float: right;
     max-width: 80%;
     overflow: hidden;
+    margin-top: 40px;
 }
 

@@ -2,13 +2,13 @@
 @Styles.Render("~/Content/css")
 @if (Request.IsAuthenticated)
 {
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right", style = "color: white; padding-right: 20px" }))
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right"}))
     {
     @Html.AntiForgeryToken()
 
     <ul class="nav navbar-nav navbar-right">
         <li>
-            @Html.ActionLink("Witaj " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Zmień", style = "color: white" })
+            @Html.ActionLink("Witaj " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Zmień"})
         </li>
         <li><a href="javascript:document.getElementById('logoutForm').submit()">Wyloguj</a></li>
     </ul>
@@ -17,8 +17,8 @@
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Rejestracja", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", style = "color: white; padding-right: 20px" })</li>
-        <li>@Html.ActionLink("Logowanie", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", style = "color: white; padding-right: 20px" })</li>
+        <li>@Html.ActionLink("Rejestracja", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink"})</li>
+        <li>@Html.ActionLink("Logowanie", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink"})</li>
     </ul>
 }
    

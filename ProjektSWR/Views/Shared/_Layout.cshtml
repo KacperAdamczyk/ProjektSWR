@@ -21,15 +21,15 @@
                 <img id="PRZ_LOGO" img src="http://w.prz.edu.pl/thumb/GcdkwuAx9CA3YQcDUOEyt6IH8JIx4JJzo2LBMgezZ9Lgcg,1/pl/core_settings/BAE9Ne1RBfAdl,header_logo_transparent.png" alt="PRZ LOGO" />
             </div>
             <div class="navbar-collapse collapse">
-                @Html.Partial("_LoginPartial")
                  <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home", null, new { style = "color: white" })</li>
-                    <li>@Html.ActionLink("Wiadomości", "Messages", "Home", null, new { style = "color: white" })</li>
-                    <li>@Html.ActionLink("Kalendarz", "Calendar", "Home", null, new { style = "color: white" })</li>
+                    <li>@Html.ActionLink("Home", "Index", "Home", null, new { style = "color: white;" })</li>
+                    <li>@Html.ActionLink("Wiadomości", "Messages", "Home", null, new { style = "color: white;" })</li>
+                    <li>@Html.ActionLink("Kalendarz", "Calendar", "Home", null, new { style = "color: white;" })</li>
                     <li id="notify"><button class="btn btn-primary"  type="button">
                          Powiadomienia <span class="badge">68</span>
                         </button></li>
                 </ul>
+               @Html.Partial("_LoginPartial")
             </div>
             </div>
     </nav>
@@ -38,7 +38,7 @@
     </div>
     <footer class="footer">
         <p>&copy; @DateTime.Now.Year - Politechnika Rzeszowska</p>
-        @Html.ActionLink("Kontakt", "Contact", "Home", null, new { style = "color: white" })
+        @Html.ActionLink("Kontakt", "Contact", "Home", null, new { style = "color: white;" })
         
     </footer>
     @RenderSection("scripts", required: false)
