@@ -221,7 +221,7 @@
     <Content Include="Content\fullcalendar.min.css" />
     <Content Include="Content\fullcalendar.print.css" />
     <Content Include="Content\img\notification_bell.png" />
-    <Content Include="Content\Msg.css" />
+    <Content Include="Content\Messages.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -360,6 +360,7 @@
     <Content Include="Scripts\locale\vi.js" />
     <Content Include="Scripts\locale\zh-cn.js" />
     <Content Include="Scripts\locale\zh-tw.js" />
+    <Content Include="Scripts\Messages\pageload.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />
@@ -571,6 +572,7 @@
     <Content Include="Views\Messages\Details.cshtml" />
     <Content Include="Views\Messages\Edit.cshtml" />
     <Content Include="Views\Messages\Index.cshtml" />
+    <Content Include="Views\Messages\Layout.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

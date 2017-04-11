@@ -10,6 +10,8 @@
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    margin-bottom: 70px;
+    margin-top: 20px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -26,11 +28,16 @@ textarea {
     max-width: 280px;
 }
 
+.navbar-toggle {
+    border: solid white 3px;
+}
+
 .navbar, .navbar-inverse, .navbar-fixed-top {
     background-color: #003c82;
     color: white;
-    max-height: 500px;
-    margin: 0px;
+    max-height: 400px;
+    padding-top: 15px;
+    padding-bottom: 15px;
 }
 
 
@@ -41,6 +48,10 @@ textarea {
     font-size: 14px;
     font-weight: 700;
     text-transform: uppercase;
+}
+
+.navbar-collapse {
+    height: 300px;
 }
 
 .navbar-nav {
@@ -55,14 +66,31 @@ textarea {
     padding: 10px;
 }
 
+.icon-bar {
+    color: white !important; 
+    background-color: white !important;
+}
+
+.navbar-toggle button:hover {
+    background-color: none !important;
+}
+
 footer {
     max-height: 100px;
     color: white;
     background-color: #003c82;
     padding-left: 150px;
+    padding-right: 150px;
     padding-top: 20px;
     padding-bottom: 20px;
-    margin-top: 100px;
+}
+
+footer hr {
+    margin: 0px;
+    border-color: white;
+    border-width: 1px;
+    padding-top: 10px;
+    padding-bottom: 0px;
 }
 
 ul {
@@ -76,5 +104,5 @@ li {
 }
 
 #notify {
-    padding-top: 8px;
+    padding-top: 15px;
 }

@@ -8,6 +8,7 @@ namespace ProjektSWR.Models
     public class Message
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID_wiadomosci { get; set; }
         //[ForeignKey("Nadawca")]
         public int ID_nadawcy { get; set; }

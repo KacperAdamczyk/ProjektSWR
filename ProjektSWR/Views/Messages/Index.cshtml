@@ -1,14 +1,16 @@
 ﻿@model IEnumerable<ProjektSWR.Models.Message>
 
 @{
+    Layout = "~/Views/Messages/Layout.cshtml";
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<script>
+    $(document).ready(function () {
+        changeActive("mail_box");
+    });
+</script>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>

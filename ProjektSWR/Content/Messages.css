@@ -1,0 +1,50 @@
+
+.messages ul {
+    top: 10px;
+    list-style-type: none;
+    margin: 0px;
+    margin-top: 0px;
+    padding: 0px;
+    background-color: #f1f1f1;
+    max-width: 20%;
+    min-height: 500px;
+    float: left;
+}
+
+.messages li {
+    padding: 0px;
+}
+
+.messages li a {
+    display: table;
+    color: black;
+    text-decoration: none;
+    width: 100%;
+    padding: 10px;
+}
+
+.messages li a.active {
+    background-color: #003c82;
+    color: white;
+}
+
+.messages li a:hover:not(.active) {
+    background-color: #555;
+}
+
+#new_message {
+    margin-bottom: 10px;
+    background-color: mediumvioletred;
+}
+
+#new_message a {
+    color: white;
+}
+
+#msgboard {
+    float: right;
+    max-width: 80%;
+    overflow: hidden;
+    margin-top: 40px;
+}
+

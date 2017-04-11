@@ -1,0 +1,19 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Scripts.Render("~/bundles/bootstrap");
+    ViewBag.Title = "Wiadomości";
+}
+
+<link rel="stylesheet" type="text/css" href="~/Content/Messages.css">
+<script src='~/Scripts/jquery-3.1.1.min.js'></script>
+<script src="~/Scripts/Messages/pageload.js"></script>
+<div class="messages">
+    <ul>
+        <li id="new_message"><a href="~/Messages/Create">Nowa wiadomość</a></li>
+        <li><a id="mail_box" href="~/Messages">Skrzynka odbiorcza</a></li>
+        <li id="sent"><a href="~/Messages">Wysłane</a></li>
+    </ul>
+    <div id="msgboard">
+        @RenderBody()
+    </div>
+</div>
