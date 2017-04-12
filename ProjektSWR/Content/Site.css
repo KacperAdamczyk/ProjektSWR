@@ -36,8 +36,8 @@ textarea {
     background-color: #003c82;
     color: white;
     max-height: 400px;
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 
@@ -59,7 +59,15 @@ textarea {
 }
 
 #registerLink, #loginLink {
-    color: white;
+    color: white !important;
+}
+
+.white_link {
+    color: white !important;
+}
+
+.white_link a {
+    color: white !important;
 }
 
 #PRZ_LOGO {

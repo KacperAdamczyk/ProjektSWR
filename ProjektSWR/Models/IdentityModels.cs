@@ -20,8 +20,9 @@ namespace ProjektSWR.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<Message> Messages { get; set; }
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("ApplicationDBContext", throwIfV1Schema: false)
         {
         }
 
@@ -29,5 +30,17 @@ namespace ProjektSWR.Models
         {
             return new ApplicationDbContext();
         }
+
+       /* protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Change the name of the table to be Users instead of AspNetUsers
+            // Jakieś tam oszukiwanie wunderwaffy M$
+            modelBuilder.Entity<IdentityUser>()
+                .ToTable("Users");
+            modelBuilder.Entity<ApplicationUser>()
+                .ToTable("Users");
+        }*/
     }
 }

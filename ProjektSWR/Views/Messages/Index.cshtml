@@ -32,9 +32,6 @@
         <th>
             @Html.DisplayNameFor(model => model.Archiwizacja_nadawca)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ID_odpowiedzi)
-        </th>
         <th></th>
     </tr>
 
@@ -63,14 +60,6 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Archiwizacja_nadawca)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ID_odpowiedzi)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID_wiadomosci }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID_wiadomosci }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID_wiadomosci })
         </td>
     </tr>
 }

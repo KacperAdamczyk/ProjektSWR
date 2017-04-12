@@ -7,19 +7,20 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ProjektSWR.Models;
+using Microsoft.AspNet.Identity;
 
 namespace ProjektSWR.Controllers
 {
+    [Authorize]
     public class MessagesController : Controller
     {
-        private MessageDBContext db = new MessageDBContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Messages
         public ActionResult Json()
         {
             return Json(db.Messages, JsonRequestBehavior.AllowGet);
         }
-
 
         public ActionResult Index()
         {
@@ -56,6 +57,8 @@ namespace ProjektSWR.Controllers
         {
             if (ModelState.IsValid)
             {
+                //message.ID_nadawcy = User.Identity.GetUserId();
+                message.Data_nadania = DateTime.Now;
                 db.Messages.Add(message);
                 db.SaveChanges();
                 return RedirectToAction("Index");

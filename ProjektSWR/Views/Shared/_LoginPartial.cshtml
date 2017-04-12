@@ -5,12 +5,11 @@
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right"}))
     {
     @Html.AntiForgeryToken()
-
     <ul class="nav navbar-nav navbar-right">
         <li>
-            @Html.ActionLink("Witaj " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Zmień"})
+            @Html.ActionLink("Witaj " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { @class = "white_link", title = "Zmień"})
         </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Wyloguj</a></li>
+        <li><a class="white_link" href="javascript:document.getElementById('logoutForm').submit()">Wyloguj</a></li>
     </ul>
     }
 }
