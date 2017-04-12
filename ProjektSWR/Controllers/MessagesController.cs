@@ -15,6 +15,12 @@ namespace ProjektSWR.Controllers
         private MessageDBContext db = new MessageDBContext();
 
         // GET: Messages
+        public ActionResult Json()
+        {
+            return Json(db.Messages, JsonRequestBehavior.AllowGet);
+        }
+
+
         public ActionResult Index()
         {
             return View(db.Messages.ToList());
