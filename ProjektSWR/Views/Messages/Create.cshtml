@@ -2,14 +2,47 @@
 
 @{
     ViewBag.Title = "Create";
+    Layout = "~/Views/Messages/Layout.cshtml";
 }
+<link rel="stylesheet" href="~/Content/themes/base/jquery-ui.min.css">
+<style>
+    .custom-combobox {
+        position: relative;
+        display: inline-block;
+    }
+
+    .custom-combobox-toggle {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin-left: -1px;
+        padding: 0;
+    }
+
+    .custom-combobox-input {
+        margin: 0;
+        padding: 5px 10px;
+    }
+
+    .ui-draggable, .ui-droppable {
+        background-position: top;
+    }
+</style>
+<script src="~/Scripts/Messages/newMessage.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+
+<div class="ui-widget">
+    <label>Odbiorca: </label>
+    <select id="combobox">
+        <option value=""></option>
+    </select>
+</div>
 
 <h2>Create</h2>
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
-    
     <div class="form-horizontal">
         <h4>Message</h4>
         <hr />

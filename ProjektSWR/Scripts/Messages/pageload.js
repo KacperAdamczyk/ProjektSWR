@@ -1,5 +1,5 @@
 ﻿function changeActive(li) {
-    var tags = ["mail_box", "sent"];
+    var tags = ["mail_box", "sent", "new_message"];
     var activeClass = "active";
     var i;
     for (i = 0; i < tags.length; i++) {

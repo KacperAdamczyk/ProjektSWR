@@ -16,12 +16,20 @@ namespace ProjektSWR.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Messages
-        public ActionResult Json()
+        public ActionResult JgetUsers()
         {
-            return Json(db.Messages, JsonRequestBehavior.AllowGet);
+            string q = "SELECT [Email] FROM [dbo].[AspNetUsers]";
+            return Json(db.Database.SqlQuery<string>(q), JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult JgetMessages()
+        {
+            string q = "select [*] from [dbo].[Messages] where [Id] = " + User.Identity.GetUserId<string>();
+
+            return Json(db.Database.SqlQuery<string>(q), JsonRequestBehavior.AllowGet);
+        }
+
+        // GET: Messages
         public ActionResult Index()
         {
             return View(db.Messages.ToList());

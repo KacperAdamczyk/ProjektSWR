@@ -30,17 +30,5 @@ namespace ProjektSWR.Models
         {
             return new ApplicationDbContext();
         }
-
-       /* protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-
-            // Change the name of the table to be Users instead of AspNetUsers
-            // Jakieś tam oszukiwanie wunderwaffy M$
-            modelBuilder.Entity<IdentityUser>()
-                .ToTable("Users");
-            modelBuilder.Entity<ApplicationUser>()
-                .ToTable("Users");
-        }*/
     }
 }

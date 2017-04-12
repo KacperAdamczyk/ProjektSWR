@@ -38,6 +38,7 @@ textarea {
     max-height: 400px;
     padding-top: 10px;
     padding-bottom: 10px;
+    overflow: hidden;
 }
 
 
@@ -51,7 +52,7 @@ textarea {
 }
 
 .navbar-collapse {
-    height: 300px;
+    max-height: 400px;
 }
 
 .navbar-nav {
