@@ -33,12 +33,11 @@
 }
 
 #new_message {
-    margin-bottom: 10px;
-    background-color: mediumvioletred;
+    font-weight: 700;
 }
 
 #new_message a {
-    color: white;
+    margin-bottom: 10px;
 }
 
 #msgboard {

@@ -16,17 +16,25 @@ namespace ProjektSWR.Controllers
     {
         protected ApplicationDbContext db = new ApplicationDbContext();
 
-        public ActionResult JgetUsers()
+        public JsonResult JgetUsers()
         {
             var users = from u in db.Users select u.Email;
             return Json(users, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult JgetMessages()
+        public JsonResult JgetMessages()
         {
             var messages = from m in db.Messages select m;
             string userId = User.Identity.GetUserId<string>();
-            messages = messages.Where(m => m.ID_odbiorcy == userId);
+            messages = messages.Where(m => (m.ID_odbiorcy == userId && m.Archiwizacja_odbiorca));
+            return Json(messages, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult JgetSentMessages()
+        {
+            var messages = from m in db.Messages select m;
+            string userId = User.Identity.GetUserId<string>();
+            messages = messages.Where(m => (m.ID_nadawcy.Id == userId && m.Archiwizacja_nadawca));
             return Json(messages, JsonRequestBehavior.AllowGet);
         }
 
@@ -34,6 +42,11 @@ namespace ProjektSWR.Controllers
         public ActionResult Index()
         {
             return View(db.Messages.ToList());
+        }
+
+        public ActionResult Inbox()
+        {
+            return View();
         }
 
         // GET: Messages/Details/5
@@ -60,12 +73,15 @@ namespace ProjektSWR.Controllers
         // POST: Messages/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        public ActionResult CreateMessage(string userName, string Temat, string Tresc)
+        public bool CreateMessage(string userName, string Temat, string Tresc)
         {
+            if (String.IsNullOrEmpty(userName) || String.IsNullOrEmpty(Temat) || String.IsNullOrEmpty(Tresc))
+                return false;
+
             string currentUserId = User.Identity.GetUserId();
             ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
             ApplicationUser r = db.Users.FirstOrDefault(x => x.Email == userName);
+
             Message message = new Message()
             {
                 ID_nadawcy = currentUser,
@@ -76,9 +92,8 @@ namespace ProjektSWR.Controllers
             };
             db.Messages.Add(message);
             db.SaveChanges();
-            return RedirectToAction("Index");
 
-           // return View(message);
+            return true;
         }
 
         // GET: Messages/Edit/5

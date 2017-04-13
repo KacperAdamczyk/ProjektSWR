@@ -372,7 +372,7 @@
     <Content Include="Scripts\locale\zh-tw.js" />
     <Content Include="Scripts\Messages\inbox.js" />
     <Content Include="Scripts\Messages\newMessage.js" />
-    <Content Include="Scripts\Messages\pageload.js" />
+    <Content Include="Scripts\Messages\controller.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />
@@ -382,7 +382,7 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Scripts\textboard.js" />
+    <Content Include="Scripts\Messages\newMessage_input.js" />
     <Content Include="Scripts\tinymce\jquery.tinymce.min.js" />
     <Content Include="Scripts\tinymce\license.txt" />
     <Content Include="Scripts\tinymce\plugins\advlist\plugin.js" />
@@ -543,7 +543,9 @@
     <Content Include="Scripts\tinymce\themes\modern\theme.min.js" />
     <Content Include="Scripts\tinymce\tinymce.js" />
     <Content Include="Scripts\tinymce\tinymce.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -568,14 +570,13 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Home\Calendar.cshtml" />
-    <Content Include="Views\Home\Messages.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\Messages\Create.cshtml" />
     <Content Include="Views\Messages\Delete.cshtml" />
     <Content Include="Views\Messages\Details.cshtml" />
     <Content Include="Views\Messages\Edit.cshtml" />
+    <Content Include="Views\Messages\Inbox.cshtml" />
     <Content Include="Views\Messages\Index.cshtml" />
-    <Content Include="Views\Messages\Layout.cshtml" />
     <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce.woff" />
     <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce.ttf" />
     <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce.json" />

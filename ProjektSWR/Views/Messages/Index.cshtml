@@ -1,67 +1,26 @@
-﻿@model IEnumerable<ProjektSWR.Models.Message>
-
-@{
-    Layout = "~/Views/Messages/Layout.cshtml";
-    ViewBag.Title = "Index";
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Wiadomości";
 }
+
+<link rel="stylesheet" href="~/Content/themes/base/jquery-ui.min.css">
+<link rel="stylesheet" type="text/css" href="~/Content/Messages.css">
+
+
+<script src="~/Scripts/tinymce/tinymce.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+
+<script src="~/Scripts/Messages/newMessage.js"></script>
+<script src="~/Scripts/Messages/newMessage_input.js"></script>
 <script src="~/Scripts/Messages/inbox.js"></script>
+<script src="~/Scripts/Messages/controller.js"></script>
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ID_nadawcy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ID_odbiorcy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Temat)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Tresc)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Data_nadania)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Data_odbioru)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Archiwizacja_odbiorca)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Archiwizacja_nadawca)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.ID_nadawcy)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ID_odbiorcy)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Temat)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Tresc)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Data_nadania)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Data_odbioru)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Archiwizacja_odbiorca)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Archiwizacja_nadawca)
-        </td>
-    </tr>
-}
-
-</table>
+<div class="messages">
+    <ul>
+        <li><a id="new_message" onclick="loadNewMessage()">Nowa wiadomość</a></li>
+        <li><a id="inbox" onclick="loadInbox()">Skrzynka odbiorcza</a></li>
+        <li><a id="sent" onclick="loadSent()">Wysłane</a></li>
+    </ul>
+    <div id="content">
+    </div>
+</div>
