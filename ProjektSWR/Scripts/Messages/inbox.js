@@ -9,7 +9,7 @@ xhttp.onreadystatechange = function () {
 
 $(document).ready(function () {
     changeActive("mail_box");
-    xhttp.open("GET", "JgetMessages", true);
+    xhttp.open("GET", "/Messages/JgetMessages", true);
     xhttp.send();
 });
 

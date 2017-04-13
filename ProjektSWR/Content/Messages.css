@@ -47,4 +47,31 @@
     overflow: hidden;
     margin-top: 40px;
 }
+#content {
+    margin-top: 0px;
+    margin-left: 15px;
+}
+
+.custom-combobox {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+.custom-combobox-toggle {
+    position: absolute;
+    top: 0px;
+    margin-left: -1px;
+    padding: 0;
+    height: 32px;
+}
+
+.custom-combobox-input {
+    margin: 0;
+    padding: 5px 10px;
+}
+
+.ui-draggable, .ui-droppable {
+    background-position: top;
+}
 

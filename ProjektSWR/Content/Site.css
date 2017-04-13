@@ -32,13 +32,12 @@ textarea {
     border: solid white 3px;
 }
 
-.navbar, .navbar-inverse, .navbar-fixed-top {
+.navbar {
     background-color: #003c82;
     color: white;
-    max-height: 400px;
     padding-top: 10px;
     padding-bottom: 10px;
-    overflow: hidden;
+    
 }
 
 
@@ -46,18 +45,17 @@ textarea {
     padding-top: 10px;
     padding-left: 50px;
     padding-bottom: 15px;
+    max-height: 1000px;
     font-size: 14px;
     font-weight: 700;
     text-transform: uppercase;
+    vertical-align: bottom;
 }
 
 .navbar-collapse {
     max-height: 400px;
 }
 
-.navbar-nav {
-    vertical-align: bottom;
-}
 
 #registerLink, #loginLink {
     color: white !important;

@@ -1,21 +1,42 @@
 ﻿var xhttp = new XMLHttpRequest();
+var op;
 
 xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
-        var Jdata = JSON.parse(this.responseText);
-        parseData(Jdata);
+        if (op == "GET") { 
+            var Jdata = JSON.parse(this.responseText);
+            parseData(Jdata);
+        }
+        if (op == "POST") {
+            document.location.href = "/Messages";
+        }
     }
+}
+
+function sendMessage() {
+    var receiver = $("#combobox").find('option:selected').text();
+    var s = $("#Subject").val();
+    var c = (((tinyMCE.activeEditor.getContent()).replace(/(&nbsp;)*/g, "")).replace(/(<p>)*/g, "")).replace(/<(\/)?p[^>]*>/g, "");
+    var message = { "userName": receiver, "Temat": s, "Tresc": c };
+    var cl = "";
+    for (x in message) {
+        cl += x + "=" + message[x] + "&";
+    }
+    cl = cl.substr(0, cl.length - 1);
+    op = "POST";
+    xhttp.open("POST", "/Messages/CreateMessage?" + cl, true);
+    xhttp.send();
 }
 
 $(document).ready(function () {
     changeActive("new_message");
-    xhttp.open("GET", "JgetUsers", true);
+    op = "GET";
+    xhttp.open(op, "JgetUsers", true);
     xhttp.send();
 });
 
 function parseData(Jdata) {
     console.log(Jdata);
-
     var i, line;
     for (i = 0; i < Jdata.length; i++) {
         line = '<option value="' + Jdata[i] + '">' + Jdata[i] + '</option>';

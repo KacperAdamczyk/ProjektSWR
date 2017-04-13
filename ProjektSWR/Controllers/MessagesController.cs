@@ -14,19 +14,20 @@ namespace ProjektSWR.Controllers
     [Authorize]
     public class MessagesController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        protected ApplicationDbContext db = new ApplicationDbContext();
 
         public ActionResult JgetUsers()
         {
-            string q = "SELECT [Email] FROM [dbo].[AspNetUsers]";
-            return Json(db.Database.SqlQuery<string>(q), JsonRequestBehavior.AllowGet);
+            var users = from u in db.Users select u.Email;
+            return Json(users, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult JgetMessages()
         {
-            string q = "select [*] from [dbo].[Messages] where [Id] = " + User.Identity.GetUserId<string>();
-
-            return Json(db.Database.SqlQuery<string>(q), JsonRequestBehavior.AllowGet);
+            var messages = from m in db.Messages select m;
+            string userId = User.Identity.GetUserId<string>();
+            messages = messages.Where(m => m.ID_odbiorcy == userId);
+            return Json(messages, JsonRequestBehavior.AllowGet);
         }
 
         // GET: Messages
@@ -59,20 +60,25 @@ namespace ProjektSWR.Controllers
         // POST: Messages/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID_wiadomosci,ID_nadawcy,ID_odbiorcy,Temat,Tresc,Data_nadania,Data_odbioru,Archiwizacja_odbiorca,Archiwizacja_nadawca,ID_odpowiedzi")] Message message)
+        //[HttpPost]
+        public ActionResult CreateMessage(string userName, string Temat, string Tresc)
         {
-            if (ModelState.IsValid)
+            string currentUserId = User.Identity.GetUserId();
+            ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
+            ApplicationUser r = db.Users.FirstOrDefault(x => x.Email == userName);
+            Message message = new Message()
             {
-                //message.ID_nadawcy = User.Identity.GetUserId();
-                message.Data_nadania = DateTime.Now;
-                db.Messages.Add(message);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                ID_nadawcy = currentUser,
+                ID_odbiorcy = r.Id,
+                Temat = Temat,
+                Tresc = Tresc,
+                Data_nadania = DateTime.Now
+            };
+            db.Messages.Add(message);
+            db.SaveChanges();
+            return RedirectToAction("Index");
 
-            return View(message);
+           // return View(message);
         }
 
         // GET: Messages/Edit/5
