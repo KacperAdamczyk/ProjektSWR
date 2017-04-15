@@ -8,9 +8,27 @@ using System.Web;
 using System.Web.Mvc;
 using ProjektSWR.Models;
 using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
 
 namespace ProjektSWR.Controllers
 {
+    class JmessageHeader
+    {
+        [JsonProperty] private int Id { set; get; }
+        [JsonProperty] private string senderName { set; get; }
+        [JsonProperty] private string Subject { set; get; }
+        [JsonProperty] private DateTime sendDateT { set; get; }
+        [JsonProperty] private DateTime receiveDateT { set; get; }
+        public JmessageHeader(int Id, string senderName, string Subject, DateTime sendDateT, DateTime receiveDateT)
+        {
+            this.Id = Id;
+            this.senderName = senderName;
+            this.Subject = Subject;
+            this.sendDateT = sendDateT;
+            this.receiveDateT = receiveDateT;
+        }
+    }
+
     [Authorize]
     public class MessagesController : Controller
     {
@@ -19,22 +37,32 @@ namespace ProjektSWR.Controllers
         public JsonResult JgetUsers()
         {
             var users = from u in db.Users select u.Email;
+            string currentUserId = User.Identity.GetUserId();
+            ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
+            users = users.Where(u => u != currentUser.Email);
             return Json(users, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult JgetMessages()
+        public JsonResult JgetMessageHeaders()
         {
             var messages = from m in db.Messages select m;
             string userId = User.Identity.GetUserId<string>();
-            messages = messages.Where(m => (m.ID_odbiorcy == userId && m.Archiwizacja_odbiorca));
-            return Json(messages, JsonRequestBehavior.AllowGet);
+            messages = messages.Where(m => (m.OdbiorcaID == userId && !m.Archiwizacja_odbiorca));
+
+            List<JmessageHeader> Jmessage = new List<JmessageHeader>();
+            //var user = from u in db.Users select u;
+            foreach (var m in messages)
+            {
+                Jmessage.Add(new JmessageHeader(m.WiadomoscID, m.NadawcaID.Email, m.Temat, m.Data_nadania, m.Data_odbioru ?? DateTime.MinValue));
+            }
+            return Json(JsonConvert.SerializeObject(Jmessage), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult JgetSentMessages()
         {
             var messages = from m in db.Messages select m;
             string userId = User.Identity.GetUserId<string>();
-            messages = messages.Where(m => (m.ID_nadawcy.Id == userId && m.Archiwizacja_nadawca));
+            messages = messages.Where(m => (m.NadawcaID.Id == userId && !m.Archiwizacja_nadawca));
             return Json(messages, JsonRequestBehavior.AllowGet);
         }
 
@@ -84,8 +112,8 @@ namespace ProjektSWR.Controllers
 
             Message message = new Message()
             {
-                ID_nadawcy = currentUser,
-                ID_odbiorcy = r.Id,
+                NadawcaID = currentUser,
+                OdbiorcaID = r.Id,
                 Temat = Temat,
                 Tresc = Tresc,
                 Data_nadania = DateTime.Now

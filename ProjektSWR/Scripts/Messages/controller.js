@@ -22,14 +22,13 @@ function load(label, url, fun) {
 
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", "/Messages/" + url, true);
-    xhttp.send();
-
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             $(globalContainer).html(this.responseText);
             fun();
         }
     }
+    xhttp.send();
 }
 
 function loadNewMessage() {

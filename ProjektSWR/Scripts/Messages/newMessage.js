@@ -4,14 +4,13 @@
 
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", "/Messages/JgetUsers", true);
-    xhttp.send();
-
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
                 var Jdata = JSON.parse(this.responseText);
                 parseUsers(Jdata);
             }
     }
+    xhttp.send();
 }
 
 function onExitNewMessageDocument() {
@@ -29,16 +28,14 @@ function sendMessage() {
     }
     cl = cl.substr(0, cl.length - 1);
 
-    operation = "POST";
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "/Messages/CreateMessage?" + cl, true);
-    xhttp.send();
-
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            if (this.responseText == true) {
-                document.location.href = "/Messages";
+            if (this.responseText == "True") {
+                loadInbox();
             }
         }
     }
+    xhttp.send();
 }

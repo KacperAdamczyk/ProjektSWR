@@ -9,9 +9,9 @@ namespace ProjektSWR.Models
     public class Message
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID_wiadomosci { get; set; }
-        public ApplicationUser ID_nadawcy { get; set; }
-        public string ID_odbiorcy { get; set; }
+        public int WiadomoscID { get; set; }
+        public virtual ApplicationUser NadawcaID { get; set; }
+        public string OdbiorcaID { get; set; }
         [Required]
         public string Temat { get; set; }
         public string Tresc { get; set; }
@@ -23,6 +23,6 @@ namespace ProjektSWR.Models
         [Required, DefaultValue(false)]
         public bool Archiwizacja_nadawca { get; set; }
         [DefaultValue(null)]
-        public Message ID_odpowiedzi { get; set; }
+        public Message OdpowiedzID { get; set; }
     }
 }

@@ -1,16 +1,13 @@
 ﻿function prepareInboxDocument() {
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "/Messages/JgetMessages", true);
-    xhttp.send();
-
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            var Jdata = JSON.parse(this.responseText);
-            parseUsers(Jdata);
-        }
-    }
+    $.getJSON("/Messages/JgetMessageHeaders", parseMessages);
 }
 
 function parseMessages(Jdata) {
+    Jdata = JSON.parse(Jdata);
     console.log(Jdata);
+    var i, line;
+    for (i = 0; i < Jdata.length; i++) {
+        line = "<tr><td>" + "</td></tr>";
+        $("#inbox_table").append(line);
+    }
 }
