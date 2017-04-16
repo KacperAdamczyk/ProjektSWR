@@ -11,7 +11,7 @@ function changeActive(li) {
     for (i = 0; i < tags.length; i++) {
         $("#" + tags[i]).removeClass(activeClass);
     }
-    var pos = tags.findIndex(function (element) { return element === li; });
+    var pos = tags.indexOf(li);
     if (pos >= 0) {
         $("#" + li).addClass(activeClass);
     }
@@ -19,16 +19,14 @@ function changeActive(li) {
 
 function load(label, url, fun) {
     changeActive(label);
-
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "/Messages/" + url, true);
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            $(globalContainer).html(this.responseText);
+    $.ajax({
+        url: "/Messages/" + url,
+        success: function (data) {
+            $(globalContainer).html(data);
             fun();
         }
-    }
-    xhttp.send();
+    });
+    
 }
 
 function loadNewMessage() {
@@ -41,5 +39,6 @@ function loadInbox() {
 }
 
 function loadSent() {
-
+    onExitNewMessageDocument();
+    load("sent", "Sent", prepareSentDocument);
 }

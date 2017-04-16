@@ -7,7 +7,7 @@ function parseMessages(Jdata) {
     console.log(Jdata);
     var i, line;
     for (i = 0; i < Jdata.length; i++) {
-        line = "<tr><td>" + "</td></tr>";
-        $("#inbox_table").append(line);
+        line = "<tr><td>" + Jdata[i].UserName + "</td><td>" + Jdata[i].Subject + "</td></tr>";
+        $(".is_table").append(line);
     }
 }

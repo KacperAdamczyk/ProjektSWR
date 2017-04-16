@@ -74,3 +74,12 @@
     background-position: top;
 }
 
+.is_table {
+    border: 2px black solid;
+    border-collapse: collapse;
+}
+
+.is_table td {
+    
+    border: 2px grey solid;
+}

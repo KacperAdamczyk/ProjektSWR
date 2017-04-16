@@ -2,15 +2,7 @@
     loadContentInput();
     loadTo();
 
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "/Messages/JgetUsers", true);
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-                var Jdata = JSON.parse(this.responseText);
-                parseUsers(Jdata);
-            }
-    }
-    xhttp.send();
+    $.getJSON("/Messages/JgetUsers", parseUsers);
 }
 
 function onExitNewMessageDocument() {
@@ -20,8 +12,8 @@ function onExitNewMessageDocument() {
 function sendMessage() {
     var receiver = $("#combobox").find('option:selected').text();
     var s = $("#Subject").val();
-    var c = (((tinyMCE.activeEditor.getContent()).replace(/(&nbsp;)*/g, "")).replace(/(<p>)*/g, "")).replace(/<(\/)?p[^>]*>/g, "");
-    var message = { "userName": receiver, "Temat": s, "Tresc": c };
+    var c = (((tinyMCE.activeEditor.getContent()).replace(/(&nbsp;)*/g, "")).replace(/(<p>)*/g, "")).replace(/<(\/)?p[^>]*>/g, ""); // usuwa wszystko
+    var message = { "UserName": receiver, "Subject": s, "Content": c };
     var cl = "";
     for (x in message) {
         cl += x + "=" + message[x] + "&";
@@ -31,8 +23,8 @@ function sendMessage() {
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "/Messages/CreateMessage?" + cl, true);
     xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            if (this.responseText == "True") {
+        if (this.readyState === 4 && this.status === 200) {
+            if (this.responseText === "True") {
                 loadInbox();
             }
         }

@@ -15,17 +15,17 @@ namespace ProjektSWR.Controllers
     class JmessageHeader
     {
         [JsonProperty] private int Id { set; get; }
-        [JsonProperty] private string senderName { set; get; }
+        [JsonProperty] private string UserName { set; get; }
         [JsonProperty] private string Subject { set; get; }
-        [JsonProperty] private DateTime sendDateT { set; get; }
-        [JsonProperty] private DateTime receiveDateT { set; get; }
-        public JmessageHeader(int Id, string senderName, string Subject, DateTime sendDateT, DateTime receiveDateT)
+        [JsonProperty] private DateTime SendDate { set; get; }
+        [JsonProperty] private DateTime ReceivedDate { set; get; }
+        public JmessageHeader(int Id, string UserName, string Subject, DateTime SendDate, DateTime ReceivedDate)
         {
             this.Id = Id;
-            this.senderName = senderName;
+            this.UserName = UserName;
             this.Subject = Subject;
-            this.sendDateT = sendDateT;
-            this.receiveDateT = receiveDateT;
+            this.SendDate = SendDate;
+            this.ReceivedDate = ReceivedDate;
         }
     }
 
@@ -45,15 +45,16 @@ namespace ProjektSWR.Controllers
 
         public JsonResult JgetMessageHeaders()
         {
-            var messages = from m in db.Messages select m;
-            string userId = User.Identity.GetUserId<string>();
-            messages = messages.Where(m => (m.OdbiorcaID == userId && !m.Archiwizacja_odbiorca));
+            var recipients = from r in db.Recipients select r;
+            string currentUserId = User.Identity.GetUserId();
+
+            recipients = recipients.Where(r => r.UserID.Id == currentUserId && !r.Archived);
 
             List<JmessageHeader> Jmessage = new List<JmessageHeader>();
-            //var user = from u in db.Users select u;
-            foreach (var m in messages)
+            foreach (var m in recipients)
             {
-                Jmessage.Add(new JmessageHeader(m.WiadomoscID, m.NadawcaID.Email, m.Temat, m.Data_nadania, m.Data_odbioru ?? DateTime.MinValue));
+                Jmessage.Add(new JmessageHeader(m.ID, m.MessageID.SenderID.Email, m.MessageID.Subject, m.MessageID.SendDate,
+                    m.ReceivedDate ?? DateTime.MinValue));
             }
             return Json(JsonConvert.SerializeObject(Jmessage), JsonRequestBehavior.AllowGet);
         }
@@ -61,15 +62,23 @@ namespace ProjektSWR.Controllers
         public JsonResult JgetSentMessages()
         {
             var messages = from m in db.Messages select m;
-            string userId = User.Identity.GetUserId<string>();
-            messages = messages.Where(m => (m.NadawcaID.Id == userId && !m.Archiwizacja_nadawca));
-            return Json(messages, JsonRequestBehavior.AllowGet);
+            string currentUserId = User.Identity.GetUserId<string>();
+            messages = messages.Where(m => m.SenderID.Id == currentUserId && !m.Archived);
+           
+
+            List<JmessageHeader> Jmessage = new List<JmessageHeader>();
+            foreach (var m in messages)
+            {
+                DateTime? RecivedDate = db.Recipients.FirstOrDefault(r => r.MessageID.ID == m.ID).ReceivedDate;
+                Jmessage.Add(new JmessageHeader(m.ID, m.SenderID.Email, m.Subject, m.SendDate, RecivedDate ?? DateTime.MinValue));
+            }
+            return Json(JsonConvert.SerializeObject(Jmessage), JsonRequestBehavior.AllowGet);
         }
 
         // GET: Messages
         public ActionResult Index()
         {
-            return View(db.Messages.ToList());
+            return View();
         }
 
         public ActionResult Inbox()
@@ -77,19 +86,9 @@ namespace ProjektSWR.Controllers
             return View();
         }
 
-        // GET: Messages/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Sent()
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Message message = db.Messages.Find(id);
-            if (message == null)
-            {
-                return HttpNotFound();
-            }
-            return View(message);
+            return View();
         }
 
         // GET: Messages/Create
@@ -101,84 +100,33 @@ namespace ProjektSWR.Controllers
         // POST: Messages/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        public bool CreateMessage(string userName, string Temat, string Tresc)
+        public bool CreateMessage(string UserName, string Subject, string Content)
         {
-            if (String.IsNullOrEmpty(userName) || String.IsNullOrEmpty(Temat) || String.IsNullOrEmpty(Tresc))
+            if (String.IsNullOrEmpty(UserName) || String.IsNullOrEmpty(Subject) || String.IsNullOrEmpty(Content))
                 return false;
 
             string currentUserId = User.Identity.GetUserId();
             ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
-            ApplicationUser r = db.Users.FirstOrDefault(x => x.Email == userName);
+            ApplicationUser recipientUser = db.Users.FirstOrDefault(x => x.Email == UserName);
 
             Message message = new Message()
             {
-                NadawcaID = currentUser,
-                OdbiorcaID = r.Id,
-                Temat = Temat,
-                Tresc = Tresc,
-                Data_nadania = DateTime.Now
+                SenderID = currentUser,
+                Subject = Subject,
+                Content = Content,
+                SendDate = DateTime.Now
             };
             db.Messages.Add(message);
+
+            Recipient recipient = new Recipient()
+            {
+                MessageID = message,
+                UserID = recipientUser,
+            };
+            db.Recipients.Add(recipient);
             db.SaveChanges();
 
             return true;
-        }
-
-        // GET: Messages/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Message message = db.Messages.Find(id);
-            if (message == null)
-            {
-                return HttpNotFound();
-            }
-            return View(message);
-        }
-
-        // POST: Messages/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID_wiadomosci,ID_nadawcy,ID_odbiorcy,Temat,Tresc,Data_nadania,Data_odbioru,Archiwizacja_odbiorca,Archiwizacja_nadawca,ID_odpowiedzi")] Message message)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(message).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(message);
-        }
-
-        // GET: Messages/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Message message = db.Messages.Find(id);
-            if (message == null)
-            {
-                return HttpNotFound();
-            }
-            return View(message);
-        }
-
-        // POST: Messages/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Message message = db.Messages.Find(id);
-            db.Messages.Remove(message);
-            db.SaveChanges();
-            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

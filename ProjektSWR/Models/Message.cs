@@ -9,20 +9,23 @@ namespace ProjektSWR.Models
     public class Message
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int WiadomoscID { get; set; }
-        public virtual ApplicationUser NadawcaID { get; set; }
-        public string OdbiorcaID { get; set; }
-        [Required]
-        public string Temat { get; set; }
-        public string Tresc { get; set; }
-        [Required]
-        public DateTime Data_nadania { get; set; }
-        public DateTime? Data_odbioru { get; set; }
-        [Required, DefaultValue(false)]
-        public bool Archiwizacja_odbiorca { get; set; }
-        [Required, DefaultValue(false)]
-        public bool Archiwizacja_nadawca { get; set; }
-        [DefaultValue(null)]
-        public Message OdpowiedzID { get; set; }
+        public int ID { get; set; }
+        [Required] public virtual ApplicationUser SenderID { get; set; }
+        [Required] public string Subject { get; set; }
+        public string Content { get; set; }
+        [Required] public DateTime SendDate { get; set; }
+        
+        [Required, DefaultValue(false)] public bool Archived { get; set; }
+        [DefaultValue(null)] public Message ResponseID { get; set; }
+    }
+
+    public class Recipient
+    {
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ID { get; set; }
+        [Required] public virtual Message MessageID { get; set; }
+        [Required] public virtual ApplicationUser UserID { get; set; }
+        [Required, DefaultValue(false)] public bool Archived { get; set; }
+        public DateTime? ReceivedDate { get; set; }
     }
 }

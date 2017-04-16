@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace ProjektSWR.Models
 {
@@ -21,17 +22,19 @@ namespace ProjektSWR.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Message> Messages { get; set; }
+        public DbSet<Recipient> Recipients { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
             //modelBuilder.Ignore<IdentityUserLogin>();
             //modelBuilder.Ignore<IdentityRole>();
             //modelBuilder.Ignore<IdentityUserClaim>();
             //modelBuilder.Ignore<IdentityRole>();
             //modelBuilder.Entity<IdentityUser>().Ignore(c => c.EmailConfirmed);
-             //                                  .Ignore(c => c.TwoFactorEnabled);
-                                                                                 
+            //                                  .Ignore(c => c.TwoFactorEnabled);
+
             //modelBuilder.Entity<IdentityUser>().ToTable("Users");
         }
 

@@ -284,6 +284,7 @@
     <Content Include="Scripts\fullcalendar.js" />
     <Content Include="Scripts\fullcalendar.min.js" />
     <Content Include="Scripts\gcal.js" />
+    <Content Include="Scripts\gcal.min.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
     <Content Include="Scripts\jquery-3.1.1.slim.js" />
@@ -313,6 +314,9 @@
     <Content Include="Scripts\lib\jquery.min.js" />
     <Content Include="Scripts\lib\moment.min.js" />
     <Content Include="Scripts\locale-all.js" />
+    <Content Include="Scripts\locale\af.js" />
+    <Content Include="Scripts\locale\ar-dz.js" />
+    <Content Include="Scripts\locale\ar-ly.js" />
     <Content Include="Scripts\locale\ar-ma.js" />
     <Content Include="Scripts\locale\ar-sa.js" />
     <Content Include="Scripts\locale\ar-tn.js" />
@@ -346,6 +350,7 @@
     <Content Include="Scripts\locale\is.js" />
     <Content Include="Scripts\locale\it.js" />
     <Content Include="Scripts\locale\ja.js" />
+    <Content Include="Scripts\locale\kk.js" />
     <Content Include="Scripts\locale\ko.js" />
     <Content Include="Scripts\locale\lb.js" />
     <Content Include="Scripts\locale\lt.js" />
@@ -354,6 +359,7 @@
     <Content Include="Scripts\locale\ms-my.js" />
     <Content Include="Scripts\locale\ms.js" />
     <Content Include="Scripts\locale\nb.js" />
+    <Content Include="Scripts\locale\nl-be.js" />
     <Content Include="Scripts\locale\nl.js" />
     <Content Include="Scripts\locale\nn.js" />
     <Content Include="Scripts\locale\pl.js" />
@@ -375,6 +381,7 @@
     <Content Include="Scripts\Messages\inbox.js" />
     <Content Include="Scripts\Messages\newMessage.js" />
     <Content Include="Scripts\Messages\controller.js" />
+    <Content Include="Scripts\Messages\sent.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />
@@ -574,9 +581,7 @@
     <Content Include="Views\Home\Calendar.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\Messages\Create.cshtml" />
-    <Content Include="Views\Messages\Delete.cshtml" />
-    <Content Include="Views\Messages\Details.cshtml" />
-    <Content Include="Views\Messages\Edit.cshtml" />
+    <Content Include="Views\Messages\Sent.cshtml" />
     <Content Include="Views\Messages\Inbox.cshtml" />
     <Content Include="Views\Messages\Index.cshtml" />
     <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce.woff" />
