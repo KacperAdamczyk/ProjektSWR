@@ -44,7 +44,8 @@ namespace ProjektSWR.Models
     public class RegisterViewModel
     {
         [Required]
-        [Display(Name = "Nazwa użytkownika")]
+        [EmailAddress]
+        [Display(Name = "e-mail: (@prz.edu.pl)")]
         public string Email { get; set; }
 
         [Required]
