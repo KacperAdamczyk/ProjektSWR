@@ -1,12 +1,18 @@
-﻿const globalContainer = "#content";
-
+"use strict";
+var $ = require("jquery");
+var inbox = require("./inbox");
+var sent = require("./sent");
+var new_message = require("./newMessage");
+var globalContainer = "#content";
 $(document).ready(function () {
     loadInbox(); // domyślna zakładka
+    $("#new_message").click(function () { loadNewMessage(); });
+    $("#inbox").click(function () { loadInbox(); });
+    $("#sent").click(function () { loadSent(); });
 });
-
 function changeActive(li) {
     var tags = ["inbox", "sent", "new_message"];
-    const activeClass = "active";
+    var activeClass = "active";
     var i;
     for (i = 0; i < tags.length; i++) {
         $("#" + tags[i]).removeClass(activeClass);
@@ -16,7 +22,6 @@ function changeActive(li) {
         $("#" + li).addClass(activeClass);
     }
 }
-
 function load(label, url, fun) {
     changeActive(label);
     $.ajax({
@@ -26,19 +31,19 @@ function load(label, url, fun) {
             fun();
         }
     });
-    
 }
-
 function loadNewMessage() {
-    load("new_message", "Create", prepareNewMessageDocument);
+    load("new_message", "Create", new_message.prepareNewMessageDocument);
 }
-
+exports.loadNewMessage = loadNewMessage;
 function loadInbox() {
-    onExitNewMessageDocument();
-    load("inbox", "Inbox", prepareInboxDocument);
+    new_message.onExitNewMessageDocument();
+    load("inbox", "Inbox", inbox.prepareInboxDocument);
 }
-
+exports.loadInbox = loadInbox;
 function loadSent() {
-    onExitNewMessageDocument();
-    load("sent", "Sent", prepareSentDocument);
+    new_message.onExitNewMessageDocument();
+    load("sent", "Sent", sent.prepareSentDocument);
 }
+exports.loadSent = loadSent;
+//# sourceMappingURL=controller.js.map

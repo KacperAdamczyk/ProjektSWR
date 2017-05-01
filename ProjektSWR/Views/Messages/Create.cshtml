@@ -2,18 +2,17 @@
     Layout = null;
 }
 <div id="msgboard">
-    <form>
-        <div class="ui-widget">
-            <label>Odbiorca: </label>
-            <select id="combobox">
-                <option value=""></option>
-            </select>
-        </div>
+    <form>       
+        <label>Odbiorca: </label>
+        <input list="combobox" id="users_combobox">
+        <datalist id="combobox">
+            
+        </datalist>
         <div class="input-group">
             <span class="input-group-addon">Temat</span>
             <input id="Subject" type="text" class="form-control">
         </div>
     </form>
-    <textarea id="messageContent"></textarea>
-    <button type="button" class="btn btn-default" onclick="sendMessage()">Wyślij</button>
+    <div id="messageContent"></div>
+    <button id="send_button">Wyślij</button>
 </div>
