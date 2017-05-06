@@ -1,0 +1,85 @@
+
+.messages ul {
+    top: 10px;
+    list-style-type: none;
+    margin: 0px;
+    margin-top: 0px;
+    padding: 0px;
+    background-color: #f1f1f1;
+    max-width: 20%;
+    min-height: 500px;
+    float: left;
+}
+
+.messages li {
+    padding: 0px;
+}
+
+.messages li a {
+    display: table;
+    color: black;
+    text-decoration: none;
+    width: 100%;
+    padding: 10px;
+}
+
+.messages li a.active {
+    background-color: #003c82;
+    color: white;
+}
+
+.messages li a:hover:not(.active) {
+    background-color: #555;
+}
+
+#new_message {
+    font-weight: 700;
+}
+
+#new_message a {
+    margin-bottom: 10px;
+}
+
+#msgboard {
+    float: right;
+    max-width: 80%;
+    overflow: hidden;
+    margin-top: 40px;
+}
+#content {
+    margin-top: 0px;
+    margin-left: 15px;
+}
+
+.custom-combobox {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+.custom-combobox-toggle {
+    position: absolute;
+    top: 0px;
+    margin-left: -1px;
+    padding: 0;
+    height: 32px;
+}
+
+.custom-combobox-input {
+    margin: 0;
+    padding: 5px 10px;
+}
+
+.ui-draggable, .ui-droppable {
+    background-position: top;
+}
+
+.is_table {
+    border: 2px black solid;
+    border-collapse: collapse;
+}
+
+.is_table td {
+    
+    border: 2px grey solid;
+}

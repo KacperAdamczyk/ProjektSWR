@@ -1,0 +1,19 @@
+﻿@{ 
+    Layout = null;
+}
+<div id="msgboard">
+    <form>
+        <div class="ui-widget">
+            <label>Odbiorca: </label>
+            <select id="combobox">
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">Temat</span>
+            <input id="Subject" type="text" class="form-control">
+        </div>
+    </form>
+    <textarea id="messageContent"></textarea>
+    <button type="button" class="btn btn-default" onclick="sendMessage()">Wyślij</button>
+</div>

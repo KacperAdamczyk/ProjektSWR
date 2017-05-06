@@ -10,6 +10,8 @@
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    margin-bottom: 70px;
+    margin-top: 20px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -26,38 +28,88 @@ textarea {
     max-width: 280px;
 }
 
-.navbar, .navbar-inverse, .navbar-fixed-top {
+.navbar-toggle {
+    border: solid white 3px;
+}
+
+.navbar {
     background-color: #003c82;
     color: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    
 }
 
 
 .nav, .navbar-nav {
-    height: 200px;
-    padding-top: 50px;
+    padding-top: 10px;
     padding-left: 50px;
-    padding-bottom: 20px;
+    padding-bottom: 15px;
+    max-height: 1000px;
     font-size: 14px;
     font-weight: 700;
     text-transform: uppercase;
+    vertical-align: bottom;
 }
 
-.navbar-right {
-    right: 0px;
+.navbar-collapse {
+    max-height: 400px;
+}
+
+
+#registerLink, #loginLink {
+    color: white !important;
+}
+
+.white_link {
+    color: white !important;
+}
+
+.white_link a {
+    color: white !important;
 }
 
 #PRZ_LOGO {
-    padding-top: 10px;
+    padding: 10px;
 }
 
-#NOTIFY {
-    margin-top: 10px;
+.icon-bar {
+    color: white !important; 
+    background-color: white !important;
+}
+
+.navbar-toggle button:hover {
+    background-color: none !important;
 }
 
 footer {
-    height: 90px;
+    max-height: 100px;
     color: white;
     background-color: #003c82;
     padding-left: 150px;
+    padding-right: 150px;
     padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+footer hr {
+    margin: 0px;
+    border-color: white;
+    border-width: 1px;
+    padding-top: 10px;
+    padding-bottom: 0px;
+}
+
+ul {
+    position: relative;
+    top: 30px;
+}
+
+li {
+    text-align: center;
+    padding: 10px;
+}
+
+#notify {
+    padding-top: 15px;
 }
