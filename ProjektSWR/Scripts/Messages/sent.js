@@ -12,4 +12,3 @@ function parseSentMessages(Jdata) {
         $(".is_table").append(line);
     }
 }
-//# sourceMappingURL=sent.js.map

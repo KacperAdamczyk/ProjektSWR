@@ -12,4 +12,3 @@ function parseMessages(Jdata) {
         $(".is_table").append(line);
     }
 }
-//# sourceMappingURL=inbox.js.map

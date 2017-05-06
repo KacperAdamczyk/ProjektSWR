@@ -46,4 +46,3 @@ function loadSent() {
     load("sent", "Sent", sent.prepareSentDocument);
 }
 exports.loadSent = loadSent;
-//# sourceMappingURL=controller.js.map

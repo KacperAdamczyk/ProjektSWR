@@ -14,7 +14,6 @@ namespace ProjektSWR.Models
         [Required] public string Subject { get; set; }
         public string Content { get; set; }
         [Required] public DateTime SendDate { get; set; }
-        
         [Required, DefaultValue(false)] public bool Archived { get; set; }
         [DefaultValue(null)] public Message ResponseID { get; set; }
     }

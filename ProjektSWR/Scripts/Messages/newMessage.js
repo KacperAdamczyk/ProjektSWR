@@ -35,4 +35,3 @@ function sendMessage() {
     };
     xhttp.send();
 }
-//# sourceMappingURL=newMessage.js.map
