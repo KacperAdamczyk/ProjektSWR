@@ -4,12 +4,33 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProjektSWR.Models
 {
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit https://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ID { get; set; }
+        [Required] public string FirstName { get; set; }
+        [Required] public string LastName { get; set; }
+        public string AcademicDegree { get; set; }
+        [Required] public string PhoneNumber { get; set; }
+        [Required] public string Email { get; set; }
+        [Required] public string Password { get; set; }
+        [Required] public string Login { get; set; }
+        public string Photo { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public string Description { get; set; }
+        public string Homepage { get; set; }
+        [Required] public virtual Cathedral CathedralID { get; set; }
+        public virtual Admin AdminID { get; set; }
+        public virtual NormalUser NormalUserID { get; set; }
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
@@ -47,5 +68,17 @@ namespace ProjektSWR.Models
         {
             return new ApplicationDbContext();
         }
+    }
+
+    public class NormalUser
+    {
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ID { get; set; }
+    }
+
+    public class Admin
+    {
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ID { get; set; }
     }
 }
