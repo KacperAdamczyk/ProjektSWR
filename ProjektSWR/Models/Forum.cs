@@ -12,6 +12,9 @@ namespace ProjektSWR.Models
         public int ID { get; set; }
         [Required] public string Name { get; set; }
         [Required] public string MainMessage { get; set; }
+        [Required] public Category CategoryID { get; set; }
+        [Required] public ApplicationUser UserID { get; set; }
+        [Required] public Admin AdminID { get; set; }
 
     }
 
@@ -20,6 +23,7 @@ namespace ProjektSWR.Models
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         [Required] public string Name { get; set; }
+        [Required] public Forum ForumID { get; set; }
     }
 
     public class Forum
@@ -35,5 +39,6 @@ namespace ProjektSWR.Models
         public int ID { get; set; }
         [Required] public string Answer { get; set; }
         [Required] public string Email { get; set; }
+        [Required] public Thread ThreadID { get; set; }
     }
 }

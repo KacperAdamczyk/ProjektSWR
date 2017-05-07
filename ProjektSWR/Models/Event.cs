@@ -12,6 +12,8 @@ namespace ProjektSWR.Models
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         public string Coordinator { get; set; }
+        [Required] public virtual ApplicationUser UserID { get; set; }
+        [Required] public virtual Admin AdminID { get; set; }
 
     }
 
@@ -19,6 +21,8 @@ namespace ProjektSWR.Models
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
+        [Required] public virtual ApplicationUser UserID { get; set; }
+        [Required] public virtual Admin AdminID { get; set; }
 
     }
 
@@ -27,10 +31,11 @@ namespace ProjektSWR.Models
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         [Required] public string Title { get; set; }
-        [Required] public string StartDate { get; set; }
-        public string EndDate { get; set; }
+        [Required] public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         public string Location { get; set; }
         public string Details { get; set; }
-
+        public virtual GlobalEvent GlobalEventID { get; set; }
+        public virtual PrivateEvent PrivateEventID { get; set; }
     }
 }

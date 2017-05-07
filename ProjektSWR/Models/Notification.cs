@@ -12,5 +12,9 @@ namespace ProjektSWR.Models
         public int ID { get; set; }
         [Required] public string Contents { get; set; }
         [Required] public string Status { get; set; }
+        [Required] public ApplicationUser UserID { get; set; }
+        public Event EventID { get; set; }
+        public Message MessageID { get; set; }
+        public Thread ThreadID { get; set; }
     }
 }
