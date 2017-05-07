@@ -1,7 +1,8 @@
-﻿function prepareSentDocument() {
+"use strict";
+function prepareSentDocument() {
     $.getJSON("/Messages/JgetSentMessages", parseSentMessages);
 }
-
+exports.prepareSentDocument = prepareSentDocument;
 function parseSentMessages(Jdata) {
     Jdata = JSON.parse(Jdata);
     console.log(Jdata);

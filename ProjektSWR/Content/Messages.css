@@ -45,10 +45,14 @@
     max-width: 80%;
     overflow: hidden;
     margin-top: 40px;
+    max-height: 300px;
 }
 #content {
     margin-top: 0px;
     margin-left: 15px;
+}
+#messageContent {
+    
 }
 
 .custom-combobox {

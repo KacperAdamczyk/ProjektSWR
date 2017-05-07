@@ -1,7 +1,8 @@
-﻿function prepareInboxDocument() {
+"use strict";
+function prepareInboxDocument() {
     $.getJSON("/Messages/JgetMessageHeaders", parseMessages);
 }
-
+exports.prepareInboxDocument = prepareInboxDocument;
 function parseMessages(Jdata) {
     Jdata = JSON.parse(Jdata);
     console.log(Jdata);
