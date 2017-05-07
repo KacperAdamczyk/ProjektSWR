@@ -19,6 +19,10 @@ namespace ProjektSWR.Models
         {
             Recipients = new List<Recipient>();
             Messages = new List<Message>();
+            Notifications = new List<Notification>();
+            Threads = new List<Thread>();
+            PrivateEvents = new List<PrivateEvent>();
+            GlobalEvents = new List<GlobalEvent>();
         }
 
         [Required] public string FirstName { get; set; }
@@ -34,6 +38,11 @@ namespace ProjektSWR.Models
 
         public virtual ICollection<Recipient> Recipients { get; set; }
         public virtual ICollection<Message> Messages { get; set; }
+        public virtual ICollection<Notification> Notifications { get; set; }
+        public virtual ICollection<Thread> Threads { get; set; }
+        public virtual ICollection<PrivateEvent> PrivateEvents { get; set; }
+        public virtual ICollection<GlobalEvent> GlobalEvents { get; set; }
+        
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {

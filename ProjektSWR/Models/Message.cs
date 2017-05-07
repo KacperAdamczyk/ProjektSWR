@@ -12,6 +12,7 @@ namespace ProjektSWR.Models
         public Message()
         {
             Recipients = new List<Recipient>();
+            Notifications = new List<Notification>();
         }
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
@@ -23,6 +24,7 @@ namespace ProjektSWR.Models
         [DefaultValue(null)] public Message ResponseID { get; set; }
 
         public virtual ICollection<Recipient> Recipients { get; set; }
+        public virtual ICollection<Notification> Notifications { get; set; }
     }
 
     public class Recipient
