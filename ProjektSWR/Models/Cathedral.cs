@@ -9,7 +9,7 @@ namespace ProjektSWR.Models
     public class Cathedral
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int CodeCathedral { get; set; }
+        public int ID { get; set; }
         [Required] public string Department { get; set; }
         [Required] public string Address { get; set; }
         [Required] public string Page { get; set; }

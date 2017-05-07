@@ -8,21 +8,22 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 
 namespace ProjektSWR.Models
 {
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit https://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { get; set; }
+        public ApplicationUser()
+        {
+            Recipients = new List<Recipient>();
+            Messages = new List<Message>();
+        }
+
         [Required] public string FirstName { get; set; }
         [Required] public string LastName { get; set; }
         public string AcademicDegree { get; set; }
-        [Required] public string PhoneNumber { get; set; }
-        [Required] public string Email { get; set; }
-        [Required] public string Password { get; set; }
-        [Required] public string Login { get; set; }
         public string Photo { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string Description { get; set; }
@@ -30,6 +31,9 @@ namespace ProjektSWR.Models
         [Required] public virtual Cathedral CathedralID { get; set; }
         public virtual Admin AdminID { get; set; }
         public virtual NormalUser NormalUserID { get; set; }
+
+        public virtual ICollection<Recipient> Recipients { get; set; }
+        public virtual ICollection<Message> Messages { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
@@ -45,6 +49,21 @@ namespace ProjektSWR.Models
         public DbSet<Message> Messages { get; set; }
         public DbSet<Recipient> Recipients { get; set; }
 
+        public DbSet<Cathedral> Cathedrals { get; set; }
+        public DbSet<NormalUser> NormalUsers { get; set; }
+        public DbSet<Admin> Admins { get; set; }
+
+        public DbSet<GlobalEvent> GlobalEvents { get; set; }
+        public DbSet<PrivateEvent> PrivateEvents { get; set; }
+        public DbSet<Event> Events { get; set; }
+
+        public DbSet<Thread> Threads { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Forum> Forums { get; set; }
+        public DbSet<Reply> Replys { get; set; }
+
+        public DbSet<Notification> Notifications { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -53,10 +72,10 @@ namespace ProjektSWR.Models
             //modelBuilder.Ignore<IdentityRole>();
             //modelBuilder.Ignore<IdentityUserClaim>();
             //modelBuilder.Ignore<IdentityRole>();
-            //modelBuilder.Entity<IdentityUser>().Ignore(c => c.EmailConfirmed);
-            //                                  .Ignore(c => c.TwoFactorEnabled);
+            //modelBuilder.Entity<IdentityUser>().Ignore(c => c.EmailConfirmed)
+             //                                  .Ignore(c => c.TwoFactorEnabled);
 
-            //modelBuilder.Entity<IdentityUser>().ToTable("Users");
+            //modelBuilder.Entity<ApplicationUser>().ToTable("Users");
         }
 
         public ApplicationDbContext()

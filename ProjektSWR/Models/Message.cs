@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,6 +9,10 @@ namespace ProjektSWR.Models
 {
     public class Message
     {
+        public Message()
+        {
+            Recipients = new List<Recipient>();
+        }
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         [Required] public virtual ApplicationUser SenderID { get; set; }
@@ -16,6 +21,8 @@ namespace ProjektSWR.Models
         [Required] public DateTime SendDate { get; set; }
         [Required, DefaultValue(false)] public bool Archived { get; set; }
         [DefaultValue(null)] public Message ResponseID { get; set; }
+
+        public virtual ICollection<Recipient> Recipients { get; set; }
     }
 
     public class Recipient
