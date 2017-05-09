@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Rejestracja";
 }
-
+<script src="~/Scripts/Cathedral/cathedral.js"></script>
 <h2>@ViewBag.Title</h2>
 
 @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
@@ -26,6 +26,29 @@
         @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.FisrtName, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.FisrtName, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.LastName, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.CathedralName, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            <select id="cathedrals_select" name="CathedralName">
+              <option>--Wybierz katedrę--</option>
+            </select>
         </div>
     </div>
     <div class="form-group">

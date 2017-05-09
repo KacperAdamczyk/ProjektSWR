@@ -15,6 +15,7 @@ namespace ProjektSWR.Controllers
     [Authorize]
     public class AccountController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -92,12 +93,16 @@ namespace ProjektSWR.Controllers
         }
 
         //
+        
         // GET: /Account/Register
         [AllowAnonymous]
         public ActionResult Register()
         {
-            return View();
+            var viewModel = new RegisterViewModel();
+
+            return View(viewModel);
         }
+
 
         //
         // POST: /Account/Register
@@ -108,7 +113,12 @@ namespace ProjektSWR.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+              
+                Cathedral c = db.Cathedrals.FirstOrDefault(x => x.Department == model.CathedralName);
+                
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FisrtName, LastName = model.LastName, CathedralID = c};
+                user.DateOfBirth = DateTime.Now;
+                db.Dispose();
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -240,6 +250,7 @@ namespace ProjektSWR.Controllers
                     _signInManager.Dispose();
                     _signInManager = null;
                 }
+                db.Dispose();
             }
 
             base.Dispose(disposing);
@@ -303,5 +314,8 @@ namespace ProjektSWR.Controllers
             }
         }
         #endregion
+
     }
+
+
 }
