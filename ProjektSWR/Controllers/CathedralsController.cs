@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ProjektSWR.Models;
+using Newtonsoft.Json;
 
 namespace ProjektSWR.Controllers
 {
@@ -18,6 +19,16 @@ namespace ProjektSWR.Controllers
         public ActionResult Index()
         {
             return View(db.Cathedrals.ToList());
+        }
+
+        public JsonResult Cathedrals()
+        {
+           
+            return Json(JsonConvert.SerializeObject(db.Cathedrals, Formatting.Indented,
+                            new JsonSerializerSettings
+                            {
+                                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                            }), JsonRequestBehavior.AllowGet);
         }
 
         // GET: Cathedrals/Details/5
