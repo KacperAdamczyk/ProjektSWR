@@ -15,7 +15,6 @@ namespace ProjektSWR.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -113,12 +112,10 @@ namespace ProjektSWR.Controllers
         {
             if (ModelState.IsValid)
             {
-              
+                var db = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
                 Cathedral c = db.Cathedrals.FirstOrDefault(x => x.Department == model.CathedralName);
-                
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FisrtName, LastName = model.LastName, CathedralID = c};
                 user.DateOfBirth = DateTime.Now;
-                db.Dispose();
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -250,7 +247,6 @@ namespace ProjektSWR.Controllers
                     _signInManager.Dispose();
                     _signInManager = null;
                 }
-                db.Dispose();
             }
 
             base.Dispose(disposing);
