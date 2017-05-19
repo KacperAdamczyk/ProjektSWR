@@ -12,7 +12,7 @@
 
     <div class="form-horizontal">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(m => m.Id, new { @id = "id"})
+        @Html.HiddenFor(m => m.Id, new { @id = "id" })
         <div class="form-group">
             <div class="col-md-10">
                 <select id="user_select" name="LastNam" onchange="show()">
@@ -42,8 +42,7 @@
         <div class="form-group">
             @Html.LabelFor(m => m.CathedralName, new { @class = "col-md-2 control-label" })
             <div class="col-md-10">
-                <select id="cathedrals_select" name="CathedralName">
-                </select>
+                <select id="cathedrals_select" name="CathedralName"></select>
             </div>
         </div>
         <div class="form-group">
