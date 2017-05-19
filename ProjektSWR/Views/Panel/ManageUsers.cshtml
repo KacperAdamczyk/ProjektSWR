@@ -1,0 +1,54 @@
+﻿@model ProjektSWR.Models.ManageUsersModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "LUL";
+}
+<script src="~/Scripts/Cathedral/cathedral.js"></script>
+<script src="~/Scripts/Panel/manage.js"></script>
+<script src="~/Scripts/Panel/show.js"></script>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(m => m.Id, new { @id = "id" })
+        <div class="form-group">
+            <div class="col-md-10">
+                <select id="user_select" name="LastNam" onchange="show()">
+                    <option value="0">--Wybierz uzytkownka--</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.LastName, new { @class = "col-md-2 control-label" })
+            <div class=" = col-md-10">
+                @Html.TextBoxFor(m => m.LastName, new { @id = "nazwisko" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label" })
+            <div class=" = col-md-10">
+                @Html.TextBoxFor(m => m.FirstName, new { @id = "imie" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+            <div class=" = col-md-10">
+                @Html.TextBoxFor(m => m.Email, new { @id = "email" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.CathedralName, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                <select id="cathedrals_select" name="CathedralName"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Edytuj" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
