@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var input = require("./newMessage_input");
 var controller = require("./controller");
 function prepareNewMessageDocument() {
