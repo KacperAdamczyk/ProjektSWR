@@ -1,7 +1,5 @@
 ﻿$(function () {
     $.getJSON("/Cathedrals/Cathedrals", parseJSON);
-
-
 });
 
 function parseJSON(data) {

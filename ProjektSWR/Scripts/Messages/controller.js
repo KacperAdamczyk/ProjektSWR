@@ -4,7 +4,7 @@ var $ = require("jquery");
 var inbox = require("./inbox");
 var sent = require("./sent");
 var new_message = require("./newMessage");
-var globalContainer = "#content";
+exports.globalContainer = "#content";
 $(document).ready(function () {
     loadInbox(); // domyślna zakładka
     $("#new_message").click(function () { loadNewMessage(); });
@@ -28,7 +28,7 @@ function load(label, url, fun) {
     $.ajax({
         url: "/Messages/" + url,
         success: function (data) {
-            $(globalContainer).html(data);
+            $(exports.globalContainer).html(data);
             fun();
         }
     });

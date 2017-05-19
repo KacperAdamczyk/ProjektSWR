@@ -451,6 +451,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\Messages\controller.ts" />
     <TypeScriptCompile Include="Scripts\Messages\inbox.ts" />
+    <TypeScriptCompile Include="Scripts\Messages\messageContent.ts" />
     <TypeScriptCompile Include="Scripts\Messages\newMessage.ts" />
     <TypeScriptCompile Include="Scripts\Messages\newMessage_input.ts" />
     <TypeScriptCompile Include="Scripts\Messages\sent.ts" />

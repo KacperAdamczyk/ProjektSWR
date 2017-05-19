@@ -5,7 +5,7 @@ import * as controller from "./controller";
 export function prepareNewMessageDocument() {
     input.loadContentInput();
     input.loadTo();
-    $.getJSON("/Messages/JgetUsers", input.parseUsers);
+    $.getJSON("/Messages/Users", input.parseUsers);
     $("#send_button").click(function(){sendMessage();});
 }
 

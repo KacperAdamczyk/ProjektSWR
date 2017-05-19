@@ -1,5 +1,7 @@
-﻿export function prepareInboxDocument() {
-    $.getJSON("/Messages/JgetMessageHeaders", parseMessages);
+﻿import { messageContent } from "./messageContent";
+
+export function prepareInboxDocument() {
+    $.getJSON("/Messages/MessageHeaders", parseMessages);
 }
 
 function parseMessages(Jdata) {
@@ -7,7 +9,9 @@ function parseMessages(Jdata) {
     console.log(Jdata);
     var i, line;
     for (i = 0; i < Jdata.length; i++) {
-        line = "<tr><td>" + Jdata[i].UserName + "</td><td>" + Jdata[i].Subject + "</td></tr>";
-        $(".is_table").append(line);
+        line = "<tr id='" + Jdata[i].Id + "'><td>" + Jdata[i].UserName + "</td><td>" + Jdata[i].Subject +
+            "</td><td>" + Jdata[i].SendDate + "</td><td>" + Jdata[i].ReceivedDate + "</td></tr>";
+        $(".inbox_table").append(line);
+        $("#" + Jdata[i].Id).click(function() { messageContent(this.id); });
     }
 }

@@ -12,14 +12,14 @@ using Newtonsoft.Json;
 
 namespace ProjektSWR.Controllers
 {
-    class JmessageHeader
+    class MessageHeader
     {
         [JsonProperty] private int Id { set; get; }
         [JsonProperty] private string UserName { set; get; }
         [JsonProperty] private string Subject { set; get; }
         [JsonProperty] private DateTime SendDate { set; get; }
         [JsonProperty] private DateTime ReceivedDate { set; get; }
-        public JmessageHeader(int Id, string UserName, string Subject, DateTime SendDate, DateTime ReceivedDate)
+        public MessageHeader(int Id, string UserName, string Subject, DateTime SendDate, DateTime ReceivedDate)
         {
             this.Id = Id;
             this.UserName = UserName;
@@ -34,7 +34,7 @@ namespace ProjektSWR.Controllers
     {
         protected ApplicationDbContext db = new ApplicationDbContext();
 
-        public JsonResult JgetUsers()
+        public JsonResult Users()
         {
             var users = from u in db.Users select u.Email;
             ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
@@ -42,30 +42,55 @@ namespace ProjektSWR.Controllers
             return Json(users, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult JgetMessageHeaders()
+        public JsonResult MessageHeaders()
         {
             ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
 
-            List<JmessageHeader> Jmessage = new List<JmessageHeader>();
+            List<MessageHeader> Jmessage = new List<MessageHeader>();
             foreach (var m in currentUser.Recipients)
             {
-                Jmessage.Add(new JmessageHeader(m.ID, m.MessageID.SenderID.Email, m.MessageID.Subject, m.MessageID.SendDate,
+                Jmessage.Add(new MessageHeader(m.ID, m.MessageID.SenderID.Email, m.MessageID.Subject, m.MessageID.SendDate,
                     m.ReceivedDate ?? DateTime.MinValue));
             }
             return Json(JsonConvert.SerializeObject(Jmessage), JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult JgetSentMessages()
+        public JsonResult SentMessages()
         {
             ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
 
-            List<JmessageHeader> Jmessage = new List<JmessageHeader>();
+            List<MessageHeader> Jmessage = new List<MessageHeader>();
             foreach (var m in currentUser.Messages)
             {
                 DateTime? RecivedDate = db.Recipients.FirstOrDefault(r => r.MessageID.ID == m.ID).ReceivedDate;
-                Jmessage.Add(new JmessageHeader(m.ID, m.SenderID.Email, m.Subject, m.SendDate, RecivedDate ?? DateTime.MinValue));
+                Jmessage.Add(new MessageHeader(m.ID, m.SenderID.Email, m.Subject, m.SendDate, RecivedDate ?? DateTime.MinValue));
             }
             return Json(JsonConvert.SerializeObject(Jmessage), JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult Content(int id)
+        {
+            var js = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+            var message = db.Messages.Find(id);
+            if (message == null)
+                return null;
+            if (message.SenderID == currentUser)
+                return Json(JsonConvert.SerializeObject(message.Content, Formatting.Indented, js), JsonRequestBehavior.AllowGet);
+
+            var recipient = currentUser.Recipients.FirstOrDefault(m => m.MessageID == message);
+            
+            if (recipient != null)
+            {
+                if (recipient.ReceivedDate == DateTime.MinValue)
+                {
+                    recipient.ReceivedDate = DateTime.Now;
+                    db.Entry(recipient).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                return Json(JsonConvert.SerializeObject(message.Content, Formatting.Indented, js), JsonRequestBehavior.AllowGet);
+            }
+            return null;
         }
 
         // GET: Messages

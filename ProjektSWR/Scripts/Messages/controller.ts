@@ -3,7 +3,7 @@ import * as inbox from "./inbox";
 import * as sent from "./sent";
 import * as new_message from "./newMessage";
 
-const globalContainer = "#content";
+export const globalContainer = "#content";
 
 $(document).ready(function () {
     loadInbox(); // domyślna zakładka
