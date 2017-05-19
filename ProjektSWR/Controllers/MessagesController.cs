@@ -37,21 +37,17 @@ namespace ProjektSWR.Controllers
         public JsonResult JgetUsers()
         {
             var users = from u in db.Users select u.Email;
-            string currentUserId = User.Identity.GetUserId();
-            ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
             users = users.Where(u => u != currentUser.Email);
             return Json(users, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult JgetMessageHeaders()
         {
-            var recipients = from r in db.Recipients select r;
-            string currentUserId = User.Identity.GetUserId();
-
-            recipients = recipients.Where(r => r.UserID.Id == currentUserId && !r.Archived);
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
 
             List<JmessageHeader> Jmessage = new List<JmessageHeader>();
-            foreach (var m in recipients)
+            foreach (var m in currentUser.Recipients)
             {
                 Jmessage.Add(new JmessageHeader(m.ID, m.MessageID.SenderID.Email, m.MessageID.Subject, m.MessageID.SendDate,
                     m.ReceivedDate ?? DateTime.MinValue));
@@ -61,13 +57,10 @@ namespace ProjektSWR.Controllers
 
         public JsonResult JgetSentMessages()
         {
-            var messages = from m in db.Messages select m;
-            string currentUserId = User.Identity.GetUserId<string>();
-            messages = messages.Where(m => m.SenderID.Id == currentUserId && !m.Archived);
-           
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
 
             List<JmessageHeader> Jmessage = new List<JmessageHeader>();
-            foreach (var m in messages)
+            foreach (var m in currentUser.Messages)
             {
                 DateTime? RecivedDate = db.Recipients.FirstOrDefault(r => r.MessageID.ID == m.ID).ReceivedDate;
                 Jmessage.Add(new JmessageHeader(m.ID, m.SenderID.Email, m.Subject, m.SendDate, RecivedDate ?? DateTime.MinValue));
@@ -106,7 +99,7 @@ namespace ProjektSWR.Controllers
                 return false;
 
             string currentUserId = User.Identity.GetUserId();
-            ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
             ApplicationUser recipientUser = db.Users.FirstOrDefault(x => x.Email == UserName);
 
             Message message = new Message()
