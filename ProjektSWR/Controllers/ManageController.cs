@@ -11,6 +11,7 @@ using System.Net;
 using System.Data.Entity.Infrastructure;
 using System.Web.UI;
 using Newtonsoft.Json;
+using System.Data.Entity.Validation;
 
 namespace ProjektSWR.Controllers
 {
@@ -60,6 +61,7 @@ namespace ProjektSWR.Controllers
         // GET: /Manage/Index
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
+            var db = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
             ViewBag.Message = "Panel użytkownika";
             ViewBag.Title = "UserPanel";
             ViewBag.StatusMessage =
@@ -80,6 +82,7 @@ namespace ProjektSWR.Controllers
                 Description = db.Users.Find(userId).Description,
                 Email = db.Users.Find(userId).Email,
                 PhoneNumber = db.Users.Find(userId).PhoneNumber,
+                CathedralName = db.Cathedrals.Find(1).Department,
             };
             return View(m);
         }
@@ -92,7 +95,6 @@ namespace ProjektSWR.Controllers
         public ActionResult Index(ManageViewModel m)
         {
             var db = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
-
             var userId = User.Identity.GetUserId();
 
             if (userId == null)
@@ -100,23 +102,27 @@ namespace ProjektSWR.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            db.Users.Find(userId).FirstName = m.FirstName;
-            db.Entry(db.Users.Find(userId)).State = System.Data.Entity.EntityState.Modified;
-            db.SaveChanges();
-
-            //if (TryUpdateModel(dbToChange, "", new string[]{ "FirstName, LastName, PhoneNumber, Email, AcademicDegree" } ))
-            //{
-            //    try
-            //    {
-            //        db.Entry(dbToChange).State = System.Data.Entity.EntityState.Modified;
-            //        db.SaveChanges();
-            //        return RedirectToAction("Index");
-            //    }
-            //    catch(RetryLimitExceededException)
-            //    {
-            //        ModelState.AddModelError("", "Niemożliwa była zmiana danych. Skontaktuj się z Adamem Małyszem."); //PAMIETAJ ZEBY ZMIENIC TEN KOMUNIKAT GLUPKU
-            //    }
-            //}
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    Cathedral c = db.Cathedrals.FirstOrDefault(x => x.Department == m.CathedralName);
+                    UserManager.FindById(userId).CathedralID = c;
+                    UserManager.FindById(userId).FirstName = m.FirstName;
+                    UserManager.FindById(userId).LastName = m.LastName;
+                    UserManager.FindById(userId).PhoneNumber = m.PhoneNumber;
+                    UserManager.FindById(userId).AcademicDegree = m.AcademicDegree;
+                    UserManager.FindById(userId).Email = m.Email;
+                    var dbToChange = db.Users.Find(userId);
+                    db.Entry(db.Users.Find(userId)).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");               
+                }
+                catch (RetryLimitExceededException)
+                {
+                    ModelState.AddModelError("", "Niemożliwa była zmiana danych. Skontaktuj się z Adamem Małyszem."); //PAMIETAJ ZEBY ZMIENIC TEN KOMUNIKAT GLUPKU
+                }
+            }
             return View(m);
         }
 

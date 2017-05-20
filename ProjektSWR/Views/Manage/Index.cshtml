@@ -60,23 +60,13 @@
             </div>
         </p>
     </div>
-    <div id="pool">
-        <p>
-            <div id="text">Wydział:</div>
-            <div id="textfield">
-                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
-            </div>
-        </p>
-    </div>
-    <div id="pool">
-        <p>
-            <div id="text">Katedra:</div>
-            <div id="textfield">
-                @*<input type="text" name="kat">*@
-            </div>
-
-        </p>
+    <div class="form-group">
+        @Html.LabelFor(m => m.CathedralName, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            <select id="cathedrals_select" name="CathedralName">
+                <option>--Wybierz katedrę--</option>
+            </select>
+        </div>
     </div>
     <div id="buttons">
         <p>
@@ -138,4 +128,8 @@
         </dd>
     </dl>
 </div>
+}
+
+@section Scripts{
+<script src="~/Scripts/Cathedral/cathedral.js"></script>
 }
