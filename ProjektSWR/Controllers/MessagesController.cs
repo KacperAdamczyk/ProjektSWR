@@ -18,8 +18,8 @@ namespace ProjektSWR.Controllers
         [JsonProperty] private string UserName { set; get; }
         [JsonProperty] private string Subject { set; get; }
         [JsonProperty] private DateTime SendDate { set; get; }
-        [JsonProperty] private DateTime ReceivedDate { set; get; }
-        public MessageHeader(int Id, string UserName, string Subject, DateTime SendDate, DateTime ReceivedDate)
+        [JsonProperty] private DateTime? ReceivedDate { set; get; }
+        public MessageHeader(int Id, string UserName, string Subject, DateTime SendDate, DateTime? ReceivedDate)
         {
             this.Id = Id;
             this.UserName = UserName;
@@ -50,12 +50,12 @@ namespace ProjektSWR.Controllers
             foreach (var m in currentUser.Recipients)
             {
                 Jmessage.Add(new MessageHeader(m.ID, m.MessageID.SenderID.Email, m.MessageID.Subject, m.MessageID.SendDate,
-                    m.ReceivedDate ?? DateTime.MinValue));
+                    m.ReceivedDate));
             }
             return Json(JsonConvert.SerializeObject(Jmessage), JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult SentMessages()
+        public JsonResult SentMessageHeaders()
         {
             ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
 
@@ -63,7 +63,7 @@ namespace ProjektSWR.Controllers
             foreach (var m in currentUser.Messages)
             {
                 DateTime? RecivedDate = db.Recipients.FirstOrDefault(r => r.MessageID.ID == m.ID).ReceivedDate;
-                Jmessage.Add(new MessageHeader(m.ID, m.SenderID.Email, m.Subject, m.SendDate, RecivedDate ?? DateTime.MinValue));
+                Jmessage.Add(new MessageHeader(m.ID, m.SenderID.Email, m.Subject, m.SendDate, RecivedDate));
             }
             return Json(JsonConvert.SerializeObject(Jmessage), JsonRequestBehavior.AllowGet);
         }
@@ -82,7 +82,7 @@ namespace ProjektSWR.Controllers
             
             if (recipient != null)
             {
-                if (recipient.ReceivedDate == DateTime.MinValue)
+                if (recipient.ReceivedDate == null)
                 {
                     recipient.ReceivedDate = DateTime.Now;
                     db.Entry(recipient).State = EntityState.Modified;
@@ -118,10 +118,10 @@ namespace ProjektSWR.Controllers
         // POST: Messages/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        public bool CreateMessage(string UserName, string Subject, string Content)
+        public ActionResult CreateMessage(string UserName, string Subject, string Content)
         {
             if (String.IsNullOrEmpty(UserName) || String.IsNullOrEmpty(Subject) || String.IsNullOrEmpty(Content))
-                return false;
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             string currentUserId = User.Identity.GetUserId();
             ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
@@ -144,7 +144,7 @@ namespace ProjektSWR.Controllers
             db.Recipients.Add(recipient);
             db.SaveChanges();
 
-            return true;
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
         protected override void Dispose(bool disposing)

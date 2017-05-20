@@ -42,11 +42,9 @@ export function loadNewMessage() {
 }
 
 export function loadInbox() {
-    new_message.onExitNewMessageDocument();
     load("inbox", "Inbox", inbox.prepareInboxDocument);
 }
 
 export function loadSent() {
-    new_message.onExitNewMessageDocument();
     load("sent", "Sent", sent.prepareSentDocument);
 }

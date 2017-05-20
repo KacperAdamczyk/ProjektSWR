@@ -38,12 +38,10 @@ function loadNewMessage() {
 }
 exports.loadNewMessage = loadNewMessage;
 function loadInbox() {
-    new_message.onExitNewMessageDocument();
     load("inbox", "Inbox", inbox.prepareInboxDocument);
 }
 exports.loadInbox = loadInbox;
 function loadSent() {
-    new_message.onExitNewMessageDocument();
     load("sent", "Sent", sent.prepareSentDocument);
 }
 exports.loadSent = loadSent;

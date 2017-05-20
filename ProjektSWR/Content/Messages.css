@@ -78,11 +78,11 @@
     background-position: top;
 }
 
-.inbox_table, sent_table {
+.inbox_table, .sent_table {
     border: 2px black solid;
     border-collapse: collapse;
 }
 
-.inbox_table td, sent_table td {
+.inbox_table td, .sent_table td {
     border: 2px grey solid;
 }

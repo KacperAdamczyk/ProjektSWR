@@ -111,12 +111,10 @@ function loadNewMessage() {
 }
 exports.loadNewMessage = loadNewMessage;
 function loadInbox() {
-    new_message.onExitNewMessageDocument();
     load("inbox", "Inbox", inbox.prepareInboxDocument);
 }
 exports.loadInbox = loadInbox;
 function loadSent() {
-    new_message.onExitNewMessageDocument();
     load("sent", "Sent", sent.prepareSentDocument);
 }
 exports.loadSent = loadSent;
@@ -129,7 +127,7 @@ exports.loadSent = loadSent;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var messageContent_1 = __webpack_require__(18);
+var messageContent_1 = __webpack_require__(5);
 function prepareInboxDocument() {
     $.getJSON("/Messages/MessageHeaders", parseMessages);
 }
@@ -139,8 +137,15 @@ function parseMessages(Jdata) {
     console.log(Jdata);
     var i, line;
     for (i = 0; i < Jdata.length; i++) {
+        var sentDate = new Date(Jdata[i].SendDate).toLocaleString();
+        if (Jdata[i].ReceivedDate != null) {
+            var receivedDate = new Date(Jdata[i].ReceivedDate).toLocaleString();
+        }
+        else {
+            var receivedDate = "Nie odczytano";
+        }
         line = "<tr id='" + Jdata[i].Id + "'><td>" + Jdata[i].UserName + "</td><td>" + Jdata[i].Subject +
-            "</td><td>" + Jdata[i].SendDate + "</td><td>" + Jdata[i].ReceivedDate + "</td></tr>";
+            "</td><td>" + sentDate + "</td><td>" + receivedDate + "</td></tr>";
         $(".inbox_table").append(line);
         $("#" + Jdata[i].Id).click(function () { messageContent_1.messageContent(this.id); });
     }
@@ -154,7 +159,7 @@ function parseMessages(Jdata) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var input = __webpack_require__(5);
+var input = __webpack_require__(6);
 var controller = __webpack_require__(0);
 function prepareNewMessageDocument() {
     input.loadContentInput();
@@ -163,32 +168,18 @@ function prepareNewMessageDocument() {
     $("#send_button").click(function () { sendMessage(); });
 }
 exports.prepareNewMessageDocument = prepareNewMessageDocument;
-function onExitNewMessageDocument() {
-    //tinymce.EditorManager.editors = [];
-}
-exports.onExitNewMessageDocument = onExitNewMessageDocument;
 function sendMessage() {
     var receiver = $('#users_combobox').val();
     var s = $("#Subject").val();
     var c = input.quill_editor.getContents();
     var message = { "UserName": receiver, "Subject": s, "Content": JSON.stringify(c) };
-    var cl = "";
-    for (var x in message) {
-        cl += x + "=" + message[x] + "&";
-    }
-    cl = cl.substr(0, cl.length - 1);
-    console.log(cl);
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "/Messages/CreateMessage?" + cl, true);
-    xhttp.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            console.log(this.responseText);
-            if (this.responseText === "True") {
-                controller.loadInbox();
-            }
-        }
-    };
-    xhttp.send();
+    $.ajax({
+        url: "/Messages/CreateMessage",
+        type: "POST",
+        data: message,
+        success: function () { controller.loadInbox(); },
+        error: function () { console.log(this.textStatus); }
+    });
 }
 
 
@@ -199,8 +190,9 @@ function sendMessage() {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var messageContent_1 = __webpack_require__(5);
 function prepareSentDocument() {
-    $.getJSON("/Messages/SentMessages", parseSentMessages);
+    $.getJSON("/Messages/SentMessageHeaders", parseSentMessages);
 }
 exports.prepareSentDocument = prepareSentDocument;
 function parseSentMessages(Jdata) {
@@ -208,9 +200,17 @@ function parseSentMessages(Jdata) {
     console.log(Jdata);
     var i, line;
     for (i = 0; i < Jdata.length; i++) {
-        line = "<tr id='" + Jdata[i].Id + "' onclick='messageDetails(this.id)'><td>" + Jdata[i].UserName + "</td><td>" + Jdata[i].Subject +
-            "</td><td>" + Jdata[i].SendDate + "</td><td>" + Jdata[i].ReceivedDate + "</td></tr>";
+        var sentDate = new Date(Jdata[i].SendDate).toLocaleString();
+        if (Jdata[i].ReceivedDate != null) {
+            var receivedDate = new Date(Jdata[i].ReceivedDate).toLocaleString();
+        }
+        else {
+            var receivedDate = "Nie odczytano";
+        }
+        line = "<tr id='" + Jdata[i].Id + "'><td>" + Jdata[i].UserName + "</td><td>" + Jdata[i].Subject +
+            "</td><td>" + sentDate + "</td><td>" + receivedDate + "</td></tr>";
         $(".sent_table").append(line);
+        $("#" + Jdata[i].Id).click(function () { messageContent_1.messageContent(this.id); });
     }
 }
 
@@ -10482,8 +10482,26 @@ return jQuery;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Quill = __webpack_require__(12);
-__webpack_require__(15);
+function messageContent(id) {
+    $.getJSON("/Messages/Content?id=" + id, parseDetails);
+}
+exports.messageContent = messageContent;
+function parseDetails(data) {
+    data = JSON.parse(data);
+    console.log(data);
+    //$(globalContainer).html(data);
+}
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Quill = __webpack_require__(13);
+__webpack_require__(16);
 function parseUsers(Jdata) {
     var i, line;
     for (i = 0; i < Jdata.length; i++) {
@@ -10504,7 +10522,7 @@ exports.loadTo = loadTo;
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10625,7 +10643,7 @@ function fromByteArray (uint8) {
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10639,9 +10657,9 @@ function fromByteArray (uint8) {
 
 
 
-var base64 = __webpack_require__(6)
-var ieee754 = __webpack_require__(10)
-var isArray = __webpack_require__(11)
+var base64 = __webpack_require__(7)
+var ieee754 = __webpack_require__(11)
+var isArray = __webpack_require__(12)
 
 exports.Buffer = Buffer
 exports.SlowBuffer = SlowBuffer
@@ -12419,13 +12437,13 @@ function isnan (val) {
   return val !== val // eslint-disable-line no-self-compare
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(16)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17)))
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(9)(undefined);
+exports = module.exports = __webpack_require__(10)(undefined);
 // imports
 
 
@@ -12436,7 +12454,7 @@ exports.push([module.i, "/*!\n * Quill Editor v1.2.4\n * https://quilljs.com/\n 
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports) {
 
 /*
@@ -12518,7 +12536,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports) {
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -12608,7 +12626,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports) {
 
 var toString = {}.toString;
@@ -12619,7 +12637,7 @@ module.exports = Array.isArray || function (arr) {
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {/*!
@@ -23599,10 +23617,10 @@ module.exports = __webpack_require__(62);
 /***/ })
 /******/ ]);
 });
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8).Buffer))
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -23639,7 +23657,7 @@ var stylesInDom = {},
 	singletonElement = null,
 	singletonCounter = 0,
 	styleElementsInsertedAtTop = [],
-	fixUrls = __webpack_require__(14);
+	fixUrls = __webpack_require__(15);
 
 module.exports = function(list, options) {
 	if(typeof DEBUG !== "undefined" && DEBUG) {
@@ -23915,7 +23933,7 @@ function updateLink(linkElement, options, obj) {
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports) {
 
 
@@ -24010,13 +24028,13 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(8);
+var content = __webpack_require__(9);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -24024,7 +24042,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(13)(content, options);
+var update = __webpack_require__(14)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -24041,7 +24059,7 @@ if(false) {
 }
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports) {
 
 var g;
@@ -24065,25 +24083,6 @@ try {
 // easier to handle this case. if(!global) { ...}
 
 module.exports = g;
-
-
-/***/ }),
-/* 17 */,
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-function messageContent(id) {
-    $.getJSON("/Messages/Content?id=" + id, parseDetails);
-}
-exports.messageContent = messageContent;
-function parseDetails(data) {
-    data = JSON.parse(data);
-    console.log(data);
-    //$(globalContainer).html(data);
-}
 
 
 /***/ })
