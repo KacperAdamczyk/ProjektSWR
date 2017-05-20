@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Panel";
+}
+
+<div class="float-left">
+    <ul>
+        <li>@Html.ActionLink("Użytkownicy", "ManageUsers", "Panel")</li>
+        <li>@Html.ActionLink("Wydarzenia", "ManageEvents", "Panel")</li>
+        <li>@Html.ActionLink("Forum", "ManageForums", "Panel")</li>
+    </ul>
+</div>

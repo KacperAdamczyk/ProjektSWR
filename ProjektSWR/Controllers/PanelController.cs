@@ -125,6 +125,22 @@ namespace ProjektSWR.Controllers
             return View(viewModel);
         }
 
+        // GET: /Panel/ManageEvents
+        [AllowAnonymous]
+        public ActionResult ManageEvents()
+        {
+
+            return View();
+        }
+
+        // GET: /Panel/ManageForums
+        [AllowAnonymous]
+        public ActionResult ManageForums()
+        {
+
+            return View();
+        }
+
 
         //
         // POST: /Panel/ManageUsers

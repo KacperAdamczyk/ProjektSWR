@@ -440,6 +440,9 @@
     <Content Include="Views\Cathedrals\Edit.cshtml" />
     <Content Include="Views\Cathedrals\Index.cshtml" />
     <Content Include="Views\Panel\ManageUsers.cshtml" />
+    <Content Include="Views\Panel\Index.cshtml" />
+    <Content Include="Views\Panel\ManageEvents.cshtml" />
+    <Content Include="Views\Panel\ManageForums.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
