@@ -62,6 +62,7 @@ namespace ProjektSWR.Models
         public DbSet<NormalUser> NormalUsers { get; set; }
         public DbSet<Admin> Admins { get; set; }
 
+        
         public DbSet<GlobalEvent> GlobalEvents { get; set; }
         public DbSet<PrivateEvent> PrivateEvents { get; set; }
         public DbSet<Event> Events { get; set; }

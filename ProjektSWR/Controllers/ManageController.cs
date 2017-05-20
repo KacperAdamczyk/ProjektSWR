@@ -7,6 +7,10 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ProjektSWR.Models;
+using System.Net;
+using System.Data.Entity.Infrastructure;
+using System.Web.UI;
+using Newtonsoft.Json;
 
 namespace ProjektSWR.Controllers
 {
@@ -15,6 +19,8 @@ namespace ProjektSWR.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         public ManageController()
         {
@@ -60,19 +66,95 @@ namespace ProjektSWR.Controllers
                 message == ManageMessageId.ChangePasswordSuccess ? "Hasło zostało zmienione pomyślnie." : "";
 
             var userId = User.Identity.GetUserId();
-            var model = new IndexViewModel
+            var m = new ManageViewModel
             {
                 HasPassword = HasPassword(),
                 Logins = await UserManager.GetLoginsAsync(userId),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
+                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
+
+                FirstName = db.Users.Find(userId).FirstName,
+                LastName = db.Users.Find(userId).LastName,
+                AcademicDegree = db.Users.Find(userId).AcademicDegree,
+                Photo = db.Users.Find(userId).Photo,
+                DateOfBirth = db.Users.Find(userId).DateOfBirth,
+                Description = db.Users.Find(userId).Description,
+                Email = db.Users.Find(userId).Email,
+                PhoneNumber = db.Users.Find(userId).PhoneNumber,
             };
-            return View(model);
+            return View(m);
+        }
+
+        //
+        // POST: /Manage
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Index(ManageViewModel m)
+        {
+            var db = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
+
+            var userId = User.Identity.GetUserId();
+
+            if (userId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            db.Users.Find(userId).FirstName = m.FirstName;
+            db.Entry(db.Users.Find(userId)).State = System.Data.Entity.EntityState.Modified;
+            db.SaveChanges();
+
+            //if (TryUpdateModel(dbToChange, "", new string[]{ "FirstName, LastName, PhoneNumber, Email, AcademicDegree" } ))
+            //{
+            //    try
+            //    {
+            //        db.Entry(dbToChange).State = System.Data.Entity.EntityState.Modified;
+            //        db.SaveChanges();
+            //        return RedirectToAction("Index");
+            //    }
+            //    catch(RetryLimitExceededException)
+            //    {
+            //        ModelState.AddModelError("", "Niemożliwa była zmiana danych. Skontaktuj się z Adamem Małyszem."); //PAMIETAJ ZEBY ZMIENIC TEN KOMUNIKAT GLUPKU
+            //    }
+            //}
+            return View(m);
+        }
+
+        //
+        // POST: /Manage
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditOptionalDatas(ManageViewModel m)
+        {
+            var userId = User.Identity.GetUserId();
+
+            if (userId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if (TryUpdateModel(m, "", new string[] { "Description, DateOfBirth" }))
+            {
+                try
+                {
+                    db.Entry(m).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Home", "Index");
+                }
+                catch (RetryLimitExceededException)
+                {
+                    ModelState.AddModelError("", "Niemożliwa była zmiana danych. Skontaktuj się z Adamem Małyszem."); //PAMIETAJ ZEBY ZMIENIC TEN KOMUNIKAT GLUPKU
+                }
+            }
+            return View(m);
         }
 
         //
         // POST: /Manage/RemoveLogin
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public async Task<ActionResult> RemoveLogin(string loginProvider, string providerKey)
         {
             ManageMessageId? message;

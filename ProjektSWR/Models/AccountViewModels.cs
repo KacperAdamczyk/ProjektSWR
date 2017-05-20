@@ -64,7 +64,7 @@ namespace ProjektSWR.Models
         [StringLength(16, ErrorMessage = "Imię nie może mieć więcej niż 16 znaków")]
         [DataType(DataType.Text)]
         [Display(Name = "Imię")]
-        public string FisrtName { get; set; }
+        public string FirstName { get; set; }
 
         [Required]
         [StringLength(30, ErrorMessage = "Nazwisko nie może mieć więcej niż 30 znaków")]
