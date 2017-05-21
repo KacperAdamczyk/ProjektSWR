@@ -13,6 +13,7 @@
 
 .messages li {
     padding: 0px;
+    cursor: pointer;
 }
 
 .messages li a {
@@ -55,32 +56,14 @@
     
 }
 
-.custom-combobox {
-    position: relative;
-    display: inline-block;
-    padding-bottom: 5px;
-}
-
-.custom-combobox-toggle {
-    position: absolute;
-    top: 0px;
-    margin-left: -1px;
-    padding: 0;
-    height: 32px;
-}
-
-.custom-combobox-input {
-    margin: 0;
-    padding: 5px 10px;
-}
-
-.ui-draggable, .ui-droppable {
-    background-position: top;
+.new_message_row {
+    font-weight: 700;
 }
 
 .inbox_table, .sent_table {
     border: 2px black solid;
     border-collapse: collapse;
+    cursor: pointer;
 }
 
 .inbox_table td, .sent_table td {

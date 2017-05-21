@@ -73,10 +73,10 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var $ = __webpack_require__(4);
-var inbox = __webpack_require__(1);
-var sent = __webpack_require__(3);
-var new_message = __webpack_require__(2);
+var $ = __webpack_require__(5);
+var inbox = __webpack_require__(2);
+var sent = __webpack_require__(4);
+var new_message = __webpack_require__(3);
 exports.globalContainer = "#content";
 $(document).ready(function () {
     loadInbox(); // domyślna zakładka
@@ -127,28 +127,14 @@ exports.loadSent = loadSent;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var messageContent_1 = __webpack_require__(5);
-function prepareInboxDocument() {
-    $.getJSON("/Messages/MessageHeaders", parseMessages);
+function messageContent(id) {
+    $.getJSON("/Messages/Content?id=" + id, parseDetails);
 }
-exports.prepareInboxDocument = prepareInboxDocument;
-function parseMessages(Jdata) {
-    Jdata = JSON.parse(Jdata);
-    console.log(Jdata);
-    var i, line;
-    for (i = 0; i < Jdata.length; i++) {
-        var sentDate = new Date(Jdata[i].SendDate).toLocaleString();
-        if (Jdata[i].ReceivedDate != null) {
-            var receivedDate = new Date(Jdata[i].ReceivedDate).toLocaleString();
-        }
-        else {
-            var receivedDate = "Nie odczytano";
-        }
-        line = "<tr id='" + Jdata[i].Id + "'><td>" + Jdata[i].UserName + "</td><td>" + Jdata[i].Subject +
-            "</td><td>" + sentDate + "</td><td>" + receivedDate + "</td></tr>";
-        $(".inbox_table").append(line);
-        $("#" + Jdata[i].Id).click(function () { messageContent_1.messageContent(this.id); });
-    }
+exports.messageContent = messageContent;
+function parseDetails(data) {
+    data = JSON.parse(data);
+    console.log(data);
+    //$(globalContainer).html(data);
 }
 
 
@@ -159,26 +145,55 @@ function parseMessages(Jdata) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var input = __webpack_require__(6);
 var controller = __webpack_require__(0);
-function prepareNewMessageDocument() {
-    input.loadContentInput();
-    input.loadTo();
-    $.getJSON("/Messages/Users", input.parseUsers);
-    $("#send_button").click(function () { sendMessage(); });
+var messageContent_1 = __webpack_require__(1);
+function prepareInboxDocument() {
+    getMessages();
+    $("#delete_selected_btn").click(function () { deleteMessages(); });
 }
-exports.prepareNewMessageDocument = prepareNewMessageDocument;
-function sendMessage() {
-    var receiver = $('#users_combobox').val();
-    var s = $("#Subject").val();
-    var c = input.quill_editor.getContents();
-    var message = { "UserName": receiver, "Subject": s, "Content": JSON.stringify(c) };
+exports.prepareInboxDocument = prepareInboxDocument;
+function getMessages() {
+    $.getJSON("/Messages/MessageHeaders", parseMessages);
+}
+function parseMessages(data) {
+    data = JSON.parse(data);
+    console.log(data);
+    var i, line;
+    for (i = 0; i < data.length; i++) {
+        var newMessage = false;
+        var sentDate = new Date(data[i].SendDate).toLocaleString();
+        if (data[i].ReceivedDate != null) {
+            var receivedDate = new Date(data[i].ReceivedDate).toLocaleString();
+        }
+        else {
+            var receivedDate = "Nie odczytano";
+            newMessage = true;
+        }
+        line = "<tr id='" + data[i].Id + (newMessage ? "' class='new_message_row'>" : "'>") +
+            "<td>" + "<input type='checkbox' id='cb" + data[i].Id + "'>" + "</td>" +
+            "<td>" + data[i].Sender + "</td>" +
+            "<td>" + data[i].Subject + "</td>" +
+            "<td>" + sentDate + "</td>" +
+            "</tr>";
+        $(".inbox_table").append(line);
+        var tr = $("#" + data[i].Id);
+        tr.click(function () { messageContent_1.messageContent(this.id); });
+        tr.first().children().first().click(function (e) { e.stopPropagation(); });
+    }
+}
+function deleteMessages() {
+    var selectedMessages = $("input:checkbox:checked");
+    var selectedMessageIds = [];
+    var i;
+    for (i = 0; i < selectedMessages.length; i++) {
+        selectedMessageIds.push(Number(selectedMessages[i].id.substr(2)));
+    }
+    console.log(selectedMessageIds);
     $.ajax({
-        url: "/Messages/CreateMessage",
-        type: "POST",
-        data: message,
-        success: function () { controller.loadInbox(); },
-        error: function () { console.log(this.textStatus); }
+        url: "/Messages/DeleteInbox",
+        method: "POST",
+        data: { "id": selectedMessageIds },
+        success: function () { controller.loadInbox(); }
     });
 }
 
@@ -190,33 +205,100 @@ function sendMessage() {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var messageContent_1 = __webpack_require__(5);
-function prepareSentDocument() {
-    $.getJSON("/Messages/SentMessageHeaders", parseSentMessages);
+var input = __webpack_require__(6);
+var controller = __webpack_require__(0);
+function prepareNewMessageDocument() {
+    input.loadContentInput();
+    $.getJSON("/Messages/Users", input.parseUsers);
+    $("#send_button").click(function () { sendMessage(); });
+    $("#add_user").click(function () { input.createCombobox(); });
 }
-exports.prepareSentDocument = prepareSentDocument;
-function parseSentMessages(Jdata) {
-    Jdata = JSON.parse(Jdata);
-    console.log(Jdata);
-    var i, line;
-    for (i = 0; i < Jdata.length; i++) {
-        var sentDate = new Date(Jdata[i].SendDate).toLocaleString();
-        if (Jdata[i].ReceivedDate != null) {
-            var receivedDate = new Date(Jdata[i].ReceivedDate).toLocaleString();
-        }
-        else {
-            var receivedDate = "Nie odczytano";
-        }
-        line = "<tr id='" + Jdata[i].Id + "'><td>" + Jdata[i].UserName + "</td><td>" + Jdata[i].Subject +
-            "</td><td>" + sentDate + "</td><td>" + receivedDate + "</td></tr>";
-        $(".sent_table").append(line);
-        $("#" + Jdata[i].Id).click(function () { messageContent_1.messageContent(this.id); });
+exports.prepareNewMessageDocument = prepareNewMessageDocument;
+function sendMessage() {
+    var recipients = getAllRecipients();
+    var s = $("#Subject").val();
+    var c = input.quill_editor.getContents();
+    var message = { "UserName": recipients, "Subject": s, "Content": JSON.stringify(c) };
+    $.ajax({
+        url: "/Messages/CreateMessage",
+        type: "POST",
+        data: message,
+        success: function () { controller.loadInbox(); },
+        error: function () { console.log(this.textStatus); }
+    });
+}
+function getAllRecipients() {
+    var comboboxes = $(".users_combobox");
+    var users = [];
+    for (var i = 0; i < comboboxes.length; i++) {
+        users.push($(comboboxes[i]).val());
     }
+    return users;
 }
 
 
 /***/ }),
 /* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var controller = __webpack_require__(0);
+var messageContent_1 = __webpack_require__(1);
+function prepareSentDocument() {
+    $.getJSON("/Messages/SentMessageHeaders", parseSentMessages);
+    $("#delete_selected_btn").click(function () { deleteMessages(); });
+}
+exports.prepareSentDocument = prepareSentDocument;
+function parseSentMessages(data) {
+    data = JSON.parse(data);
+    console.log(data);
+    var i, j, line;
+    for (i = 0; i < data.length; i++) {
+        var sentDate = new Date(data[i].SendDate).toLocaleString();
+        if (data[i].ReceivedDate != null) {
+            var receivedDate = new Date(data[i].ReceivedDate).toLocaleString();
+        }
+        else {
+            var receivedDate = "Nie odczytano";
+        }
+        var recipients = "";
+        for (j = 0; j < data[i].Recipient.length; j++) {
+            recipients += data[i].Recipient[j] + "<br />";
+        }
+        line = "<tr id='" + data[i].Id + "'>" +
+            "<td>" + "<input type='checkbox' id='cb" + data[i].Id + "'>" + "</td>" +
+            "<td>" + recipients + "</td>" +
+            "<td>" + data[i].Subject + "</td>" +
+            "<td>" + sentDate + "</td>" +
+            "<td>" + receivedDate + "</td>" +
+            "</tr>";
+        $(".sent_table").append(line);
+        var tr = $("#" + data[i].Id);
+        tr.click(function () { messageContent_1.messageContent(this.id); });
+        tr.first().children().first().click(function (e) { e.stopPropagation(); });
+    }
+}
+function deleteMessages() {
+    var selectedMessages = $("input:checkbox:checked");
+    var selectedMessageIds = [];
+    var i;
+    for (i = 0; i < selectedMessages.length; i++) {
+        selectedMessageIds.push(Number(selectedMessages[i].id.substr(2)));
+    }
+    console.log(selectedMessageIds);
+    $.ajax({
+        url: "/Messages/DeleteSent",
+        method: "POST",
+        data: { "id": selectedMessageIds },
+        success: function () { controller.loadSent(); }
+    });
+}
+
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -10476,24 +10558,6 @@ return jQuery;
 
 
 /***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-function messageContent(id) {
-    $.getJSON("/Messages/Content?id=" + id, parseDetails);
-}
-exports.messageContent = messageContent;
-function parseDetails(data) {
-    data = JSON.parse(data);
-    console.log(data);
-    //$(globalContainer).html(data);
-}
-
-
-/***/ }),
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10502,12 +10566,11 @@ function parseDetails(data) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Quill = __webpack_require__(13);
 __webpack_require__(16);
-function parseUsers(Jdata) {
-    var i, line;
-    for (i = 0; i < Jdata.length; i++) {
-        line = '<option' + ' data-id="op' + (i + 1) + ' value="' + Jdata[i] + '">' + Jdata[i] + '</option>';
-        $("#combobox").append(line);
-    }
+var users;
+exports.combobox_cnt = 0;
+function parseUsers(data) {
+    users = data;
+    createCombobox();
 }
 exports.parseUsers = parseUsers;
 function loadContentInput() {
@@ -10516,9 +10579,18 @@ function loadContentInput() {
     });
 }
 exports.loadContentInput = loadContentInput;
-function loadTo() {
+function createCombobox() {
+    var c = "<input list='users" + exports.combobox_cnt + "' class='users_combobox'>" +
+        "<datalist id='users" + exports.combobox_cnt + "'></datalist>";
+    $("#comboboxes").append(c);
+    var i, line;
+    for (i = 0; i < users.length; i++) {
+        line = '<option' + ' data-id="user' + (i + 1) + ' value="' + users[i] + '">' + users[i] + '</option>';
+        $("#users" + exports.combobox_cnt).append(line);
+    }
+    exports.combobox_cnt++;
 }
-exports.loadTo = loadTo;
+exports.createCombobox = createCombobox;
 
 
 /***/ }),

@@ -2,13 +2,12 @@
 import "quill/dist/quill.snow.css";
 
 export var quill_editor;
+let users;
+export let combobox_cnt = 0;
 
-export function parseUsers(Jdata) {
-    var i, line;
-    for (i = 0; i < Jdata.length; i++) {
-        line = '<option' + ' data-id="op' + (i+1) + ' value="' + Jdata[i] + '">' + Jdata[i] + '</option>';
-        $("#combobox").append(line);
-    }
+export function parseUsers(data) {
+    users = data;
+    createCombobox();
 }
 
 export function loadContentInput() {
@@ -17,5 +16,15 @@ export function loadContentInput() {
   });
 }
 
-export function loadTo()  {
+export function createCombobox() {
+    let c = "<input list='users" + combobox_cnt + "' class='users_combobox'>" +
+            "<datalist id='users" + combobox_cnt + "'></datalist>";
+            $("#comboboxes").append(c);
+
+    var i, line;
+    for (i = 0; i < users.length; i++) {
+        line = '<option' + ' data-id="user' + (i+1) + ' value="' + users[i] + '">' + users[i] + '</option>';
+        $("#users" + combobox_cnt).append(line);
+    }
+    combobox_cnt++;
 }

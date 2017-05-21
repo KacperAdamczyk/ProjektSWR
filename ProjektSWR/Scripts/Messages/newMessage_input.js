@@ -2,12 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var Quill = require("quill");
 require("quill/dist/quill.snow.css");
-function parseUsers(Jdata) {
-    var i, line;
-    for (i = 0; i < Jdata.length; i++) {
-        line = '<option' + ' data-id="op' + (i + 1) + ' value="' + Jdata[i] + '">' + Jdata[i] + '</option>';
-        $("#combobox").append(line);
-    }
+var users;
+exports.combobox_cnt = 0;
+function parseUsers(data) {
+    users = data;
+    createCombobox();
 }
 exports.parseUsers = parseUsers;
 function loadContentInput() {
@@ -16,6 +15,15 @@ function loadContentInput() {
     });
 }
 exports.loadContentInput = loadContentInput;
-function loadTo() {
+function createCombobox() {
+    var c = "<input list='users" + exports.combobox_cnt + "' class='users_combobox'>" +
+        "<datalist id='users" + exports.combobox_cnt + "'></datalist>";
+    $("#comboboxes").append(c);
+    var i, line;
+    for (i = 0; i < users.length; i++) {
+        line = '<option' + ' data-id="user' + (i + 1) + ' value="' + users[i] + '">' + users[i] + '</option>';
+        $("#users" + exports.combobox_cnt).append(line);
+    }
+    exports.combobox_cnt++;
 }
-exports.loadTo = loadTo;
+exports.createCombobox = createCombobox;

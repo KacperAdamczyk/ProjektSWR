@@ -2,12 +2,10 @@
     Layout = null;
 }
 <div id="new_message_inputs">
-    <form>       
-        <label>Odbiorca: </label>
-        <input list="combobox" id="users_combobox">
-        <datalist id="combobox">
-            
-        </datalist>
+    <form>
+        <label>Odbiorca: <span>(<a id="add_user">Dodaj odbiorcę</a>)</span></label>
+        <div id="comboboxes">
+        </div>
         <div class="input-group">
             <span class="input-group-addon">Temat</span>
             <input id="Subject" type="text" class="form-control">

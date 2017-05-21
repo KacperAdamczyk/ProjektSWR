@@ -4,16 +4,16 @@ import * as controller from "./controller";
 
 export function prepareNewMessageDocument() {
     input.loadContentInput();
-    input.loadTo();
     $.getJSON("/Messages/Users", input.parseUsers);
-    $("#send_button").click(function(){sendMessage();});
+    $("#send_button").click(function(){ sendMessage(); });
+    $("#add_user").click(function(){ input.createCombobox(); });
 }
 
 function sendMessage() {
-    var receiver = $('#users_combobox').val()
-    var s = $("#Subject").val();
-    var c = input.quill_editor.getContents();
-    var message = { "UserName": receiver, "Subject": s, "Content": JSON.stringify(c) };
+    var recipients : Array<string> = getAllRecipients();
+    var s : string = $("#Subject").val();
+    var c : string = input.quill_editor.getContents();
+    var message = { "UserName": recipients, "Subject": s, "Content": JSON.stringify(c) };
     $.ajax({
         url: "/Messages/CreateMessage",
         type: "POST",
@@ -21,4 +21,13 @@ function sendMessage() {
         success: function() { controller.loadInbox(); },
         error: function() { console.log(this.textStatus); }
     });
+}
+
+function getAllRecipients() {
+   let comboboxes = $(".users_combobox");
+   let users : Array<string> = [];
+   for (var i = 0; i < comboboxes.length; i++) {
+       users.push($(comboboxes[i]).val());
+   }
+    return users;
 }

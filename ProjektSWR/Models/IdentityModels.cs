@@ -29,7 +29,7 @@ namespace ProjektSWR.Models
         [Required] public string LastName { get; set; }
         public string AcademicDegree { get; set; }
         public string Photo { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         public string Description { get; set; }
         public string Homepage { get; set; }
         [Required] public virtual Cathedral CathedralID { get; set; }
