@@ -6,11 +6,24 @@
 <script src="~/Scripts/Cathedral/cathedral.js"></script>
 <script src="~/Scripts/Panel/manage.js"></script>
 <script src="~/Scripts/Panel/show.js"></script>
+<script src="~/Scripts/Panel/index.js"></script>
+
+
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
+    <div style="float:left">
+        <link rel="stylesheet" href="~/Content/Panel.css">
+        <ul id="panelMenu" class="navbar-left">
+            <li><a href="~/Panel/ManageUsers">Użytkownicy</a></li>
+            <li><a href="~/Panel/ManageEvents">Wydarzenia</a></li>
+            <li><a href="~/Panel/ManageForums">Forum</a></li>
+        </ul>
+    </div>
+
+    <div class="form-horizontal" style="margin-left:200px">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(m => m.Id, new { @id = "id" })
         <div class="form-group">
@@ -50,5 +63,5 @@
                 <input type="submit" value="Edytuj" class="btn btn-default" />
             </div>
         </div>
-    </div>
+   </div>
 }
