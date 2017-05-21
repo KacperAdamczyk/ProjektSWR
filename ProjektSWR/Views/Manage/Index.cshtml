@@ -9,7 +9,6 @@
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.ID)
-
 <div id="mainbeam">
     <h3>Dane osobowe:</h3>
 </div>
@@ -20,7 +19,7 @@
             <div id="text">Imię:</div>
             <div id="textfield">
                 @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger"})
+                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
             </div>
         </p>
     </div>
@@ -64,17 +63,18 @@
         @Html.LabelFor(m => m.CathedralName, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             <select id="cathedrals_select" name="CathedralName">
-                <option>--Wybierz katedrę--</option>
             </select>
         </div>
     </div>
     <div id="buttons">
         <p>
-            <input type="submit" value="Zatwierdź" class="btn btn-default" />
-            <input type="submit" value="Anuluj" class="btn btn-default" />
+            <input type="submit" name="submitButton" value="Zatwierdź" class="btn btn-default" />
+            <input type="submit" name="submitButton" value="Anuluj" class="btn btn-default" />
+            
         </p>
     </div>
 </div>
+
 <div id="mainbeam">
     <h3>Dane osobowe (opcjonalnie):</h3>
 </div>
@@ -100,7 +100,10 @@
     <div id="pool">
         <p>
             <div id="text" style="padding-bottom: 5px">Zdjęcie:</div>
-            <div id="photo" style="float: left;"></div>
+            <div id="photo" style="float: left;">
+                <img src="https://branzadziecieca.pl/wp-content/uploads/2016/10/anek-WhaWhaWhacky-Kaktus-web.jpg" alt=" "
+                     height="142" width="97"/>
+            </div>
             <div style="clear: both; padding-left: 125px; padding-top: 4px; float: left;" />
             <div id="buttons">
                 <input type="submit" value="Dodaj" />
@@ -110,8 +113,8 @@
     </div>
     <div id="buttons">
         <p>
-            <input type="submit" value="Zatwierdź" />
-            <input type="submit" value="Anuluj" />
+            <input type="submit" name="submitOptional" value="Zatwierdź" />
+            <input type="submit" name="submitOptional" value="Anuluj" />
         </p>
     </div>
 </div>

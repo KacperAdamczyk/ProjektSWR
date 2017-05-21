@@ -63,7 +63,6 @@ namespace ProjektSWR.Controllers
         {
             var db = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
             ViewBag.Message = "Panel użytkownika";
-            ViewBag.Title = "UserPanel";
             ViewBag.StatusMessage =
                 message == ManageMessageId.ChangePasswordSuccess ? "Hasło zostało zmienione pomyślnie." : "";
 
@@ -84,6 +83,7 @@ namespace ProjektSWR.Controllers
                 PhoneNumber = db.Users.Find(userId).PhoneNumber,
                 CathedralName = db.Cathedrals.Find(1).Department,
             };
+
             return View(m);
         }
 
@@ -92,15 +92,47 @@ namespace ProjektSWR.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index(ManageViewModel m)
+
+        public ActionResult Index(ManageMessageId? message, string submitButton, string submitOptional, ManageViewModel m)
         {
-            var db = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
             var userId = User.Identity.GetUserId();
 
             if (userId == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            if (submitButton != null)
+                switch (submitButton)
+                {
+                    case "Zatwierdź":
+                        return (EditRequiredDatas(m));
+                    case "Anuluj":
+                        return RedirectToAction("Index");
+                    default:
+                        return View(m);
+                }
+            else
+                switch (submitOptional)
+                {
+                    case "Zatwierdź":
+                        return (EditOptionalDatas(m));
+                    case "Anuluj":
+                        return RedirectToAction("Index");
+                    default:
+                        return View(m);
+                }
+        }
+
+
+        //
+        // POST: /Manage
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditRequiredDatas(ManageViewModel m)
+        {
+            var db = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
+            var userId = User.Identity.GetUserId();
 
             if (ModelState.IsValid)
             {
@@ -133,20 +165,22 @@ namespace ProjektSWR.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditOptionalDatas(ManageViewModel m)
         {
+            var db = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
             var userId = User.Identity.GetUserId();
 
-            if (userId == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            if (TryUpdateModel(m, "", new string[] { "Description, DateOfBirth" }))
+            if (ModelState.IsValid)
             {
                 try
                 {
-                    db.Entry(m).State = System.Data.Entity.EntityState.Modified;
+                    Cathedral c = db.Cathedrals.FirstOrDefault(x => x.Department == m.CathedralName);
+                    UserManager.FindById(userId).CathedralID = c;
+                    UserManager.FindById(userId).Description = m.Description;
+                    UserManager.FindById(userId).DateOfBirth = m.DateOfBirth;
+
+                    var dbToChange = db.Users.Find(userId);
+                    db.Entry(db.Users.Find(userId)).State = System.Data.Entity.EntityState.Modified;
                     db.SaveChanges();
-                    return RedirectToAction("Home", "Index");
+                    return RedirectToAction("Index");
                 }
                 catch (RetryLimitExceededException)
                 {

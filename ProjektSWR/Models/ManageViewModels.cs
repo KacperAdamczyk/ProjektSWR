@@ -41,7 +41,7 @@ namespace ProjektSWR.Models
         public string PhoneNumber { get; set; }
 
         [Required]
-        [Display(Name = "Katedra")]
+        [Display(Name = "Katedra: ")]
         public string CathedralName { get; set; }
     }
 

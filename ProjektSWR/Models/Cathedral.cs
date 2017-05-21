@@ -22,5 +22,6 @@ namespace ProjektSWR.Models
         [Required] public string Email { get; set; }
 
         public virtual ICollection<ApplicationUser> Users { get; set; }
+        public object[] ToInt { get; internal set; }
     }
 }
