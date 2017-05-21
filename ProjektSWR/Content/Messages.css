@@ -48,12 +48,19 @@
     margin-top: 40px;
     max-height: 300px;
 }
+
 #content {
     margin-top: 0px;
     margin-left: 15px;
 }
 #messageContent {
     
+}
+
+#message_content_form {
+    float: right;
+    width: 80%;
+
 }
 
 .new_message_row {

@@ -1,5 +1,4 @@
 ﻿import * as controller from "./controller";
-import { messageContent } from "./messageContent";
 
 export function prepareSentDocument() {
     $.getJSON("/Messages/SentMessageHeaders", parseSentMessages);
@@ -30,7 +29,7 @@ function parseSentMessages(data) {
          "</tr>";
         $(".sent_table").append(line);
          var tr = $("#" + data[i].Id);
-         tr.click(function() { messageContent(this.id); });
+         tr.click(function() { controller.loadContent(this.id, "sent"); });
          tr.first().children().first().click(function(e) { e.stopPropagation(); });
     }
 }

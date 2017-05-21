@@ -14,12 +14,12 @@ namespace ProjektSWR.Controllers
 {
     class MessageHeader
     {
-        [JsonProperty] private int Id { set; get; }
-        [JsonProperty] private List<string> Recipient { set; get; }
-        [JsonProperty] private string Sender { set; get; }
-        [JsonProperty] private string Subject { set; get; }
-        [JsonProperty] private DateTime SendDate { set; get; }
-        [JsonProperty] private DateTime? ReceivedDate { set; get; }
+        [JsonProperty] public int Id { set; get; }
+        [JsonProperty] public List<string> Recipient { set; get; }
+        [JsonProperty] public string Sender { set; get; }
+        [JsonProperty] public string Subject { set; get; }
+        [JsonProperty] public DateTime SendDate { set; get; }
+        [JsonProperty] public DateTime? ReceivedDate { set; get; }
         public MessageHeader(int Id, string Sender, List<string> Recipient, string Subject, DateTime SendDate, DateTime? ReceivedDate)
         {
             this.Id = Id;
@@ -56,6 +56,11 @@ namespace ProjektSWR.Controllers
             return View();
         }
 
+        public ActionResult Content()
+        {
+            return View();
+        }
+
         public JsonResult Users()
         {
             var users = from u in db.Users select u.Email;
@@ -77,6 +82,9 @@ namespace ProjektSWR.Controllers
                 Jmessage.Add(new MessageHeader(m.ID, m.MessageID.SenderID.Email, recipients, m.MessageID.Subject, m.MessageID.SendDate,
                     m.ReceivedDate));
             }
+            
+            Jmessage.Sort((x, y) => x.SendDate.CompareTo(y.SendDate));
+            Jmessage.Reverse();
             return Json(JsonConvert.SerializeObject(Jmessage), JsonRequestBehavior.AllowGet);
         }
 
@@ -98,10 +106,12 @@ namespace ProjektSWR.Controllers
                 DateTime? RecivedDate = db.Recipients.FirstOrDefault(r => r.MessageID.ID == m.ID).ReceivedDate;
                 Jmessage.Add(new MessageHeader(m.ID, m.SenderID.Email, recipients, m.Subject, m.SendDate, RecivedDate));
             }
+            Jmessage.Sort((x, y) => x.SendDate.CompareTo(y.SendDate));
+            Jmessage.Reverse();
             return Json(JsonConvert.SerializeObject(Jmessage), JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult Content(int id)
+        public JsonResult MessageContent(int id)
         {
             var js = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
             ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());

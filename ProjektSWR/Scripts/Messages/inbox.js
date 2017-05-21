@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var controller = require("./controller");
-var messageContent_1 = require("./messageContent");
 function prepareInboxDocument() {
     getMessages();
     $("#delete_selected_btn").click(function () { deleteMessages(); });
@@ -32,7 +31,7 @@ function parseMessages(data) {
             "</tr>";
         $(".inbox_table").append(line);
         var tr = $("#" + data[i].Id);
-        tr.click(function () { messageContent_1.messageContent(this.id); });
+        tr.click(function () { controller.loadContent(this.id, "inbox"); });
         tr.first().children().first().click(function (e) { e.stopPropagation(); });
     }
 }
@@ -43,7 +42,6 @@ function deleteMessages() {
     for (i = 0; i < selectedMessages.length; i++) {
         selectedMessageIds.push(Number(selectedMessages[i].id.substr(2)));
     }
-    console.log(selectedMessageIds);
     $.ajax({
         url: "/Messages/DeleteInbox",
         method: "POST",

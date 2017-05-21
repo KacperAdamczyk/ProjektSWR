@@ -451,6 +451,7 @@
     <Content Include="Views\Panel\Index.cshtml" />
     <Content Include="Views\Panel\ManageEvents.cshtml" />
     <Content Include="Views\Panel\ManageForums.cshtml" />
+    <Content Include="Views\Messages\Content.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

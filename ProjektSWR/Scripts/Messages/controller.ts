@@ -2,14 +2,15 @@
 import * as inbox from "./inbox";
 import * as sent from "./sent";
 import * as new_message from "./newMessage";
+import * as content from "./MessageContent";
 
 export const globalContainer = "#content";
 
 $(document).ready(function () {
     loadInbox(); // domyślna zakładka
-    $("#new_message").click(function() {loadNewMessage();})
-    $("#inbox").click(function() {loadInbox();})
-    $("#sent").click(function() {loadSent();})
+    $("#new_message").click(function() { loadNewMessage(); });
+    $("#inbox").click(function() { loadInbox(); });
+    $("#sent").click(function() { loadSent(); });
 });
 
 function changeActive(li) {
@@ -26,7 +27,8 @@ function changeActive(li) {
 }
 
 function load(label, url, fun) {
-    changeActive(label);
+    if (label != null)
+        changeActive(label);
     $.ajax({
         url: "/Messages/" + url,
         success: function (data) {
@@ -47,4 +49,8 @@ export function loadInbox() {
 
 export function loadSent() {
     load("sent", "Sent", sent.prepareSentDocument);
+}
+
+export function loadContent(id : number, type : string) {
+    load(null, "Content", function() { content.messageContent(id, type); });
 }

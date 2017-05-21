@@ -1,7 +1,7 @@
 ﻿import * as Quill from "quill";
 import "quill/dist/quill.snow.css";
 
-export var quill_editor;
+export let quill_editor;
 let users;
 export let combobox_cnt = 0;
 
