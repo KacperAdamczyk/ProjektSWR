@@ -4,14 +4,19 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@{
-    ViewBag.Title = "Panel";
-}
+<script src="~/Scripts/Panel/index.js"></script>
 
-<div class="float-left">
-    <ul>
-        <li>@Html.ActionLink("Użytkownicy", "ManageUsers", "Panel")</li>
-        <li>@Html.ActionLink("Wydarzenia", "ManageEvents", "Panel")</li>
-        <li>@Html.ActionLink("Forum", "ManageForums", "Panel")</li>
-    </ul>
-</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div>
+        <link rel="stylesheet" href="~/Content/Panel.css">
+        <ul id="panelMenu" class="navbar-left">
+            <li><a href="~/Panel/ManageUsers">Użytkownicy</a></li>
+            <li><a href="~/Panel/ManageEvents">Wydarzenia</a></li>
+            <li><a href="~/Panel/ManageForums">Forum</a></li>
+        </ul>
+    </div>
+}
