@@ -2,14 +2,47 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using System;
+using System.ComponentModel;
+using System.Data.Entity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProjektSWR.Models
 {
-    public class IndexViewModel
+    public class ManageViewModel
     {
         public bool HasPassword { get; set; }
         public IList<UserLoginInfo> Logins { get; set; }
         public bool BrowserRemembered { get; set; }
+
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ID { get; set; }
+
+        [Required]
+        public string FirstName { get; set; }
+
+        [Required]
+        public string LastName { get; set; }
+
+        [Required]
+        public string AcademicDegree { get; set; }
+
+        public string Photo { get; set; }
+
+        [Required]
+        public DateTime DateOfBirth { get; set; }
+
+        public string Description { get; set; }
+
+        [Required]
+        public string Email { get; set; }
+
+        [Required]
+        public string PhoneNumber { get; set; }
+
+        [Required]
+        [Display(Name = "Katedra: ")]
+        public string CathedralName { get; set; }
     }
 
     public class ManageLoginsViewModel

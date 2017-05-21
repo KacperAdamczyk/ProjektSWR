@@ -7,6 +7,11 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ProjektSWR.Models;
+using System.Net;
+using System.Data.Entity.Infrastructure;
+using System.Web.UI;
+using Newtonsoft.Json;
+using System.Data.Entity.Validation;
 
 namespace ProjektSWR.Controllers
 {
@@ -15,6 +20,8 @@ namespace ProjektSWR.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         public ManageController()
         {
@@ -54,25 +61,140 @@ namespace ProjektSWR.Controllers
         // GET: /Manage/Index
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
+            var db = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
             ViewBag.Message = "Panel użytkownika";
-            ViewBag.Title = "UserPanel";
             ViewBag.StatusMessage =
                 message == ManageMessageId.ChangePasswordSuccess ? "Hasło zostało zmienione pomyślnie." : "";
 
             var userId = User.Identity.GetUserId();
-            var model = new IndexViewModel
+            var m = new ManageViewModel
             {
                 HasPassword = HasPassword(),
                 Logins = await UserManager.GetLoginsAsync(userId),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
+                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
+
+                FirstName = db.Users.Find(userId).FirstName,
+                LastName = db.Users.Find(userId).LastName,
+                AcademicDegree = db.Users.Find(userId).AcademicDegree,
+                Photo = db.Users.Find(userId).Photo,
+                //DateOfBirth = UserManager.FindById(userId).DateOfBirth,
+                Description = db.Users.Find(userId).Description,
+                Email = db.Users.Find(userId).Email,
+                PhoneNumber = db.Users.Find(userId).PhoneNumber,
+                CathedralName = db.Cathedrals.Find(1).Department,
             };
-            return View(model);
+
+            return View(m);
+        }
+
+        //
+        // POST: /Manage
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        public ActionResult Index(ManageMessageId? message, string submitButton, string submitOptional, ManageViewModel m)
+        {
+            var userId = User.Identity.GetUserId();
+
+            if (userId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            if (submitButton != null)
+                switch (submitButton)
+                {
+                    case "Zatwierdź":
+                        return (EditRequiredDatas(m));
+                    case "Anuluj":
+                        return RedirectToAction("Index");
+                    default:
+                        return View(m);
+                }
+            else
+                switch (submitOptional)
+                {
+                    case "Zatwierdź":
+                        return (EditOptionalDatas(m));
+                    case "Anuluj":
+                        return RedirectToAction("Index");
+                    default:
+                        return View(m);
+                }
+        }
+
+
+        //
+        // POST: /Manage
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditRequiredDatas(ManageViewModel m)
+        {
+            var db = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
+            var userId = User.Identity.GetUserId();
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    Cathedral c = db.Cathedrals.FirstOrDefault(x => x.Department == m.CathedralName);
+                    UserManager.FindById(userId).CathedralID = c;
+                    UserManager.FindById(userId).FirstName = m.FirstName;
+                    UserManager.FindById(userId).LastName = m.LastName;
+                    UserManager.FindById(userId).PhoneNumber = m.PhoneNumber;
+                    UserManager.FindById(userId).AcademicDegree = m.AcademicDegree;
+                    UserManager.FindById(userId).Email = m.Email;
+                    var dbToChange = db.Users.Find(userId);
+                    db.Entry(db.Users.Find(userId)).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                catch (RetryLimitExceededException)
+                {
+                    ModelState.AddModelError("", "Niemożliwa była zmiana danych. Skontaktuj się z Adamem Małyszem."); //PAMIETAJ ZEBY ZMIENIC TEN KOMUNIKAT GLUPKU
+                }
+            }
+            return View(m);
+        }
+
+        //
+        // POST: /Manage
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditOptionalDatas(ManageViewModel m)
+        {
+            var db = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
+            var userId = User.Identity.GetUserId();
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    Cathedral c = db.Cathedrals.FirstOrDefault(x => x.Department == m.CathedralName);
+                    UserManager.FindById(userId).CathedralID = c;
+                    UserManager.FindById(userId).Description = m.Description;
+                    UserManager.FindById(userId).DateOfBirth = m.DateOfBirth;
+
+                    var dbToChange = db.Users.Find(userId);
+                    db.Entry(db.Users.Find(userId)).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                catch (RetryLimitExceededException)
+                {
+                    ModelState.AddModelError("", "Niemożliwa była zmiana danych. Skontaktuj się z Adamem Małyszem."); //PAMIETAJ ZEBY ZMIENIC TEN KOMUNIKAT GLUPKU
+                }
+            }
+            return View(m);
         }
 
         //
         // POST: /Manage/RemoveLogin
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public async Task<ActionResult> RemoveLogin(string loginProvider, string providerKey)
         {
             ManageMessageId? message;

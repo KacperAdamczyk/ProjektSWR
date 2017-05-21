@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var controller = require("./controller");
 var messageContent_1 = require("./messageContent");
 function prepareInboxDocument() {
