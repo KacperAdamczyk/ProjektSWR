@@ -1,4 +1,5 @@
-﻿@{
+﻿@model ProjektSWR.Models.ProfileModel
+@{
     ViewBag.Title = "Profile";
 }
 
@@ -9,24 +10,22 @@
 </div>
 <div id="space" style="padding-bottom: 20px;">
     <div id="photo">
-
+        <img src="https://branzadziecieca.pl/wp-content/uploads/2016/10/anek-WhaWhaWhacky-Kaktus-web.jpg" alt=" "
+             height="142" width="97" />
     </div>
     <center>
         <div id="swimmingpool">
-            <h4>mgr Jan Kowalski</h4>
+            <h4>@Html.DisplayFor(m => m.AcademicDegree) @Html.DisplayFor(m => m.FirstName) @Html.DisplayFor(m => m.LastName)</h4>
         </div>
     </center>
     <div id="swimmingpool">
-        Wydział:
+        Katedra: @Html.DisplayFor(m => m.CathedralName)
     </div>
     <div id="swimmingpool">
-        Katedra:
+        Telefon: @Html.DisplayFor(m => m.PhoneNumber)
     </div>
     <div id="swimmingpool">
-        Telefon:
-    </div>
-    <div id="swimmingpool">
-        E-mail:
+        E-mail: @Html.DisplayFor(m => m.Email)
     </div>
 
 </div>
