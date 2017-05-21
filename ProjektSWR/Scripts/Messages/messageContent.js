@@ -1,4 +1,5 @@
 "use strict";
+<<<<<<< HEAD
 Object.defineProperty(exports, "__esModule", { value: true });
 var controller = require("./controller");
 var Quill = require("quill");
@@ -14,6 +15,10 @@ function messageContent(id, type) {
             break;
     }
     $.getJSON("/Messages/MessageContent?id=" + id, parseContent);
+=======
+function messageContent(id) {
+    $.getJSON("/Messages/Content?id=" + id, parseDetails);
+>>>>>>> origin/master
 }
 exports.messageContent = messageContent;
 function parseContent(data) {
