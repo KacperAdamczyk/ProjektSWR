@@ -1,13 +1,11 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var controller = require("./controller");
 function prepareInboxDocument() {
-    getMessages();
+    $.getJSON("/Messages/MessageHeaders", parseMessages);
     $("#delete_selected_btn").click(function () { deleteMessages(); });
 }
 exports.prepareInboxDocument = prepareInboxDocument;
-function getMessages() {
-    $.getJSON("/Messages/MessageHeaders", parseMessages);
-}
 function parseMessages(data) {
     data = JSON.parse(data);
     console.log(data);

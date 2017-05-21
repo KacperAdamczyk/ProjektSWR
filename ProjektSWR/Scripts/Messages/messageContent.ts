@@ -37,6 +37,7 @@ function dispalyContent() {
         toolbar: toolbarOptions
     }
   });
+  console.log(g_data);
   quill.setContents(g_data);
   quill.disable();
 }

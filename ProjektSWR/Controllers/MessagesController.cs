@@ -79,7 +79,7 @@ namespace ProjektSWR.Controllers
             {
                 if (m.Archived)
                     continue;
-                Jmessage.Add(new MessageHeader(m.ID, m.MessageID.SenderID.Email, recipients, m.MessageID.Subject, m.MessageID.SendDate,
+                Jmessage.Add(new MessageHeader(m.MessageID.ID, m.MessageID.SenderID.Email, recipients, m.MessageID.Subject, m.MessageID.SendDate,
                     m.ReceivedDate));
             }
             

@@ -1,12 +1,8 @@
 ﻿import * as controller from "./controller";
 
 export function prepareInboxDocument() {
-    getMessages();
-    $("#delete_selected_btn").click(function() { deleteMessages(); });
-}
-
-function getMessages() {
     $.getJSON("/Messages/MessageHeaders", parseMessages);
+    $("#delete_selected_btn").click(function() { deleteMessages(); });
 }
 
 function parseMessages(data) {

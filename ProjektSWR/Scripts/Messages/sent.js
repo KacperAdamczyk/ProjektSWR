@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var controller = require("./controller");
 function prepareSentDocument() {
     $.getJSON("/Messages/SentMessageHeaders", parseSentMessages);
