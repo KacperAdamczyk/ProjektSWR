@@ -1,0 +1,69 @@
+﻿@model IEnumerable<ProjektSWR.Models.Event>
+@{
+    ViewBag.Title = "Kalendarz";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<p style="line-height: 2.2cm;">" "</p>
+
+<h2>@ViewBag.Title.</h2>
+<link href='~/Content/fullcalendar.min.css' rel='stylesheet' />
+<link href='~/Content/fullcalendar.print.css' rel='stylesheet' media='print' />
+<script src='~/Scripts/jquery-3.1.1.min.js'></script>
+<script src='~/Scripts/moment.js'></script>
+<script src='~/Scripts/Calendar/fullcalendar.min.js'></script>
+<script src="~/Scripts/Calendar/calendar.js"></script>
+<script src="~/Scripts/locale-all.js"></script>
+<div id='calendar'></div>
+
+
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EndDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Location)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Details)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StartDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EndDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Location)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Details)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>
