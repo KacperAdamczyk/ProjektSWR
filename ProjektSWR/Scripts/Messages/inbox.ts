@@ -7,7 +7,6 @@ export function prepareInboxDocument() {
 
 function parseMessages(data) {
     data = JSON.parse(data);
-    console.log(data);
     let i : number, line : string;
     for (i = 0; i < data.length; i++) {
         let newMessage : boolean = false;

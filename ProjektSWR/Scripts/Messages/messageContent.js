@@ -4,27 +4,45 @@ var controller = require("./controller");
 var Quill = require("quill");
 require("quill/dist/quill.snow.css");
 var g_data;
-function messageContent(id, type) {
+var g_type;
+function prepareMessageContentDocument(id, type) {
+    g_type = type;
     switch (type) {
         case "inbox":
             $("#delete_selected_btn").click(function () { deleteMessageInbox(id); });
             break;
         case "sent":
             $("#delete_selected_btn").click(function () { deleteMessageSent(id); });
+            $("#response_btn").hide();
             break;
     }
     $.getJSON("/Messages/MessageContent?id=" + id, parseContent);
 }
-exports.messageContent = messageContent;
+exports.prepareMessageContentDocument = prepareMessageContentDocument;
 function parseContent(data) {
     g_data = JSON.parse(data);
-    g_data = JSON.parse(g_data);
+    console.log(g_data);
+    switch (g_type) {
+        case "inbox":
+            if (g_data.ResponseId >= 0) {
+                $("#go_to_response").click(function () { prepareMessageContentDocument(g_data.ResponseId, "inbox"); });
+            }
+            else {
+                $("#response_btn").click(function () { controller.loadNewMessage(g_data.Sender, g_data.Id); });
+            }
+            break;
+        case "sent":
+            $("#response_btn").hide();
+            if (g_data.ResponseId >= 0) {
+                $("#go_to_response").click(function () { prepareMessageContentDocument(g_data.ResponseId, "sent"); });
+            }
+            else {
+                $("#go_to_response").hide();
+            }
+            break;
+    }
     dispalyContent();
 }
-function getData() {
-    return g_data;
-}
-exports.getData = getData;
 function dispalyContent() {
     var toolbarOptions = [];
     var quill = new Quill('#messageContent', {
@@ -33,8 +51,7 @@ function dispalyContent() {
             toolbar: toolbarOptions
         }
     });
-    console.log(g_data);
-    quill.setContents(g_data);
+    quill.setContents(JSON.parse(g_data.Content));
     quill.disable();
 }
 function deleteMessageInbox(id) {

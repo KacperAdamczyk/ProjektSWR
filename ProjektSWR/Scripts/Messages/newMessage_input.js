@@ -4,9 +4,10 @@ var Quill = require("quill");
 require("quill/dist/quill.snow.css");
 var users;
 exports.combobox_cnt = 0;
-function parseUsers(data) {
+function parseUsers(data, create) {
     users = data;
-    createCombobox();
+    if (create)
+        createCombobox();
 }
 exports.parseUsers = parseUsers;
 function loadContentInput() {

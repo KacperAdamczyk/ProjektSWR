@@ -5,14 +5,17 @@ import * as Quill from "quill";
 import "quill/dist/quill.snow.css";
 
 let g_data;
+let g_type;
 
-export function messageContent(id : number, type : string) {
+export function prepareMessageContentDocument(id : number, type : string) {
+    g_type = type;
     switch(type) {
         case "inbox":
             $("#delete_selected_btn").click(function (){ deleteMessageInbox(id); });
         break;
         case "sent":
-        $("#delete_selected_btn").click(function (){ deleteMessageSent(id); });
+            $("#delete_selected_btn").click(function (){ deleteMessageSent(id); });
+            $("#response_btn").hide();
         break;
     }
     
@@ -21,12 +24,26 @@ export function messageContent(id : number, type : string) {
 
 function parseContent(data) {
     g_data = JSON.parse(data);
-    g_data = JSON.parse(g_data);
-    dispalyContent();
-}
+    console.log(g_data);
+    switch(g_type) {
+        case "inbox":
+            if (g_data.ResponseId >= 0) {
+                $("#go_to_response").click(function() { prepareMessageContentDocument(g_data.ResponseId, "inbox"); })
+            } else {
+                $("#response_btn").click( function() { controller.loadNewMessage(g_data.Sender, g_data.Id); })
+            }
+        break;
+        case "sent":
+            $("#response_btn").hide();
+            if (g_data.ResponseId >= 0) {
+                $("#go_to_response").click(function() { prepareMessageContentDocument(g_data.ResponseId, "sent"); })
+            } else {
+                $("#go_to_response").hide();
+            }
+        break;
+    }
 
-export function getData() {
-    return g_data;
+    dispalyContent();
 }
 
 function dispalyContent() {
@@ -37,8 +54,8 @@ function dispalyContent() {
         toolbar: toolbarOptions
     }
   });
-  console.log(g_data);
-  quill.setContents(g_data);
+  
+  quill.setContents(JSON.parse(g_data.Content));
   quill.disable();
 }
 

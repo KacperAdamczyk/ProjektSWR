@@ -5,9 +5,10 @@ export let quill_editor;
 let users;
 export let combobox_cnt = 0;
 
-export function parseUsers(data) {
+export function parseUsers(data, create : boolean) {
     users = data;
-    createCombobox();
+    if (create)
+        createCombobox();
 }
 
 export function loadContentInput() {

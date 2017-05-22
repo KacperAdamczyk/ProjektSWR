@@ -8,7 +8,6 @@ function prepareInboxDocument() {
 exports.prepareInboxDocument = prepareInboxDocument;
 function parseMessages(data) {
     data = JSON.parse(data);
-    console.log(data);
     var i, line;
     for (i = 0; i < data.length; i++) {
         var newMessage = false;

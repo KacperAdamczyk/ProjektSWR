@@ -8,7 +8,7 @@ var content = require("./MessageContent");
 exports.globalContainer = "#content";
 $(document).ready(function () {
     loadInbox(); // domyślna zakładka
-    $("#new_message").click(function () { loadNewMessage(); });
+    $("#new_message").click(function () { loadNewMessage(null, null); });
     $("#inbox").click(function () { loadInbox(); });
     $("#sent").click(function () { loadSent(); });
 });
@@ -35,8 +35,8 @@ function load(label, url, fun) {
         }
     });
 }
-function loadNewMessage() {
-    load("new_message", "Create", new_message.prepareNewMessageDocument);
+function loadNewMessage(responseTo, responseToId) {
+    load("new_message", "Create", function () { new_message.prepareNewMessageDocument(responseTo, responseToId); });
 }
 exports.loadNewMessage = loadNewMessage;
 function loadInbox() {
@@ -48,6 +48,6 @@ function loadSent() {
 }
 exports.loadSent = loadSent;
 function loadContent(id, type) {
-    load(null, "Content", function () { content.messageContent(id, type); });
+    load(null, "Content", function () { content.prepareMessageContentDocument(id, type); });
 }
 exports.loadContent = loadContent;

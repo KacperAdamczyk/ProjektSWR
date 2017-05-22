@@ -2,11 +2,28 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var input = require("./newMessage_input");
 var controller = require("./controller");
-function prepareNewMessageDocument() {
+function prepareNewMessageDocument(responseTo, responseToId) {
     input.loadContentInput();
-    $.getJSON("/Messages/Users", input.parseUsers);
-    $("#send_button").click(function () { sendMessage(-1); });
-    $("#add_user").click(function () { input.createCombobox(); });
+    $.getJSON("/Messages/Users", function (data) {
+        if (responseTo == null)
+            input.parseUsers(data, true);
+        else
+            input.parseUsers(data, false);
+    });
+    if (responseToId == null) {
+        $("#send_button").click(function () { sendMessage(-1); });
+        $("#add_user").click(function () { input.createCombobox(); });
+    }
+    else {
+        $("#add_user").hide();
+        $("#send_button").click(function () { sendMessage(responseToId); });
+        var c = "<input list='users" + "' class='users_combobox'>" +
+            "<datalist id='users" + "'></datalist>";
+        $("#comboboxes").append(c);
+        var line = '<option' + ' data-id="user' + 0 + ' value="' + responseTo + '">' + responseTo + '</option>';
+        $("#users").append(line);
+        $(".users_combobox").first().val(responseTo);
+    }
 }
 exports.prepareNewMessageDocument = prepareNewMessageDocument;
 function sendMessage(responseId) {

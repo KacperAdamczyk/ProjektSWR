@@ -8,7 +8,7 @@ export const globalContainer = "#content";
 
 $(document).ready(function () {
     loadInbox(); // domyślna zakładka
-    $("#new_message").click(function() { loadNewMessage(); });
+    $("#new_message").click(function() { loadNewMessage(null, null); });
     $("#inbox").click(function() { loadInbox(); });
     $("#sent").click(function() { loadSent(); });
 });
@@ -39,8 +39,8 @@ function load(label, url, fun) {
     
 }
 
-export function loadNewMessage() {
-    load("new_message", "Create", new_message.prepareNewMessageDocument);
+export function loadNewMessage(responseTo : string, responseToId : number) {
+    load("new_message", "Create", function() { new_message.prepareNewMessageDocument(responseTo, responseToId) });
 }
 
 export function loadInbox() {
@@ -52,5 +52,5 @@ export function loadSent() {
 }
 
 export function loadContent(id : number, type : string) {
-    load(null, "Content", function() { content.messageContent(id, type); });
+    load(null, "Content", function() { content.prepareMessageContentDocument(id, type); });
 }

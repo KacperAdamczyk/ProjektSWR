@@ -33,6 +33,21 @@ namespace ProjektSWR.Controllers
         }
     }
 
+    class MessageContent
+    {
+        [JsonProperty] public int Id { set; get; }
+        [JsonProperty] public string Sender { set; get; }
+        [JsonProperty] public string Content { set; get; }
+        [JsonProperty] public int ResponseId { set; get; }
+
+        public MessageContent(int Id, string Sender, string Content, int ResponseId)
+        {
+            this.Id = Id;
+            this.Sender = Sender;
+            this.Content = Content;
+            this.ResponseId = ResponseId;
+        }
+    }
     [Authorize]
     public class MessagesController : Controller
     {
@@ -115,7 +130,10 @@ namespace ProjektSWR.Controllers
                 if (m.ResponseID != null)
                     responseId = m.ResponseID.ID;
 
-                DateTime? RecivedDate = db.Recipients.FirstOrDefault(r => r.MessageID.ID == m.ID).ReceivedDate;
+                var rec = db.Recipients.FirstOrDefault(x => x.MessageID.ID == m.ID);
+                DateTime? RecivedDate = new DateTime();
+                if (rec != null)
+                    RecivedDate = rec.ReceivedDate;
                 Jmessage.Add(new MessageHeader(m.ID, m.SenderID.Email, recipients, m.Subject, m.SendDate, RecivedDate, responseId));
             }
             Jmessage.Sort((x, y) => x.SendDate.CompareTo(y.SendDate));
@@ -131,7 +149,14 @@ namespace ProjektSWR.Controllers
             if (message == null)
                 return null;
             if (message.SenderID == currentUser)
-                return Json(JsonConvert.SerializeObject(message.Content, Formatting.Indented, js), JsonRequestBehavior.AllowGet);
+            {
+                int ResponseId = -1;
+                if (message.ResponseID != null)
+                    ResponseId = message.ResponseID.ID;
+                return Json(JsonConvert.SerializeObject(new MessageContent(message.ID, message.SenderID.Email, message.Content, ResponseId),
+                    Formatting.Indented, js), JsonRequestBehavior.AllowGet);
+            }
+                
 
             var recipient = currentUser.Recipients.FirstOrDefault(m => m.MessageID == message);
             
@@ -143,7 +168,11 @@ namespace ProjektSWR.Controllers
                     db.Entry(recipient).State = EntityState.Modified;
                     db.SaveChanges();
                 }
-                return Json(JsonConvert.SerializeObject(message.Content, Formatting.Indented, js), JsonRequestBehavior.AllowGet);
+                int ResponseId = -1;
+                if (message.ResponseID != null)
+                    ResponseId = message.ResponseID.ID;
+                return Json(JsonConvert.SerializeObject(new MessageContent(message.ID, message.SenderID.Email, message.Content, ResponseId),
+                    Formatting.Indented, js), JsonRequestBehavior.AllowGet);
             }
             return null;
         }
