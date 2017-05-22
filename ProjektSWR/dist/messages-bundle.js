@@ -11269,15 +11269,15 @@ var controller = __webpack_require__(0);
 function prepareNewMessageDocument() {
     input.loadContentInput();
     $.getJSON("/Messages/Users", input.parseUsers);
-    $("#send_button").click(function () { sendMessage(); });
+    $("#send_button").click(function () { sendMessage(-1); });
     $("#add_user").click(function () { input.createCombobox(); });
 }
 exports.prepareNewMessageDocument = prepareNewMessageDocument;
-function sendMessage() {
+function sendMessage(responseId) {
     var recipients = getAllRecipients();
     var s = $("#Subject").val();
     var c = input.quill_editor.getContents();
-    var message = { "UserName": recipients, "Subject": s, "Content": JSON.stringify(c) };
+    var message = { "UserName": recipients, "Subject": s, "Content": JSON.stringify(c), "ResponseId": responseId };
     $.ajax({
         url: "/Messages/CreateMessage",
         type: "POST",

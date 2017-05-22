@@ -5,15 +5,15 @@ import * as controller from "./controller";
 export function prepareNewMessageDocument() {
     input.loadContentInput();
     $.getJSON("/Messages/Users", input.parseUsers);
-    $("#send_button").click(function(){ sendMessage(); });
+    $("#send_button").click(function(){ sendMessage(-1); });
     $("#add_user").click(function(){ input.createCombobox(); });
 }
 
-function sendMessage() {
+function sendMessage(responseId : number) {
     var recipients : Array<string> = getAllRecipients();
     var s : string = $("#Subject").val();
     var c : string = input.quill_editor.getContents();
-    var message = { "UserName": recipients, "Subject": s, "Content": JSON.stringify(c) };
+    var message = { "UserName": recipients, "Subject": s, "Content": JSON.stringify(c), "ResponseId": responseId };
     $.ajax({
         url: "/Messages/CreateMessage",
         type: "POST",
