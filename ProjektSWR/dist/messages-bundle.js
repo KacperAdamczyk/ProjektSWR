@@ -11173,9 +11173,11 @@ function parseContent(data) {
         case "inbox":
             if (g_data.ResponseId >= 0) {
                 $("#go_to_response").click(function () { prepareMessageContentDocument(g_data.ResponseId, "inbox"); });
+                $("#response_btn").hide();
             }
             else {
                 $("#response_btn").click(function () { controller.loadNewMessage(g_data.Sender, g_data.Id); });
+                $("#go_to_response").hide();
             }
             break;
         case "sent":
@@ -11198,6 +11200,7 @@ function dispalyContent() {
             toolbar: toolbarOptions
         }
     });
+    $(".ql-toolbar").hide();
     quill.setContents(JSON.parse(g_data.Content));
     quill.disable();
 }
