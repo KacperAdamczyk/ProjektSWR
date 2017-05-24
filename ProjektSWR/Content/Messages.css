@@ -1,19 +1,24 @@
+/* Index */
+
+div.messages {
+    height: 100%;
+}
 
 .messages ul {
-    top: 10px;
     list-style-type: none;
     margin: 0px;
-    margin-top: 0px;
     padding: 0px;
     background-color: #f1f1f1;
-    max-width: 20%;
-    min-height: 500px;
+    min-width: 100px;
+    width: 10%;
+    height: 500px;
     float: left;
 }
 
 .messages li {
     padding: 0px;
     cursor: pointer;
+    min-width: 100px;
 }
 
 .messages li a {
@@ -33,6 +38,13 @@
     background-color: #555;
 }
 
+#content {
+    margin-left: 170px;
+    width: 85%;
+    max-height: 500px;
+    overflow: auto;
+}
+
 #new_message {
     font-weight: 700;
 }
@@ -41,38 +53,166 @@
     margin-bottom: 10px;
 }
 
-#new_message_inputs {
-    float: right;
-    max-width: 80%;
-    overflow: hidden;
-    margin-top: 40px;
-    max-height: 300px;
+/* Inbox / Sent */
+
+#delete_selected_btn {
+    padding: 5px;
+    margin-bottom: 10px;
+    height: 40px;
+    width: 40px;
 }
 
-#content {
-    margin-top: 0px;
-    margin-left: 15px;
-}
-#messageContent {
-    
+.glyphicon-trash {
+    font-size: 25px;
 }
 
-#message_content_form {
-    float: right;
-    width: 80%;
+.inbox_table, .sent_table {
+    left: 0px;
+    border-collapse: collapse;
+    cursor: pointer;
+}
 
+.inbox_table th, .sent_table th {
+    text-align: center;
+    padding: 3px;
+}
+
+.inbox_table th:not(:first-child), .sent_table th:not(:first-child) {
+    min-width: 100px;
+    width: 250px;
+}
+
+.inbox_table th:nth-child(3) {
+    min-width: 150px;
+    width: 100%;
+    text-align: left;
+}
+
+.sent_table th:nth-child(3) {
+    min-width: 150px;
+    width: 100%;
+    text-align: left;
+}
+
+.inbox_table td:nth-child(3), .sent_table td:nth-child(3) {
+    text-align: left;
+}
+
+.inbox_table tr, .sent_table tr {
+    color: black;
+    border: solid 2px grey;
+    width: 100%;
+}
+
+.inbox_table tr:nth-child(even), .sent_table tr:nth-child(even) {
+    background-color: white;
+}
+
+.inbox_table tr:nth-child(odd), .sent_table tr:nth-child(odd) {
+    background-color: #EEEEEE;
+}
+
+.inbox_table tr:first-child, .sent_table tr:first-child {
+    background-color: #003c82;
+    border: solid 2px #003c82;
+    color: white;
+    height: 35px;
+}
+
+.inbox_table tr:not(:first-child), .sent_table tr:not(:first-child) {
+   height: 45px;
+}
+
+.inbox_table th:first-child, .sent_table th:first-child,
+.inbox_table td:first-child, .sent_table td:first-child
+ {
+    padding-left: 10px;
+    padding-right: 0px;
+}
+
+.inbox_table td, .sent_table td {
+    padding: 3px;
+    padding-left: 30px;
+    padding-right: 30px;
+    text-align: center;
+}
+
+.inbox_table td:not(:first-child), .sent_table td:not(:first-child) {
+    min-width: 200px;
+}
+
+.inbox_table td:nth-child(3), .sent_table td:nth-child(3) {
+    padding-left: 0px;
 }
 
 .new_message_row {
     font-weight: 700;
 }
 
-.inbox_table, .sent_table {
-    border: 2px black solid;
-    border-collapse: collapse;
-    cursor: pointer;
+/* Content */
+
+#messageContent {
+    border: solid 1px grey;
+    min-height: 300px;
 }
 
-.inbox_table td, .sent_table td {
-    border: 2px grey solid;
+.glyphicon-arrow-up {
+    font-size: 22px;
+}
+
+#go_to_response, #response_btn {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 10px;
+    height: 40px;
+}
+
+/* New message */
+
+.ql-editor {
+    height: 300px;
+}
+
+#add_user {
+    width: 30px;
+    height: 30px;
+    padding: 0px;
+    align-content: center;
+}
+
+.input-group:first-of-type {
+    padding-top: 5px;
+    padding-bottom: 3px;
+}
+
+.input-group {
+    padding-top: 0px;
+     padding-bottom: 5px;
+}
+
+.input-group-addon {
+    height: 30px;
+}
+
+.input-group-addon {
+    width: 80px;
+    column-span: 5px;
+}
+
+input {
+    height: 35px;
+    font-size: 16px;
+}
+
+#comboboxes input {
+    text-align: center;
+    margin-right: 5px;
+}
+
+#Subject {
+    transition: 1s;
+}
+
+#Subject:hover {
+    width: 300px;
 }

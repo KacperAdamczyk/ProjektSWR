@@ -1,17 +1,14 @@
 ﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
     font-family: 'Roboto', sans-serif;
     font-size: 14px;
-    margin-top: 50px;
+    overflow: hidden;
 }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
-    margin-bottom: 70px;
-    margin-top: 20px;
+    height: 100%;
+    width: 100%;
+    margin-bottom: 20px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -33,39 +30,26 @@ textarea {
 }
 
 .navbar {
+    padding-right: 10px;
     background-color: #003c82;
-    color: white;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    
-}
-
-
-.nav, .navbar-nav {
-    padding-top: 10px;
-    padding-left: 50px;
-    padding-bottom: 15px;
-    max-height: 1000px;
-    font-size: 14px;
+    color: white; 
     font-weight: 700;
     text-transform: uppercase;
     vertical-align: bottom;
 }
 
-.navbar-collapse {
-    max-height: 400px;
+.nav {
+    position: relative; 
+    bottom: -35px; 
+    right: 0;
+    margin-bottom: 30px;
 }
-
 
 #registerLink, #loginLink {
     color: white !important;
 }
 
-.white_link {
-    color: white !important;
-}
-
-.white_link a {
+.white_link, .white_link a {
     color: white !important;
 }
 
@@ -76,10 +60,6 @@ textarea {
 .icon-bar {
     color: white !important; 
     background-color: white !important;
-}
-
-.navbar-toggle button:hover {
-    background-color: none !important;
 }
 
 footer {
@@ -100,16 +80,11 @@ footer hr {
     padding-bottom: 0px;
 }
 
-ul {
-    position: relative;
-    top: 30px;
-}
 
 li {
     text-align: center;
-    padding: 10px;
 }
 
 #notify {
-    padding-top: 15px;
+    padding-top: 7px;
 }

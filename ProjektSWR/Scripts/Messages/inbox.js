@@ -4,11 +4,21 @@ var controller = require("./controller");
 function prepareInboxDocument() {
     $.getJSON("/Messages/MessageHeaders", parseMessages);
     $("#delete_selected_btn").click(function () { deleteMessages(); });
+    $("#select_all").click(function () {
+        if ($("#select_all").is(":checked"))
+            $("input:checkbox").prop("checked", true);
+        else
+            $("input:checkbox").prop("checked", false);
+    });
 }
 exports.prepareInboxDocument = prepareInboxDocument;
 function parseMessages(data) {
     data = JSON.parse(data);
-    var i, line;
+    var i, line, full;
+    if (data.length == 0) {
+        line = "<tr>" + "<td colspan='4'>" + "Brak wiadomości" + "</td>" + "</tr>";
+        $(".inbox_table").append(line);
+    }
     for (i = 0; i < data.length; i++) {
         var newMessage = false;
         var sentDate = new Date(data[i].SendDate).toLocaleString();
@@ -25,17 +35,18 @@ function parseMessages(data) {
             "<td>" + data[i].Subject + "</td>" +
             "<td>" + sentDate + "</td>" +
             "</tr>";
-        $(".inbox_table").append(line);
+        full += line;
         var tr = $("#" + data[i].Id);
         tr.click(function () { controller.loadContent(this.id, "inbox"); });
         tr.first().children().first().click(function (e) { e.stopPropagation(); });
     }
+    $(".inbox_table").append(full);
 }
 function deleteMessages() {
     var selectedMessages = $("input:checkbox:checked");
     var selectedMessageIds = [];
     var i;
-    for (i = 0; i < selectedMessages.length; i++) {
+    for (i = 1; i < selectedMessages.length; i++) {
         selectedMessageIds.push(Number(selectedMessages[i].id.substr(2)));
     }
     $.ajax({

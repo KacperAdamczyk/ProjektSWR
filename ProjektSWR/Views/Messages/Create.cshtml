@@ -1,16 +1,15 @@
 ﻿@{ 
     Layout = null;
 }
-<div id="new_message_inputs">
-    <form>
-        <label>Odbiorca: <span>(<a id="add_user">Dodaj odbiorcę</a>)</span></label>
-        <div id="comboboxes">
-        </div>
-        <div class="input-group">
-            <span class="input-group-addon">Temat</span>
-            <input id="Subject" type="text" class="form-control">
-        </div>
-    </form>
-    <div id="messageContent"></div>
-    <button id="send_button">Wyślij</button>
+<label>Odbiorca:</label>
+<button id="add_user" class="btn btn-default"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+<div class="input-group">
+    <span class="input-group-addon">Odbiorca</span>
+    <div id="comboboxes"></div>
 </div>
+<div class="input-group">
+    <span class="input-group-addon">Temat</span>
+    <input id="Subject" type="text" class="form-control">
+</div>
+<div id="messageContent"></div>
+<button id="send_button" class="btn btn-default">Wyślij</button>

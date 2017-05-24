@@ -21,7 +21,6 @@ function prepareMessageContentDocument(id, type) {
 exports.prepareMessageContentDocument = prepareMessageContentDocument;
 function parseContent(data) {
     g_data = JSON.parse(data);
-    console.log(g_data);
     switch (g_type) {
         case "inbox":
             if (g_data.ResponseId >= 0) {

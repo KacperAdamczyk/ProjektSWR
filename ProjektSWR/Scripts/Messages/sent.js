@@ -4,12 +4,21 @@ var controller = require("./controller");
 function prepareSentDocument() {
     $.getJSON("/Messages/SentMessageHeaders", parseSentMessages);
     $("#delete_selected_btn").click(function () { deleteMessages(); });
+    $("#select_all").click(function () {
+        if ($("#select_all").is(":checked"))
+            $("input:checkbox").prop("checked", true);
+        else
+            $("input:checkbox").prop("checked", false);
+    });
 }
 exports.prepareSentDocument = prepareSentDocument;
 function parseSentMessages(data) {
     data = JSON.parse(data);
-    console.log(data);
-    var i, j, line;
+    var i, j, line, full;
+    if (data.length == 0) {
+        line = "<tr>" + "<td colspan='5'>" + "Brak wiadomości" + "</td>" + "</tr>";
+        $(".sent_table").append(line);
+    }
     for (i = 0; i < data.length; i++) {
         var sentDate = new Date(data[i].SendDate).toLocaleString();
         if (data[i].ReceivedDate != null) {
@@ -29,20 +38,20 @@ function parseSentMessages(data) {
             "<td>" + sentDate + "</td>" +
             "<td>" + receivedDate + "</td>" +
             "</tr>";
-        $(".sent_table").append(line);
+        full += line;
         var tr = $("#" + data[i].Id);
         tr.click(function () { controller.loadContent(this.id, "sent"); });
         tr.first().children().first().click(function (e) { e.stopPropagation(); });
     }
+    $(".sent_table").append(full);
 }
 function deleteMessages() {
     var selectedMessages = $("input:checkbox:checked");
     var selectedMessageIds = [];
     var i;
-    for (i = 0; i < selectedMessages.length; i++) {
+    for (i = 1; i < selectedMessages.length; i++) {
         selectedMessageIds.push(Number(selectedMessages[i].id.substr(2)));
     }
-    console.log(selectedMessageIds);
     $.ajax({
         url: "/Messages/DeleteSent",
         method: "POST",

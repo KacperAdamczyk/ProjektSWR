@@ -10,7 +10,7 @@
     @Scripts.Render("~/bundles/bootstrap")
 </head>
 <body>
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-static-top">
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -24,7 +24,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 @Html.Partial("_LoginPartial")
-                 <ul class="nav navbar-nav">
+                 <ul class="nav navbar-nav align-bottom">
                     <li>@Html.ActionLink("Home", "Index", "Home", null, new { @class = "white_link" })</li>
                      @if (Request.IsAuthenticated) {
                       <li>@Html.ActionLink("Wiadomości", "index", "Messages", null, new { @class="white_link" })</li>
