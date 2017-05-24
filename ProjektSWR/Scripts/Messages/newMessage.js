@@ -2,6 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var input = require("./newMessage_input");
 var controller = require("./controller");
+var alertifyjs = require("alertifyjs");
+require("alertifyjs/build/css/alertify.css");
+require("alertifyjs/build/css/themes/bootstrap.css");
 function prepareNewMessageDocument(responseTo, responseToId) {
     input.loadContentInput();
     $.getJSON("/Messages/Users", function (data) {
@@ -35,7 +38,10 @@ function sendMessage(responseId) {
         url: "/Messages/CreateMessage",
         type: "POST",
         data: message,
-        success: function () { controller.loadInbox(); },
+        success: function () {
+            alertifyjs.success("Wiadomość została wysłana");
+            controller.loadInbox();
+        },
         error: function () { console.log(this.textStatus); }
     });
 }
