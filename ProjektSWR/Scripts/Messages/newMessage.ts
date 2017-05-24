@@ -1,6 +1,9 @@
 ﻿import * as Quill from "quill";
 import * as input from "./newMessage_input";
 import * as controller from "./controller";
+import * as alertifyjs from "alertifyjs";
+import "alertifyjs/build/css/alertify.css";
+import "alertifyjs/build/css/themes/bootstrap.css";
 
 export function prepareNewMessageDocument(responseTo : string, responseToId : number) {
     input.loadContentInput();
@@ -34,7 +37,10 @@ function sendMessage(responseId : number) {
         url: "/Messages/CreateMessage",
         type: "POST",
         data: message,
-        success: function() { controller.loadInbox(); },
+        success: function() {
+            alertifyjs.success("Wiadomość została wysłana");
+            controller.loadInbox(); 
+        },
         error: function() { console.log(this.textStatus); }
     });
 }
