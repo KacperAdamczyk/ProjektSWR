@@ -14,7 +14,7 @@ function prepareInboxDocument() {
 exports.prepareInboxDocument = prepareInboxDocument;
 function parseMessages(data) {
     data = JSON.parse(data);
-    var i, line, full;
+    var i, line;
     if (data.length == 0) {
         line = "<tr>" + "<td colspan='4'>" + "Brak wiadomości" + "</td>" + "</tr>";
         $(".inbox_table").append(line);
@@ -35,12 +35,12 @@ function parseMessages(data) {
             "<td>" + data[i].Subject + "</td>" +
             "<td>" + sentDate + "</td>" +
             "</tr>";
-        full += line;
+        $(".inbox_table").append(line);
         var tr = $("#" + data[i].Id);
-        tr.click(function () { controller.loadContent(this.id, "inbox"); });
+        tr.click(function () { console.log(1); controller.loadContent(this.id, "inbox"); });
         tr.first().children().first().click(function (e) { e.stopPropagation(); });
     }
-    $(".inbox_table").append(full);
+    $(controller.transitor).addClass(controller.transitorAcrivated);
 }
 function deleteMessages() {
     var selectedMessages = $("input:checkbox:checked");

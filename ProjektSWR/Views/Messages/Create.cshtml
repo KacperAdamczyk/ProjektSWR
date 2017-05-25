@@ -1,15 +1,17 @@
 ﻿@{ 
     Layout = null;
 }
-<label>Odbiorca:</label>
-<button id="add_user" class="btn btn-default"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
-<div class="input-group">
-    <span class="input-group-addon">Odbiorca</span>
-    <div id="comboboxes"></div>
+<div class="transitor">
+    <label>Odbiorca:</label>
+    <button id="add_user" class="btn btn-default"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+    <div class="input-group">
+        <span class="input-group-addon">Odbiorca</span>
+        <div id="comboboxes"></div>
+    </div>
+    <div class="input-group">
+        <span class="input-group-addon">Temat</span>
+        <input id="Subject" type="text" class="form-control">
+    </div>
+    <div id="messageContent"></div>
+    <button id="send_button" class="btn btn-default">Wyślij</button>
 </div>
-<div class="input-group">
-    <span class="input-group-addon">Temat</span>
-    <input id="Subject" type="text" class="form-control">
-</div>
-<div id="messageContent"></div>
-<button id="send_button" class="btn btn-default">Wyślij</button>

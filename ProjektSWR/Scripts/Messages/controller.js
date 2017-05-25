@@ -6,11 +6,14 @@ var sent = require("./sent");
 var new_message = require("./newMessage");
 var content = require("./MessageContent");
 exports.globalContainer = "#content";
+exports.transitor = ".transitor";
+exports.transitorAcrivated = "trans-activated";
 $(document).ready(function () {
     loadInbox(); // domyślna zakładka
     $("#new_message").click(function () { loadNewMessage(null, null); });
     $("#inbox").click(function () { loadInbox(); });
     $("#sent").click(function () { loadSent(); });
+    $(exports.transitor).addClass(exports.transitorAcrivated);
 });
 function changeActive(li) {
     var tags = ["inbox", "sent", "new_message"];

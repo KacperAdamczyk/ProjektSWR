@@ -58,6 +58,8 @@ function dispalyContent() {
   $(".ql-toolbar").hide();
   quill.setContents(JSON.parse(g_data.Content));
   quill.disable();
+
+  $(controller.transitor).addClass(controller.transitorAcrivated);
 }
 
 function deleteMessageInbox(id : number) {

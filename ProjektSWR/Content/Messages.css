@@ -53,6 +53,11 @@ div.messages {
     margin-bottom: 10px;
 }
 
+.full-window {
+    height: 500px;
+    transition: height 10s ease-in;
+}
+
 /* Inbox / Sent */
 
 #delete_selected_btn {
@@ -147,6 +152,18 @@ div.messages {
 
 .new_message_row {
     font-weight: 700;
+}
+
+.transitor {
+    height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.trans-activated {
+    height: 100%;
+    opacity: 1;
 }
 
 /* Content */

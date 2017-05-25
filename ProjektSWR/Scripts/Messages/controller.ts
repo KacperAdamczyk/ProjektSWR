@@ -5,12 +5,16 @@ import * as new_message from "./newMessage";
 import * as content from "./MessageContent";
 
 export const globalContainer = "#content";
+export const transitor = ".transitor";
+export const transitorAcrivated = "trans-activated";
 
 $(document).ready(function () {
     loadInbox(); // domyślna zakładka
     $("#new_message").click(function() { loadNewMessage(null, null); });
     $("#inbox").click(function() { loadInbox(); });
     $("#sent").click(function() { loadSent(); });
+
+    $(transitor).addClass(transitorAcrivated);
 });
 
 function changeActive(li) {

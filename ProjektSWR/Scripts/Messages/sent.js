@@ -14,7 +14,7 @@ function prepareSentDocument() {
 exports.prepareSentDocument = prepareSentDocument;
 function parseSentMessages(data) {
     data = JSON.parse(data);
-    var i, j, line, full;
+    var i, j, line;
     if (data.length == 0) {
         line = "<tr>" + "<td colspan='5'>" + "Brak wiadomości" + "</td>" + "</tr>";
         $(".sent_table").append(line);
@@ -38,12 +38,12 @@ function parseSentMessages(data) {
             "<td>" + sentDate + "</td>" +
             "<td>" + receivedDate + "</td>" +
             "</tr>";
-        full += line;
+        $(".sent_table").append(line);
         var tr = $("#" + data[i].Id);
         tr.click(function () { controller.loadContent(this.id, "sent"); });
         tr.first().children().first().click(function (e) { e.stopPropagation(); });
     }
-    $(".sent_table").append(full);
+    $(controller.transitor).addClass(controller.transitorAcrivated);
 }
 function deleteMessages() {
     var selectedMessages = $("input:checkbox:checked");

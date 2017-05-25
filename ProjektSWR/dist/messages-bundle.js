@@ -79,11 +79,14 @@ var sent = __webpack_require__(8);
 var new_message = __webpack_require__(7);
 var content = __webpack_require__(5);
 exports.globalContainer = "#content";
+exports.transitor = ".transitor";
+exports.transitorAcrivated = "trans-activated";
 $(document).ready(function () {
     loadInbox(); // domyślna zakładka
     $("#new_message").click(function () { loadNewMessage(null, null); });
     $("#inbox").click(function () { loadInbox(); });
     $("#sent").click(function () { loadSent(); });
+    $(exports.transitor).addClass(exports.transitorAcrivated);
 });
 function changeActive(li) {
     var tags = ["inbox", "sent", "new_message"];
@@ -11597,6 +11600,7 @@ function dispalyContent() {
     $(".ql-toolbar").hide();
     quill.setContents(JSON.parse(g_data.Content));
     quill.disable();
+    $(controller.transitor).addClass(controller.transitorAcrivated);
 }
 function deleteMessageInbox(id) {
     $.ajax({
@@ -11637,7 +11641,7 @@ function prepareInboxDocument() {
 exports.prepareInboxDocument = prepareInboxDocument;
 function parseMessages(data) {
     data = JSON.parse(data);
-    var i, line, full;
+    var i, line;
     if (data.length == 0) {
         line = "<tr>" + "<td colspan='4'>" + "Brak wiadomości" + "</td>" + "</tr>";
         $(".inbox_table").append(line);
@@ -11658,12 +11662,12 @@ function parseMessages(data) {
             "<td>" + data[i].Subject + "</td>" +
             "<td>" + sentDate + "</td>" +
             "</tr>";
-        full += line;
+        $(".inbox_table").append(line);
         var tr = $("#" + data[i].Id);
-        tr.click(function () { controller.loadContent(this.id, "inbox"); });
+        tr.click(function () { console.log(1); controller.loadContent(this.id, "inbox"); });
         tr.first().children().first().click(function (e) { e.stopPropagation(); });
     }
-    $(".inbox_table").append(full);
+    $(controller.transitor).addClass(controller.transitorAcrivated);
 }
 function deleteMessages() {
     var selectedMessages = $("input:checkbox:checked");
@@ -11715,6 +11719,7 @@ function prepareNewMessageDocument(responseTo, responseToId) {
         $("#users").append(line);
         $(".users_combobox").first().val(responseTo);
     }
+    $(controller.transitor).addClass(controller.transitorAcrivated);
 }
 exports.prepareNewMessageDocument = prepareNewMessageDocument;
 function sendMessage(responseId) {
@@ -11764,7 +11769,7 @@ function prepareSentDocument() {
 exports.prepareSentDocument = prepareSentDocument;
 function parseSentMessages(data) {
     data = JSON.parse(data);
-    var i, j, line, full;
+    var i, j, line;
     if (data.length == 0) {
         line = "<tr>" + "<td colspan='5'>" + "Brak wiadomości" + "</td>" + "</tr>";
         $(".sent_table").append(line);
@@ -11788,12 +11793,12 @@ function parseSentMessages(data) {
             "<td>" + sentDate + "</td>" +
             "<td>" + receivedDate + "</td>" +
             "</tr>";
-        full += line;
+        $(".sent_table").append(line);
         var tr = $("#" + data[i].Id);
         tr.click(function () { controller.loadContent(this.id, "sent"); });
         tr.first().children().first().click(function (e) { e.stopPropagation(); });
     }
-    $(".sent_table").append(full);
+    $(controller.transitor).addClass(controller.transitorAcrivated);
 }
 function deleteMessages() {
     var selectedMessages = $("input:checkbox:checked");

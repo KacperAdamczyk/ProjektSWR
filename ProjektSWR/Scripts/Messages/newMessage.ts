@@ -26,6 +26,7 @@ export function prepareNewMessageDocument(responseTo : string, responseToId : nu
         $("#users").append(line);
         $(".users_combobox").first().val(responseTo);
     }
+    $(controller.transitor).addClass(controller.transitorAcrivated);
 }
 
 function sendMessage(responseId : number) {
