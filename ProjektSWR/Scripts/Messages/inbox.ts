@@ -1,6 +1,7 @@
 ﻿import * as controller from "./controller";
 
 let g_data;
+let new_msg_cnt = 0;
 
 export function prepareInboxDocument() {
     $.getJSON("/Messages/MessageHeaders", parseMessages);
@@ -24,7 +25,7 @@ function parseMessages(data) {
         line = "<tr>" + "<td colspan='4'>" + "Brak wiadomości" + "</td>" + "</tr>"
         $(".inbox_table").append(line);
     }
-
+    new_msg_cnt = 0;
     for (i = 0; i < data.length; i++) {
         let newMessage : boolean = false;
         let sentDate : string = new Date(data[i].SendDate).toLocaleString();
@@ -34,6 +35,7 @@ function parseMessages(data) {
         } else {
             var receivedDate : string = "Nie odczytano";
             newMessage = true;
+            new_msg_cnt++;
         }
 
         line = "<tr id='" + data[i].Id + (newMessage ? "' class='new_message_row'>" : "'>") +
@@ -48,6 +50,8 @@ function parseMessages(data) {
          tr.first().children().first().click(function(e) { e.stopPropagation(); });
     }
     $(controller.transitor).addClass(controller.transitorAcrivated);
+    if (new_msg_cnt > 0)
+        $("#inbox").html("Skrzynka odbiorcza (" + new_msg_cnt + ")");
 }
 
 function updateHeaders() {

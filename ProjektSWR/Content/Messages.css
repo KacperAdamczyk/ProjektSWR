@@ -10,8 +10,7 @@ div.messages {
     margin: 0px;
     padding: 0px;
     background-color: #f1f1f1;
-    min-width: 100px;
-    width: 10%;
+    min-width: 160px;
     height: 70vh;
     float: left;
 }
@@ -19,7 +18,7 @@ div.messages {
 .messages li {
     padding: 0px;
     cursor: pointer;
-    min-width: 100px;
+    min-width: 160px;
     min-height: 40px;
 }
 
@@ -41,8 +40,10 @@ div.messages {
 }
 
 #content {
-    margin-left: 170px;
-    width: 85%;
+    display: block;
+    float: left;
+    padding-left: 10px;
+    width: 80%;
     max-height: 100%;
     overflow: auto;
 }
