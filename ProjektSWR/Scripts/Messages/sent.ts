@@ -9,10 +9,14 @@ export function prepareSentDocument() {
         else
             $("input:checkbox").prop("checked", false);
     });
+    setInterval(function() {
+
+    }, 1000);
 }
 
 function parseSentMessages(data) {
     data = JSON.parse(data);
+    console.log(data);
     var i : number, j : number, line : string;
     if (data.length == 0) {
             line = "<tr>" + "<td colspan='5'>" + "Brak wiadomości" + "</td>" + "</tr>"
@@ -20,15 +24,16 @@ function parseSentMessages(data) {
         }
 
     for (i = 0; i < data.length; i++) {
-        var sentDate : string = new Date(data[i].SendDate).toLocaleString();
-        if (data[i].ReceivedDate != null) {
-           var receivedDate : string = new Date(data[i].ReceivedDate).toLocaleString()
-        } else {
-            var receivedDate : string= "Nie odczytano";
-        }
-        var recipients : string = "";
+        let sentDate : string = new Date(data[i].SendDate).toLocaleString();
+        let recipients : string = "";
+        let receivedDate : string = "";
         for (j = 0; j < data[i].Recipient.length; j++) {
             recipients += data[i].Recipient[j] + "<br />";
+            if (data[i].ReceivedDate[j] != null) {
+            receivedDate += new Date(data[i].ReceivedDate[j]).toLocaleString() + "<br />";
+            } else {
+            receivedDate += "Nie odczytano" + "<br />";
+            }
         }
         line = "<tr id='" + data[i].Id + "'>" +
          "<td>" + "<input type='checkbox' id='cb" + data[i].Id + "'>" + "</td>" +
@@ -49,8 +54,9 @@ function deleteMessages() {
     let selectedMessages = $("input:checkbox:checked");
     let selectedMessageIds : Array<number> = [];
     var i : number;
-    for (i = 1; i < selectedMessages.length; i++) {
-        selectedMessageIds.push(Number(selectedMessages[i].id.substr(2)));
+    for (i = 0; i < selectedMessages.length; i++) {
+        if (selectedMessages[i].id != "select_all")
+            selectedMessageIds.push(Number(selectedMessages[i].id.substr(2)));
     }
     $.ajax({
         url: "/Messages/DeleteSent",

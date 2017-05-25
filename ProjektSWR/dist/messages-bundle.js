@@ -11673,8 +11673,9 @@ function deleteMessages() {
     var selectedMessages = $("input:checkbox:checked");
     var selectedMessageIds = [];
     var i;
-    for (i = 1; i < selectedMessages.length; i++) {
-        selectedMessageIds.push(Number(selectedMessages[i].id.substr(2)));
+    for (i = 0; i < selectedMessages.length; i++) {
+        if (selectedMessages[i].id != "select_all")
+            selectedMessageIds.push(Number(selectedMessages[i].id.substr(2)));
     }
     $.ajax({
         url: "/Messages/DeleteInbox",
@@ -11692,11 +11693,12 @@ function deleteMessages() {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var input = __webpack_require__(10);
-var controller = __webpack_require__(0);
-var alertifyjs = __webpack_require__(11);
 __webpack_require__(20);
 __webpack_require__(21);
+var controller = __webpack_require__(0);
+var input = __webpack_require__(10);
+var alertifyjs = __webpack_require__(11);
+var subject_id = "#Subject";
 function prepareNewMessageDocument(responseTo, responseToId) {
     input.loadContentInput();
     $.getJSON("/Messages/Users", function (data) {
@@ -11708,9 +11710,11 @@ function prepareNewMessageDocument(responseTo, responseToId) {
     if (responseToId == null) {
         $("#send_button").click(function () { sendMessage(-1); });
         $("#add_user").click(function () { input.createCombobox(); });
+        $("#remove_user").click(function () { input.removeLastCombobox(); });
     }
     else {
         $("#add_user").hide();
+        $("remove_user").hide();
         $("#send_button").click(function () { sendMessage(responseToId); });
         var c = "<input list='users" + "' class='users_combobox'>" +
             "<datalist id='users" + "'></datalist>";
@@ -11720,11 +11724,19 @@ function prepareNewMessageDocument(responseTo, responseToId) {
         $(".users_combobox").first().val(responseTo);
     }
     $(controller.transitor).addClass(controller.transitorAcrivated);
+    $(subject_id).change(function () { $(subject_id).css("border", "solid 1px black"); });
 }
 exports.prepareNewMessageDocument = prepareNewMessageDocument;
 function sendMessage(responseId) {
     var recipients = getAllRecipients();
-    var s = $("#Subject").val();
+    if (recipients == null)
+        return;
+    var s = $(subject_id).val();
+    if (s.length == 0) {
+        alertifyjs.error("Uzupełnij pole z tematem");
+        $(subject_id).css("border", "solid 1px red");
+        return;
+    }
     var c = input.quill_editor.getContents();
     var message = { "UserName": recipients, "Subject": s, "Content": JSON.stringify(c), "ResponseId": responseId };
     $.ajax({
@@ -11735,14 +11747,30 @@ function sendMessage(responseId) {
             alertifyjs.success("Wiadomość została wysłana");
             controller.loadInbox();
         },
-        error: function () { console.log(this.textStatus); }
+        error: function () { alertifyjs.error("Nie udało się wysłać wiadomości"); }
     });
 }
 function getAllRecipients() {
     var comboboxes = $(".users_combobox");
     var users = [];
+    var error = 0;
     for (var i = 0; i < comboboxes.length; i++) {
-        users.push($(comboboxes[i]).val());
+        var str = $(comboboxes[i]).val();
+        if (input.users.indexOf(str) >= 0) {
+            $(comboboxes[i]).removeClass("input_error");
+            users.push(str);
+        }
+        else {
+            error++;
+            $(comboboxes[i]).addClass("input_error");
+        }
+    }
+    if (error > 0) {
+        if (error == 1)
+            alertifyjs.error("Nie znaleziono " + error + " odbiorcy");
+        else
+            alertifyjs.error("Nie znaleziono " + error + " odbiorców");
+        return;
     }
     return users;
 }
@@ -11765,10 +11793,13 @@ function prepareSentDocument() {
         else
             $("input:checkbox").prop("checked", false);
     });
+    setInterval(function () {
+    }, 1000);
 }
 exports.prepareSentDocument = prepareSentDocument;
 function parseSentMessages(data) {
     data = JSON.parse(data);
+    console.log(data);
     var i, j, line;
     if (data.length == 0) {
         line = "<tr>" + "<td colspan='5'>" + "Brak wiadomości" + "</td>" + "</tr>";
@@ -11776,15 +11807,16 @@ function parseSentMessages(data) {
     }
     for (i = 0; i < data.length; i++) {
         var sentDate = new Date(data[i].SendDate).toLocaleString();
-        if (data[i].ReceivedDate != null) {
-            var receivedDate = new Date(data[i].ReceivedDate).toLocaleString();
-        }
-        else {
-            var receivedDate = "Nie odczytano";
-        }
         var recipients = "";
+        var receivedDate = "";
         for (j = 0; j < data[i].Recipient.length; j++) {
             recipients += data[i].Recipient[j] + "<br />";
+            if (data[i].ReceivedDate[j] != null) {
+                receivedDate += new Date(data[i].ReceivedDate[j]).toLocaleString() + "<br />";
+            }
+            else {
+                receivedDate += "Nie odczytano" + "<br />";
+            }
         }
         line = "<tr id='" + data[i].Id + "'>" +
             "<td>" + "<input type='checkbox' id='cb" + data[i].Id + "'>" + "</td>" +
@@ -11804,8 +11836,9 @@ function deleteMessages() {
     var selectedMessages = $("input:checkbox:checked");
     var selectedMessageIds = [];
     var i;
-    for (i = 1; i < selectedMessages.length; i++) {
-        selectedMessageIds.push(Number(selectedMessages[i].id.substr(2)));
+    for (i = 0; i < selectedMessages.length; i++) {
+        if (selectedMessages[i].id != "select_all")
+            selectedMessageIds.push(Number(selectedMessages[i].id.substr(2)));
     }
     $.ajax({
         url: "/Messages/DeleteSent",
@@ -22085,10 +22118,10 @@ return jQuery;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Quill = __webpack_require__(3);
 __webpack_require__(4);
-var users;
+exports.users = [];
 exports.combobox_cnt = 0;
 function parseUsers(data, create) {
-    users = data;
+    exports.users = data;
     if (create)
         createCombobox();
 }
@@ -22104,13 +22137,20 @@ function createCombobox() {
         "<datalist id='users" + exports.combobox_cnt + "'></datalist>";
     $("#comboboxes").append(c);
     var i, line;
-    for (i = 0; i < users.length; i++) {
-        line = '<option' + ' data-id="user' + (i + 1) + ' value="' + users[i] + '">' + users[i] + '</option>';
+    for (i = 0; i < exports.users.length; i++) {
+        line = '<option' + ' data-id="user' + (i + 1) + ' value="' + exports.users[i] + '">' + exports.users[i] + '</option>';
         $("#users" + exports.combobox_cnt).append(line);
     }
     exports.combobox_cnt++;
 }
 exports.createCombobox = createCombobox;
+function removeLastCombobox() {
+    if (exports.combobox_cnt > 1) {
+        $("input.users_combobox").last().remove();
+        exports.combobox_cnt--;
+    }
+}
+exports.removeLastCombobox = removeLastCombobox;
 
 
 /***/ }),

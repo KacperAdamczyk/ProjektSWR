@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var controller = require("./controller");
 function prepareInboxDocument() {
     $.getJSON("/Messages/MessageHeaders", parseMessages);
@@ -45,8 +46,9 @@ function deleteMessages() {
     var selectedMessages = $("input:checkbox:checked");
     var selectedMessageIds = [];
     var i;
-    for (i = 1; i < selectedMessages.length; i++) {
-        selectedMessageIds.push(Number(selectedMessages[i].id.substr(2)));
+    for (i = 0; i < selectedMessages.length; i++) {
+        if (selectedMessages[i].id != "select_all")
+            selectedMessageIds.push(Number(selectedMessages[i].id.substr(2)));
     }
     $.ajax({
         url: "/Messages/DeleteInbox",

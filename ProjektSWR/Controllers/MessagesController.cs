@@ -19,9 +19,9 @@ namespace ProjektSWR.Controllers
         [JsonProperty] public string Sender { set; get; }
         [JsonProperty] public string Subject { set; get; }
         [JsonProperty] public DateTime SendDate { set; get; }
-        [JsonProperty] public DateTime? ReceivedDate { set; get; }
+        [JsonProperty] public List<DateTime?> ReceivedDate { set; get; }
         [JsonProperty] public int ResponseId { set; get; }
-        public MessageHeader(int Id, string Sender, List<string> Recipient, string Subject, DateTime SendDate, DateTime? ReceivedDate, int ResponseId)
+        public MessageHeader(int Id, string Sender, List<string> Recipient, string Subject, DateTime SendDate, List<DateTime?> ReceivedDate, int ResponseId)
         {
             this.Id = Id;
             this.Sender = Sender;
@@ -100,9 +100,8 @@ namespace ProjektSWR.Controllers
                 int responseId = -1;
                 if (m.MessageID.ResponseID != null)
                     responseId = m.MessageID.ResponseID.ID;
-
                 Jmessage.Add(new MessageHeader(m.MessageID.ID, m.MessageID.SenderID.Email, recipients, m.MessageID.Subject, m.MessageID.SendDate,
-                    m.ReceivedDate, responseId));
+                    new List<DateTime?> { m.ReceivedDate }, responseId));
             }
             
             Jmessage.Sort((x, y) => x.SendDate.CompareTo(y.SendDate));
@@ -121,9 +120,11 @@ namespace ProjektSWR.Controllers
                     continue;
 
                 List<string> recipients = new List<string>();
+                List<DateTime?> recipients_dates = new List<DateTime?>();
                 foreach (var r in m.Recipients)
                 {
                     recipients.Add(r.UserID.UserName);
+                    recipients_dates.Add(r.ReceivedDate);
                 }
 
                 int responseId = -1;
@@ -131,10 +132,7 @@ namespace ProjektSWR.Controllers
                     responseId = m.ResponseID.ID;
 
                 var rec = db.Recipients.FirstOrDefault(x => x.MessageID.ID == m.ID);
-                DateTime? RecivedDate = new DateTime();
-                if (rec != null)
-                    RecivedDate = rec.ReceivedDate;
-                Jmessage.Add(new MessageHeader(m.ID, m.SenderID.Email, recipients, m.Subject, m.SendDate, RecivedDate, responseId));
+                Jmessage.Add(new MessageHeader(m.ID, m.SenderID.Email, recipients, m.Subject, m.SendDate, recipients_dates, responseId));
             }
             Jmessage.Sort((x, y) => x.SendDate.CompareTo(y.SendDate));
             Jmessage.Reverse();
@@ -182,8 +180,14 @@ namespace ProjektSWR.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         public ActionResult CreateMessage(List<string> UserName, string Subject, string Content, List<int> ResponseId)
         {
+            string currentUserId = User.Identity.GetUserId();
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+
             if (UserName == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            UserName.RemoveAll(x => x == "");
+            UserName.RemoveAll(x => x == currentUser.Email);
 
             if (UserName.Count() == 0 || String.IsNullOrEmpty(Subject) || String.IsNullOrEmpty(Content))
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -196,8 +200,6 @@ namespace ProjektSWR.Controllers
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            string currentUserId = User.Identity.GetUserId();
-            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
             List<ApplicationUser> recipientUser = new List<ApplicationUser>();//db.Users.FirstOrDefault(x => x.Email == UserName);
             foreach (var n in UserName)
             {

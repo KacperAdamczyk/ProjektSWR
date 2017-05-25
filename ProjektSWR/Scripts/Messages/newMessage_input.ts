@@ -2,7 +2,7 @@
 import "quill/dist/quill.snow.css";
 
 export let quill_editor;
-let users;
+export let users : Array<string> = [];
 export let combobox_cnt = 0;
 
 export function parseUsers(data, create : boolean) {
@@ -28,4 +28,11 @@ export function createCombobox() {
         $("#users" + combobox_cnt).append(line);
     }
     combobox_cnt++;
+}
+
+export function removeLastCombobox() {
+    if (combobox_cnt > 1) {
+        $("input.users_combobox").last().remove();
+        combobox_cnt--;
+    }
 }

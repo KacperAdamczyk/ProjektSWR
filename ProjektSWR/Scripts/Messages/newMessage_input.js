@@ -1,10 +1,11 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var Quill = require("quill");
 require("quill/dist/quill.snow.css");
-var users;
+exports.users = [];
 exports.combobox_cnt = 0;
 function parseUsers(data, create) {
-    users = data;
+    exports.users = data;
     if (create)
         createCombobox();
 }
@@ -20,10 +21,17 @@ function createCombobox() {
         "<datalist id='users" + exports.combobox_cnt + "'></datalist>";
     $("#comboboxes").append(c);
     var i, line;
-    for (i = 0; i < users.length; i++) {
-        line = '<option' + ' data-id="user' + (i + 1) + ' value="' + users[i] + '">' + users[i] + '</option>';
+    for (i = 0; i < exports.users.length; i++) {
+        line = '<option' + ' data-id="user' + (i + 1) + ' value="' + exports.users[i] + '">' + exports.users[i] + '</option>';
         $("#users" + exports.combobox_cnt).append(line);
     }
     exports.combobox_cnt++;
 }
 exports.createCombobox = createCombobox;
+function removeLastCombobox() {
+    if (exports.combobox_cnt > 1) {
+        $("input.users_combobox").last().remove();
+        exports.combobox_cnt--;
+    }
+}
+exports.removeLastCombobox = removeLastCombobox;

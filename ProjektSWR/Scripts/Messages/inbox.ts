@@ -48,8 +48,9 @@ function deleteMessages() {
     let selectedMessages = $("input:checkbox:checked");
     let selectedMessageIds : Array<number> = [];
     var i : number;
-    for (i = 1; i < selectedMessages.length; i++) {
-        selectedMessageIds.push(Number(selectedMessages[i].id.substr(2)));
+    for (i = 0; i < selectedMessages.length; i++) {
+        if (selectedMessages[i].id != "select_all")
+            selectedMessageIds.push(Number(selectedMessages[i].id.substr(2)));
     }
     $.ajax({
         url: "/Messages/DeleteInbox",
