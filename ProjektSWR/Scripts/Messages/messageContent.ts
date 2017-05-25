@@ -26,11 +26,10 @@ function parseContent(data) {
     g_data = JSON.parse(data);
     switch(g_type) {
         case "inbox":
+                $("#response_btn").click( function() { controller.loadNewMessage(g_data.Sender, g_data.Id); });
             if (g_data.ResponseId >= 0) {
                 $("#go_to_response").click(function() { prepareMessageContentDocument(g_data.ResponseId, "inbox"); })
-                $("#response_btn").hide();
             } else {
-                $("#response_btn").click( function() { controller.loadNewMessage(g_data.Sender, g_data.Id); });
                 $("#go_to_response").hide();
             }
         break;

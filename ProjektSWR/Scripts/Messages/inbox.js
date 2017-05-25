@@ -51,6 +51,8 @@ function parseMessages(data) {
     $(controller.transitor).addClass(controller.transitorAcrivated);
     if (new_msg_cnt > 0)
         $("#inbox").html("Skrzynka odbiorcza (" + new_msg_cnt + ")");
+    else
+        $("#inbox").html("Skrzynka odbiorcza");
 }
 function updateHeaders() {
     $.getJSON("/Messages/MessageHeaders", function (data) {
