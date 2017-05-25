@@ -82,6 +82,7 @@ namespace ProjektSWR.Controllers
         {
             var users = from u in db.Users select u.Email;
             ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+            if (currentUser == null) return null;
             users = users.Where(u => u != currentUser.Email);
             return Json(users, JsonRequestBehavior.AllowGet);
         }
@@ -89,6 +90,7 @@ namespace ProjektSWR.Controllers
         public JsonResult MessageHeaders()
         {
             ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+            if (currentUser == null) return null;
 
             List<MessageHeader> Jmessage = new List<MessageHeader>();
             List<string> recipients = new List<string>();
@@ -112,6 +114,7 @@ namespace ProjektSWR.Controllers
         public JsonResult SentMessageHeaders()
         {
             ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+            if (currentUser == null) return null;
 
             List<MessageHeader> Jmessage = new List<MessageHeader>();
             foreach (var m in currentUser.Messages)
@@ -141,8 +144,9 @@ namespace ProjektSWR.Controllers
 
         public JsonResult MessageContent(int id)
         {
-            var js = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
             ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+            if (currentUser == null) return null;
+            var js = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
             var message = db.Messages.Find(id);
             if (message == null)
                 return null;
@@ -183,6 +187,7 @@ namespace ProjektSWR.Controllers
         {
             string currentUserId = User.Identity.GetUserId();
             ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+            if (currentUser == null) return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
             if (UserName == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -247,6 +252,8 @@ namespace ProjektSWR.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+            if (currentUser == null) return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
             List<Message> messages = new List<Message>();
             foreach (var r in currentUser.Recipients)
             {
@@ -273,6 +280,8 @@ namespace ProjektSWR.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+            if (currentUser == null) return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
             List<Message> messages = new List<Message>();
             foreach (var i in id)
             {
