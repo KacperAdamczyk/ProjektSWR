@@ -1,0 +1,47 @@
+﻿@model ProjektSWR.Models.Thread
+@{
+    ViewBag.Title = "Thread";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h3>
+    @Model.Name
+</h3>
+
+
+<table class="table">
+        <tr>
+                <td width="50">
+                    <b>
+                        Nazwa uzytkownika
+                    </b>
+                </td>
+                <td>
+                    <b>
+                        @Model.MainMessage
+                    </b>
+                </td>
+        </tr>
+        @foreach (var th in Model.Replies)
+        {
+            <tr>
+                <td>
+                    Nazwa uzytkownika
+                </td>
+                <td>
+                    @th.Answer
+                </td>
+            </tr>
+        }
+
+    </table>
+<div>
+    @Html.ActionLink("Dodaj nową odpowiedź", "CreateReply")
+</div>
+
+<!--
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+    -->
