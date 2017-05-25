@@ -23,12 +23,12 @@ namespace ProjektSWR.Controllers
 
         public JsonResult Cathedrals()
         {
-           
-            return Json(JsonConvert.SerializeObject(db.Cathedrals, Formatting.Indented,
-                            new JsonSerializerSettings
-                            {
-                                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                            }), JsonRequestBehavior.AllowGet);
+            List<string> names = new List<string>();
+            foreach (var c in db.Cathedrals.ToList())
+            {
+                names.Add(c.Department);
+            }
+            return Json(JsonConvert.SerializeObject(names), JsonRequestBehavior.AllowGet);
         }
 
         // GET: Cathedrals/Details/5
