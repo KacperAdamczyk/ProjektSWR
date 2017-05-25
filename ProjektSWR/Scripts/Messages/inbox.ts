@@ -1,5 +1,7 @@
 ﻿import * as controller from "./controller";
 
+let g_data;
+
 export function prepareInboxDocument() {
     $.getJSON("/Messages/MessageHeaders", parseMessages);
     $("#delete_selected_btn").click(function() { deleteMessages(); });
@@ -9,10 +11,14 @@ export function prepareInboxDocument() {
         else
             $("input:checkbox").prop("checked", false);
     });
+    var interval = setInterval(function() {
+        updateHeaders();
+    }, 5000);
 }
 
 function parseMessages(data) {
     data = JSON.parse(data);
+    g_data = data;
     let i : number, line : string;
     if (data.length == 0) {
         line = "<tr>" + "<td colspan='4'>" + "Brak wiadomości" + "</td>" + "</tr>"
@@ -23,7 +29,7 @@ function parseMessages(data) {
         let newMessage : boolean = false;
         let sentDate : string = new Date(data[i].SendDate).toLocaleString();
 
-        if (data[i].ReceivedDate != null) {
+        if (data[i].ReceivedDate[0] != null) {
            var receivedDate : string = new Date(data[i].ReceivedDate).toLocaleString()
         } else {
             var receivedDate : string = "Nie odczytano";
@@ -42,6 +48,16 @@ function parseMessages(data) {
          tr.first().children().first().click(function(e) { e.stopPropagation(); });
     }
     $(controller.transitor).addClass(controller.transitorAcrivated);
+}
+
+function updateHeaders() {
+    $.getJSON("/Messages/MessageHeaders", function(data) {
+        let str_g_data = JSON.stringify(g_data);
+        if(str_g_data !== data) {
+            $(".inbox_table tr").not(":first-child").remove();
+            parseMessages(data);
+        }
+    });
 }
 
 function deleteMessages() {

@@ -11628,6 +11628,7 @@ function deleteMessageSent(id) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var controller = __webpack_require__(0);
+var g_data;
 function prepareInboxDocument() {
     $.getJSON("/Messages/MessageHeaders", parseMessages);
     $("#delete_selected_btn").click(function () { deleteMessages(); });
@@ -11637,10 +11638,14 @@ function prepareInboxDocument() {
         else
             $("input:checkbox").prop("checked", false);
     });
+    var interval = setInterval(function () {
+        updateHeaders();
+    }, 5000);
 }
 exports.prepareInboxDocument = prepareInboxDocument;
 function parseMessages(data) {
     data = JSON.parse(data);
+    g_data = data;
     var i, line;
     if (data.length == 0) {
         line = "<tr>" + "<td colspan='4'>" + "Brak wiadomości" + "</td>" + "</tr>";
@@ -11649,7 +11654,7 @@ function parseMessages(data) {
     for (i = 0; i < data.length; i++) {
         var newMessage = false;
         var sentDate = new Date(data[i].SendDate).toLocaleString();
-        if (data[i].ReceivedDate != null) {
+        if (data[i].ReceivedDate[0] != null) {
             var receivedDate = new Date(data[i].ReceivedDate).toLocaleString();
         }
         else {
@@ -11668,6 +11673,15 @@ function parseMessages(data) {
         tr.first().children().first().click(function (e) { e.stopPropagation(); });
     }
     $(controller.transitor).addClass(controller.transitorAcrivated);
+}
+function updateHeaders() {
+    $.getJSON("/Messages/MessageHeaders", function (data) {
+        var str_g_data = JSON.stringify(g_data);
+        if (str_g_data !== data) {
+            $(".inbox_table tr").not(":first-child").remove();
+            parseMessages(data);
+        }
+    });
 }
 function deleteMessages() {
     var selectedMessages = $("input:checkbox:checked");

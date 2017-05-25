@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var controller = require("./controller");
 var Quill = require("quill");
 require("quill/dist/quill.snow.css");

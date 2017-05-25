@@ -178,6 +178,7 @@ namespace ProjektSWR.Controllers
         // POST: Messages/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
         public ActionResult CreateMessage(List<string> UserName, string Subject, string Content, List<int> ResponseId)
         {
             string currentUserId = User.Identity.GetUserId();
@@ -210,6 +211,10 @@ namespace ProjektSWR.Controllers
                     recipientUser.Add(r);
             }
 
+            if (Subject.Length > 50)
+            {
+                Subject = Subject.Substring(0, 50);
+            }
             Message message = new Message()
             {
                 SenderID = currentUser,
