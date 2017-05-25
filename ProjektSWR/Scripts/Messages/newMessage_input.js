@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var Quill = require("quill");
 require("quill/dist/quill.snow.css");
 exports.users = [];
