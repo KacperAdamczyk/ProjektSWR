@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System;
 
 namespace ProjektSWR.Models
 {
@@ -21,5 +22,9 @@ namespace ProjektSWR.Models
         public string CathedralName { get; set; }
 
         public string Id { get; set; }
+
+        [Display(Name = "Data blokady")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        public DateTime LockDate { get; set; }
     }
 }

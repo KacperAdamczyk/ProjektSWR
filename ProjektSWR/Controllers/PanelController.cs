@@ -1,10 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Data;
+using System.Data.Entity;
+using System.Net;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Configuration;
+using System.Web.Script.Serialization;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System.Data.Entity.Validation;
@@ -32,11 +38,38 @@ namespace ProjektSWR.Controllers
         public JsonResult Users()
         {
 
+            var users = db.Users.Select(x => new { x.FirstName, x.LastName, x.Email, x.CathedralID.Department, x.Id, x.LockoutEndDateUtc, x.LockoutEnabled });
+            return Json(users, JsonRequestBehavior.AllowGet);
+            /*
             return Json(JsonConvert.SerializeObject(db.Users, Formatting.Indented,
                             new JsonSerializerSettings
                             {
                                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                            }), JsonRequestBehavior.AllowGet);
+                            }), JsonRequestBehavior.AllowGet); */
+        }
+        public JsonResult Katedry()
+        {
+            var katedry = db.Cathedrals.Select(x => new { x.Department });
+            return Json(katedry, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult Kalendarz()
+        {
+            var users = db.Events.Select(x => new { x.Title, x.StartDate, x.EndDate, x.Location, x.Details });
+            //return Json(users, JsonRequestBehavior.AllowGet);
+
+            return Json(JsonConvert.SerializeObject(users, Formatting.Indented,
+                           new JsonSerializerSettings
+                           {
+                               ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                           }), JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult ManageEvents()
+        {
+            return View(db.Events.ToList());
+        }
+        public ActionResult EventsList()
+        {
+            return View(db.Events.ToList());
         }
         // GET: Panel
         public ActionResult Index()
@@ -125,13 +158,6 @@ namespace ProjektSWR.Controllers
             return View(viewModel);
         }
 
-        // GET: /Panel/ManageEvents
-        [AllowAnonymous]
-        public ActionResult ManageEvents()
-        {
-
-            return View();
-        }
 
         // GET: /Panel/ManageForums
         [AllowAnonymous]
@@ -163,6 +189,156 @@ namespace ProjektSWR.Controllers
                 // If we got this far, something failed, redisplay form
             }
             return View(model);
-        } 
+        }
+        // GET: /Panel/LockUsers
+        [AllowAnonymous]
+        public ActionResult LockUsers()
+        {
+            var viewModel = new ManageUsersModel();
+
+            return View(viewModel);
+        }
+
+
+        //
+        // POST: /Panel/LockUsers
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> LockUsers(ManageUsersModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var db = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
+                var user = UserManager.FindById(model.Id);
+                Cathedral c = db.Cathedrals.FirstOrDefault(x => x.Department == model.CathedralName);
+                user.CathedralID = c;
+                user.LockoutEndDateUtc = model.LockDate;
+                user.LockoutEnabled = true;
+                var result = await UserManager.UpdateAsync(user);
+                db.SaveChanges();
+                // If we got this far, something failed, redisplay form
+            }
+            return View(model);
+        }
+        // GET: /Panel/UnlockUsers
+        [AllowAnonymous]
+        public ActionResult UnlockUsers()
+        {
+            var viewModel = new ManageUsersModel();
+
+            return View(viewModel);
+        }
+
+
+        //
+        // POST: /Panel/UnlockUsers
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> UnlockUsers(ManageUsersModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var db = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
+                var user = UserManager.FindById(model.Id);
+                Cathedral c = db.Cathedrals.FirstOrDefault(x => x.Department == model.CathedralName);
+                user.CathedralID = c;
+                user.LockoutEnabled = false;
+                var result = await UserManager.UpdateAsync(user);
+                db.SaveChanges();
+                // If we got this far, something failed, redisplay form
+            }
+            return View(model);
+        }
+        // GET: Events/Create
+        public ActionResult EventsCreate()
+        {
+            return View();
+        }
+
+        // POST: Events/Create
+        // Aby zapewnić ochronę przed atakami polegającymi na przesyłaniu dodatkowych danych, włącz określone właściwości, z którymi chcesz utworzyć powiązania.
+        // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EventsCreate([Bind(Include = "ID,Title,StartDate,EndDate,Location,Details")] Event @event)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Events.Add(@event);
+                db.SaveChanges();
+                return RedirectToAction("EventsList");
+            }
+
+            return View(@event);
+        }
+
+        // GET: Events/Edit/5
+        public ActionResult EventsEdit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Event @event = db.Events.Find(id);
+            if (@event == null)
+            {
+                return HttpNotFound();
+            }
+            return View(@event);
+        }
+
+        // POST: Events/Edit/5
+        // Aby zapewnić ochronę przed atakami polegającymi na przesyłaniu dodatkowych danych, włącz określone właściwości, z którymi chcesz utworzyć powiązania.
+        // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EventsEdit([Bind(Include = "ID,Title,StartDate,EndDate,Location,Details")] Event @event)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(@event).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("EventsList");
+            }
+            return View(@event);
+        }
+
+        // GET: Events/Delete/5
+        public ActionResult EventsDelete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Event @event = db.Events.Find(id);
+            if (@event == null)
+            {
+                return HttpNotFound();
+            }
+            return View(@event);
+        }
+
+        // POST: Events/Delete/5
+        [HttpPost, ActionName("EventsDelete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            Event @event = db.Events.Find(id);
+            db.Events.Remove(@event);
+            db.SaveChanges();
+            return RedirectToAction("EventsList");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
     }
 }
+
