@@ -64,7 +64,11 @@ namespace ProjektSWR.Controllers
         }
 
         // GET: Forum/Create
-        public ActionResult Create()
+        public ActionResult CreateThread()
+        {
+            return View();
+        }
+        public ActionResult CreateReply()
         {
             return View();
         }
@@ -74,11 +78,24 @@ namespace ProjektSWR.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateThread([Bind(Include = "ID, Name")] Thread forum)
+        public ActionResult CreateThread([Bind(Include = "ID, Name, MainMessage, AdminID_ID, CategoryID_ID, UserID_Id")] Thread forum)
         {
             if (ModelState.IsValid)
             {
                 db.Threads.Add(forum);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(forum);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateReply([Bind(Include = "ID, Answer")] Reply forum)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Replys.Add(forum);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
