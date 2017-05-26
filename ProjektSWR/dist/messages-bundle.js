@@ -11568,12 +11568,11 @@ function parseContent(data) {
     g_data = JSON.parse(data);
     switch (g_type) {
         case "inbox":
+            $("#response_btn").click(function () { controller.loadNewMessage(g_data.Sender, g_data.Id); });
             if (g_data.ResponseId >= 0) {
                 $("#go_to_response").click(function () { prepareMessageContentDocument(g_data.ResponseId, "inbox"); });
-                $("#response_btn").hide();
             }
             else {
-                $("#response_btn").click(function () { controller.loadNewMessage(g_data.Sender, g_data.Id); });
                 $("#go_to_response").hide();
             }
             break;
@@ -11590,6 +11589,8 @@ function parseContent(data) {
     dispalyContent();
 }
 function dispalyContent() {
+    $("#content_sender").val(g_data.Sender);
+    $("#content_subject").val(g_data.Subject);
     var toolbarOptions = [];
     var quill = new Quill('#messageContent', {
         theme: 'snow',
@@ -11628,6 +11629,8 @@ function deleteMessageSent(id) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var controller = __webpack_require__(0);
+var g_data;
+var new_msg_cnt = 0;
 function prepareInboxDocument() {
     $.getJSON("/Messages/MessageHeaders", parseMessages);
     $("#delete_selected_btn").click(function () { deleteMessages(); });
@@ -11637,24 +11640,30 @@ function prepareInboxDocument() {
         else
             $("input:checkbox").prop("checked", false);
     });
+    var interval = setInterval(function () {
+        updateHeaders();
+    }, 5000);
 }
 exports.prepareInboxDocument = prepareInboxDocument;
 function parseMessages(data) {
     data = JSON.parse(data);
+    g_data = data;
     var i, line;
     if (data.length == 0) {
         line = "<tr>" + "<td colspan='4'>" + "Brak wiadomości" + "</td>" + "</tr>";
         $(".inbox_table").append(line);
     }
+    new_msg_cnt = 0;
     for (i = 0; i < data.length; i++) {
         var newMessage = false;
         var sentDate = new Date(data[i].SendDate).toLocaleString();
-        if (data[i].ReceivedDate != null) {
+        if (data[i].ReceivedDate[0] != null) {
             var receivedDate = new Date(data[i].ReceivedDate).toLocaleString();
         }
         else {
             var receivedDate = "Nie odczytano";
             newMessage = true;
+            new_msg_cnt++;
         }
         line = "<tr id='" + data[i].Id + (newMessage ? "' class='new_message_row'>" : "'>") +
             "<td>" + "<input type='checkbox' id='cb" + data[i].Id + "'>" + "</td>" +
@@ -11668,6 +11677,19 @@ function parseMessages(data) {
         tr.first().children().first().click(function (e) { e.stopPropagation(); });
     }
     $(controller.transitor).addClass(controller.transitorAcrivated);
+    if (new_msg_cnt > 0)
+        $("#inbox").html("Skrzynka odbiorcza (" + new_msg_cnt + ")");
+    else
+        $("#inbox").html("Skrzynka odbiorcza");
+}
+function updateHeaders() {
+    $.getJSON("/Messages/MessageHeaders", function (data) {
+        var str_g_data = JSON.stringify(g_data);
+        if (str_g_data !== data) {
+            $(".inbox_table tr").not(":first-child").remove();
+            parseMessages(data);
+        }
+    });
 }
 function deleteMessages() {
     var selectedMessages = $("input:checkbox:checked");
@@ -11698,7 +11720,7 @@ __webpack_require__(21);
 var controller = __webpack_require__(0);
 var input = __webpack_require__(10);
 var alertifyjs = __webpack_require__(11);
-var subject_id = "#Subject";
+var subject_id = "#subject";
 function prepareNewMessageDocument(responseTo, responseToId) {
     input.loadContentInput();
     $.getJSON("/Messages/Users", function (data) {

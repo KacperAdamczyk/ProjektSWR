@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<ProjektSWR.Models.Event>
 @{
-    ViewBag.Title = "Kalendarz";
+    ViewBag.Title = "Lista zdarzeń";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -20,15 +20,60 @@
 </script>
 
 <h2>@ViewBag.Title</h2>
-<link href='~/Content/fullcalendar.min.css' rel='stylesheet' />
-<link href='~/Content/fullcalendar.print.css' rel='stylesheet' media='print' />
-<script src='~/Scripts/moment.js'></script>
-<script src='~/Scripts/Calendar/fullcalendar.min.js'></script>
-<script src="~/Scripts/Calendar/calendar.js"></script>
-<script src="~/Scripts/locale-all.js"></script>
-<div id='calendar'></div>
 
 
+
+
+<p>
+    @Html.ActionLink("Create New", "EventsCreate")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EndDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Location)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Details)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Details)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "EventsEdit", new { id = item.ID }) |
+                @Html.ActionLink("Details", "EventsDetails", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "EventsDelete", new { id = item.ID })
+            </td>
+        </tr>
+    }
+
+</table>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -79,12 +124,12 @@
                         </div>
                     </div>
 
-                    </form>
-</div>
+                </form>
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger pull-left hidden delete-btn" data-dismiss="modal">Delete <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" name = "saveChanges" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+                <button type="button" name="saveChanges" class="btn btn-primary" data-dismiss="modal">Save changes</button>
             </div>
         </div>
     </div>

@@ -297,8 +297,11 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Scripts\Cathedral\cathedral.js" />
     <Content Include="Scripts\Panel\index.js" />
+    <Content Include="Scripts\Panel\katedry.js" />
+    <Content Include="Scripts\Panel\lockedusers.js" />
     <Content Include="Scripts\Panel\manage.js" />
     <Content Include="Scripts\Panel\show.js" />
+    <Content Include="Scripts\Panel\show2.js" />
     <Content Include="webpack.config.js" />
     <Content Include="package.json" />
     <Content Include="ClassDiagram.cd" />
@@ -466,7 +469,18 @@
     <Content Include="Views\Forum\Index.cshtml" />
     <Content Include="Views\Forum\Rep.cshtml" />
     <Content Include="Views\Forum\Thr.cshtml" />
+<<<<<<< HEAD
     <Content Include="Views\Forum\CreateReply.cshtml" />
+=======
+    <Content Include="Views\Messages\Content.cshtml" />
+    <Content Include="Views\Panel\LockUsers.cshtml" />
+    <Content Include="Views\Panel\UnlockUsers.cshtml" />
+    <Content Include="Views\Panel\EventsList.cshtml" />
+    <Content Include="Views\Panel\EventsCreate.cshtml" />
+    <Content Include="Views\Panel\EventsDelete.cshtml" />
+    <Content Include="Views\Panel\EventsDetails.cshtml" />
+    <Content Include="Views\Panel\EventsEdit.cshtml" />
+>>>>>>> refs/remotes/origin/master
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

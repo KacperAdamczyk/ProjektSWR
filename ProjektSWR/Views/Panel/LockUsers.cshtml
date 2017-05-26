@@ -3,8 +3,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "LUL";
 }
-<!--<script src="~/Scripts/Cathedral/cathedral.js"></script>-->
-<script src="~/Scripts/Panel/katedry.js"></script>
 <script src="~/Scripts/Panel/manage.js"></script>
 <script src="~/Scripts/Panel/show.js"></script>
 <link rel="stylesheet" type="text/css" href="~/Content/Panel.css" />
@@ -36,7 +34,8 @@
             </div>
         </div>
     </div>
-    <div class="form-horizontal" style="margin-left:200px">
+
+    <div class="form-horizontal" style="margin-left:400px">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(m => m.Id, new { @id = "id" })
         <div class="form-group">
@@ -50,31 +49,37 @@
         <div class="form-group">
             @Html.LabelFor(m => m.LastName, new { @class = "col-md-2 control-label" })
             <div class=" = col-md-10">
-                @Html.TextBoxFor(m => m.LastName, new { @id = "nazwisko" })
+                @Html.TextBoxFor(m => m.LastName, new { @id = "nazwisko", @readonly = "true" })
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label" })
             <div class=" = col-md-10">
-                @Html.TextBoxFor(m => m.FirstName, new { @id = "imie" })
+                @Html.TextBoxFor(m => m.FirstName, new { @id = "imie", @readonly = "true" })
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
             <div class=" = col-md-10">
-                @Html.TextBoxFor(m => m.Email, new { @id = "email" })
+                @Html.TextBoxFor(m => m.Email, new { @id = "email", @readonly = "true" })
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(m => m.CathedralName, new { @class = "col-md-2 control-label" })
             <div class="col-md-10">
-                <select id="cathedrals_select" name="CathedralName"></select>
+                @Html.TextBoxFor(m => m.CathedralName, new { @id = "cathedrals_select", @readonly = "true" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.LockDate, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.LockDate, "{0:yyyy-MM-dd}", new { @id = "lockdate" })
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Edytuj" class="btn btn-default" />
+                <input type="submit" value="Zablokuj" class="btn btn-default" onclick="return confirm('Czy na pewno chcesz zablokować tego użytkownika?')" />
             </div>
         </div>
     </div>

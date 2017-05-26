@@ -1,10 +1,11 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 require("alertifyjs/build/css/alertify.css");
 require("alertifyjs/build/css/themes/bootstrap.css");
 var controller = require("./controller");
 var input = require("./newMessage_input");
 var alertifyjs = require("alertifyjs");
-var subject_id = "#Subject";
+var subject_id = "#subject";
 function prepareNewMessageDocument(responseTo, responseToId) {
     input.loadContentInput();
     $.getJSON("/Messages/Users", function (data) {

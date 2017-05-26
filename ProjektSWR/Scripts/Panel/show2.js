@@ -5,7 +5,7 @@ function show() {
         async: false,
         dataType: 'json',
         success: function dane(json) {
-            // json = JSON.parse(json);
+            //   json = JSON.parse(json);
             var e = document.getElementById("user_select");
             var nr = e.options[e.selectedIndex].value;
             document.getElementById("imie").value = json[nr - 1].FirstName;
@@ -13,6 +13,11 @@ function show() {
             document.getElementById("nazwisko").value = json[nr - 1].LastName;
             document.getElementById("id").value = json[nr - 1].Id;
             document.getElementById("cathedrals_select").value = json[nr - 1].Department;
+            var data = json[nr - 1].LockoutEndDateUtc;
+            var date = new Date(parseInt(data.substr(6)));
+            var output = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate();
+            data = data.substring(0, 10);
+            document.getElementById("lockdate").value = output;
         }
     });
     /* $.ajax({

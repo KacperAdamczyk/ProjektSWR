@@ -10,16 +10,16 @@ div.messages {
     margin: 0px;
     padding: 0px;
     background-color: #f1f1f1;
-    min-width: 100px;
-    width: 10%;
-    height: 540px;
+    min-width: 160px;
+    height: 70vh;
     float: left;
 }
 
 .messages li {
     padding: 0px;
     cursor: pointer;
-    min-width: 100px;
+    min-width: 160px;
+    min-height: 40px;
 }
 
 .messages li a {
@@ -40,9 +40,11 @@ div.messages {
 }
 
 #content {
-    margin-left: 170px;
-    width: 85%;
-    max-height: 540px;
+    display: block;
+    float: left;
+    padding-left: 10px;
+    width: 80%;
+    max-height: 100%;
     overflow: auto;
 }
 
@@ -55,7 +57,7 @@ div.messages {
 }
 
 .full-window {
-    height: 540px;
+    height: 100%;
     transition: height 10s ease-in;
 }
 
@@ -145,6 +147,7 @@ div.messages {
     padding-left: 30px;
     padding-right: 30px;
     text-align: center;
+    overflow: auto;
 }
 
 .inbox_table td:not(:first-child), .sent_table td:not(:first-child) {
@@ -153,16 +156,17 @@ div.messages {
 
 .inbox_table td:nth-child(3), .sent_table td:nth-child(3) {
     padding-left: 0px;
+    max-width: 300px;
 }
 
 .new_message_row {
-    font-weight: 700;
+    font-weight: 700 !important;
 }
 
 .transitor {
     height: 0;
     opacity: 0;
-    overflow: hidden;
+    overflow: auto;
     padding-left: 10px;
     transition: opacity 0.5s ease-in-out;
 }
@@ -190,6 +194,38 @@ div.messages {
     height: 40px;
 }
 
+.input-group:first-of-type {
+    padding-top: 5px;
+    padding-bottom: 3px;
+}
+
+.input-group {
+    padding-top: 0px;
+     padding-bottom: 5px;
+}
+
+.input-group-addon {
+    height: 30px;
+    width: 83px;
+    column-span: 5px;
+}
+
+input {
+    height: 35px;
+    font-size: 16px;
+}
+
+#content_sender {
+    width: 200px;
+    min-width: 150px;
+    background-color: white;
+}
+
+#content_subject {
+    width: 100ch;
+    background-color: white;
+}
+
 /* New message */
 
 .ql-editor {
@@ -203,30 +239,6 @@ div.messages {
     align-content: center;
 }
 
-.input-group:first-of-type {
-    padding-top: 5px;
-    padding-bottom: 3px;
-}
-
-.input-group {
-    padding-top: 0px;
-     padding-bottom: 5px;
-}
-
-.input-group-addon {
-    height: 30px;
-}
-
-.input-group-addon {
-    width: 80px;
-    column-span: 5px;
-}
-
-input {
-    height: 35px;
-    font-size: 16px;
-}
-
 .input_error {
     border: solid 1px red;
 }
@@ -236,11 +248,11 @@ input {
     margin-right: 5px;
 }
 
-#Subject {
+#subject {
     transition: 1s;
 }
 
-#Subject:hover {
+#subject:hover {
     width: 300px;
 }
 
