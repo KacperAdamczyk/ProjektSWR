@@ -44,6 +44,8 @@ function parseContent(data) {
     dispalyContent();
 }
 function dispalyContent() {
+    $("#content_sender").val(g_data.Sender);
+    $("#content_subject").val(g_data.Subject);
     var toolbarOptions = [];
     var quill = new Quill('#messageContent', {
         theme: 'snow',

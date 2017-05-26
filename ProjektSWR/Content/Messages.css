@@ -194,6 +194,38 @@ div.messages {
     height: 40px;
 }
 
+.input-group:first-of-type {
+    padding-top: 5px;
+    padding-bottom: 3px;
+}
+
+.input-group {
+    padding-top: 0px;
+     padding-bottom: 5px;
+}
+
+.input-group-addon {
+    height: 30px;
+    width: 83px;
+    column-span: 5px;
+}
+
+input {
+    height: 35px;
+    font-size: 16px;
+}
+
+#content_sender {
+    width: 200px;
+    min-width: 150px;
+    background-color: white;
+}
+
+#content_subject {
+    width: 100ch;
+    background-color: white;
+}
+
 /* New message */
 
 .ql-editor {
@@ -207,30 +239,6 @@ div.messages {
     align-content: center;
 }
 
-.input-group:first-of-type {
-    padding-top: 5px;
-    padding-bottom: 3px;
-}
-
-.input-group {
-    padding-top: 0px;
-     padding-bottom: 5px;
-}
-
-.input-group-addon {
-    height: 30px;
-}
-
-.input-group-addon {
-    width: 80px;
-    column-span: 5px;
-}
-
-input {
-    height: 35px;
-    font-size: 16px;
-}
-
 .input_error {
     border: solid 1px red;
 }
@@ -240,11 +248,11 @@ input {
     margin-right: 5px;
 }
 
-#Subject {
+#subject {
     transition: 1s;
 }
 
-#Subject:hover {
+#subject:hover {
     width: 300px;
 }
 

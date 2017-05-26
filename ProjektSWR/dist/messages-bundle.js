@@ -11589,6 +11589,8 @@ function parseContent(data) {
     dispalyContent();
 }
 function dispalyContent() {
+    $("#content_sender").val(g_data.Sender);
+    $("#content_subject").val(g_data.Subject);
     var toolbarOptions = [];
     var quill = new Quill('#messageContent', {
         theme: 'snow',
@@ -11718,7 +11720,7 @@ __webpack_require__(21);
 var controller = __webpack_require__(0);
 var input = __webpack_require__(10);
 var alertifyjs = __webpack_require__(11);
-var subject_id = "#Subject";
+var subject_id = "#subject";
 function prepareNewMessageDocument(responseTo, responseToId) {
     input.loadContentInput();
     $.getJSON("/Messages/Users", function (data) {

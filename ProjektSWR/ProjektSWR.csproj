@@ -466,6 +466,7 @@
     <Content Include="Views\Forum\Index.cshtml" />
     <Content Include="Views\Forum\Rep.cshtml" />
     <Content Include="Views\Forum\Thr.cshtml" />
+    <Content Include="Views\Messages\Content.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

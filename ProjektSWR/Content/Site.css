@@ -9,9 +9,7 @@
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
-    height: 100%;
-    min-height: 500px;
-    height: calc(100vh - 2 * 100px - 12px);
+    min-height: calc(100vh - 2 * 100px - 12px);
     width: 100%;
 }
 

@@ -4,7 +4,7 @@ import * as controller from './controller';
 import * as input from './newMessage_input';
 import * as alertifyjs from 'alertifyjs';
 
-let subject_id = "#Subject";
+let subject_id = "#subject";
 
 export function prepareNewMessageDocument(responseTo : string, responseToId : number) {
     input.loadContentInput();

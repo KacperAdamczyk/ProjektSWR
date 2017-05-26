@@ -37,13 +37,15 @@ namespace ProjektSWR.Controllers
     {
         [JsonProperty] public int Id { set; get; }
         [JsonProperty] public string Sender { set; get; }
+        [JsonProperty] public string Subject { set; get; }
         [JsonProperty] public string Content { set; get; }
         [JsonProperty] public int ResponseId { set; get; }
 
-        public MessageContent(int Id, string Sender, string Content, int ResponseId)
+        public MessageContent(int Id, string Sender, string Subject, string Content, int ResponseId)
         {
             this.Id = Id;
             this.Sender = Sender;
+            this.Subject = Subject;
             this.Content = Content;
             this.ResponseId = ResponseId;
         }
@@ -57,27 +59,31 @@ namespace ProjektSWR.Controllers
             return View();
         }
 
+        [HttpGet]
         public ActionResult Inbox()
         {
             return View();
         }
 
+        [HttpGet]
         public ActionResult Sent()
         {
             return View();
         }
 
-        // GET: Messages/Create
+        [HttpGet]
         public ActionResult Create()
         {
             return View();
         }
 
+        [HttpGet]
         public ActionResult Content()
         {
             return View();
         }
 
+        [HttpGet]
         public JsonResult Users()
         {
             var users = from u in db.Users select u.Email;
@@ -87,6 +93,7 @@ namespace ProjektSWR.Controllers
             return Json(users, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
         public JsonResult MessageHeaders()
         {
             ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
@@ -111,6 +118,7 @@ namespace ProjektSWR.Controllers
             return Json(JsonConvert.SerializeObject(Jmessage), JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
         public JsonResult SentMessageHeaders()
         {
             ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
@@ -142,6 +150,7 @@ namespace ProjektSWR.Controllers
             return Json(JsonConvert.SerializeObject(Jmessage), JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
         public JsonResult MessageContent(int id)
         {
             ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
@@ -155,7 +164,8 @@ namespace ProjektSWR.Controllers
                 int ResponseId = -1;
                 if (message.ResponseID != null)
                     ResponseId = message.ResponseID.ID;
-                return Json(JsonConvert.SerializeObject(new MessageContent(message.ID, message.SenderID.Email, message.Content, ResponseId),
+                return Json(JsonConvert.SerializeObject(new MessageContent(message.ID, message.SenderID.Email, message.Subject,
+                    message.Content, ResponseId),
                     Formatting.Indented, js), JsonRequestBehavior.AllowGet);
             }
                 
@@ -173,7 +183,8 @@ namespace ProjektSWR.Controllers
                 int ResponseId = -1;
                 if (message.ResponseID != null)
                     ResponseId = message.ResponseID.ID;
-                return Json(JsonConvert.SerializeObject(new MessageContent(message.ID, message.SenderID.Email, message.Content, ResponseId),
+                return Json(JsonConvert.SerializeObject(new MessageContent(message.ID, message.SenderID.Email, message.Subject,
+                    message.Content, ResponseId),
                     Formatting.Indented, js), JsonRequestBehavior.AllowGet);
             }
             return null;
@@ -206,7 +217,7 @@ namespace ProjektSWR.Controllers
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            List<ApplicationUser> recipientUser = new List<ApplicationUser>();//db.Users.FirstOrDefault(x => x.Email == UserName);
+            List<ApplicationUser> recipientUser = new List<ApplicationUser>();
             foreach (var n in UserName)
             {
                 if (recipientUser.Find(u => u.Email == n) != null)
@@ -243,6 +254,7 @@ namespace ProjektSWR.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
+        [HttpPost]
         public ActionResult DeleteInbox(List<int> id)
         {
             if (id == null)
@@ -271,6 +283,7 @@ namespace ProjektSWR.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
+        [HttpPost]
         public ActionResult DeleteSent(List<int> id)
         {
             if (id == null)
