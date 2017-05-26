@@ -7,7 +7,7 @@
 
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("CreateReply", "Forum", FormMethod.Post, new { th = Model.ThreadID.ID }))
 {
     @Html.AntiForgeryToken()
 
@@ -19,7 +19,8 @@
             @Html.LabelFor(model => model.Answer, htmlAttributes: new { @class = "control-label col-md-2" })
 
             <div class="col-md-10">
-
+                @Html.Hidden("th", Model.ThreadID.ID)
+                @Html.Hidden("Email", Model.Email)
                 @Html.EditorFor(model => model.Answer, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Answer, "", new { @class = "text-danger" })
             </div>

@@ -469,9 +469,6 @@
     <Content Include="Views\Forum\Index.cshtml" />
     <Content Include="Views\Forum\Rep.cshtml" />
     <Content Include="Views\Forum\Thr.cshtml" />
-<<<<<<< HEAD
-    <Content Include="Views\Forum\CreateReply.cshtml" />
-=======
     <Content Include="Views\Messages\Content.cshtml" />
     <Content Include="Views\Panel\LockUsers.cshtml" />
     <Content Include="Views\Panel\UnlockUsers.cshtml" />
@@ -480,7 +477,7 @@
     <Content Include="Views\Panel\EventsDelete.cshtml" />
     <Content Include="Views\Panel\EventsDetails.cshtml" />
     <Content Include="Views\Panel\EventsEdit.cshtml" />
->>>>>>> refs/remotes/origin/master
+    <Content Include="Views\Forum\CreateReply.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

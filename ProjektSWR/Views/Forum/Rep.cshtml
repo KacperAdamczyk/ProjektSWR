@@ -36,7 +36,7 @@
 
     </table>
 <div>
-    @Html.ActionLink("Dodaj nową odpowiedź", "CreateReply")
+    @Html.ActionLink("Dodaj nową odpowiedź", "CreateReply", new { th = Model.ID }, Model.ID);
 </div>
 
 <!--

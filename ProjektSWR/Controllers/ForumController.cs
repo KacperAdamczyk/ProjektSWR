@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ProjektSWR.Models;
+using Microsoft.AspNet.Identity;
 
 namespace ProjektSWR.Controllers
 {
@@ -68,9 +69,22 @@ namespace ProjektSWR.Controllers
         {
             return View();
         }
-        public ActionResult CreateReply()
+        public ActionResult CreateReply(int? th)
         {
-            return View();
+            if (th == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            var Thread = db.Threads.Find(th);
+            if (Thread == null)
+                return HttpNotFound();
+
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+
+            Reply reply = new Reply
+            {
+                Email = currentUser?.Email,
+                ThreadID = Thread
+            };
+            return View(reply);
         }
 
         // POST: Forum/Create
@@ -91,16 +105,19 @@ namespace ProjektSWR.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateReply([Bind(Include = "ID, Answer")] Reply forum)
+        public ActionResult CreateReply(int? th, [Bind(Include = "Email, Answer")] Reply forum)
         {
-            if (ModelState.IsValid)
-            {
+            if (th == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            var Thread = db.Threads.Find(th);
+            if (Thread == null)
+                return HttpNotFound();
+
+            forum.ThreadID = Thread;
+
                 db.Replys.Add(forum);
                 db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(forum);
+                return RedirectToAction("Index");  
         }
 
         // GET: Forum/Edit/5
