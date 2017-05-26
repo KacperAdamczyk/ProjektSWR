@@ -1,6 +1,7 @@
 ﻿import * as controller from "./controller";
 import { quill_editor } from './newMessage_input';
 import { globalContainer } from "./controller";
+import * as alertifyjs from 'alertifyjs';
 import * as Quill from "quill";
 import "quill/dist/quill.snow.css";
 
@@ -65,18 +66,25 @@ function dispalyContent() {
 }
 
 function deleteMessageInbox(id : number) {
-    $.ajax({
+    alertifyjs.confirm("Czy na pewno chcesz usunąć tę wiadomość?",
+        function(){
+            $.ajax({
         url: "/Messages/DeleteInbox",
         method: "POST",
         data: {"id" : id},
         success: function() { controller.loadInbox(); }
-    });
+            });
+        });
 }
 function deleteMessageSent(id : number) {
-    $.ajax({
+    alertifyjs.confirm("Czy na pewno chcesz usunąć tę wiadomość?",
+        function(){
+           $.ajax({
         url: "/Messages/DeleteSent",
         method: "POST",
         data: {"id" : id},
         success: function() { controller.loadSent(); }
-    });
+            });
+        });
+    
 }

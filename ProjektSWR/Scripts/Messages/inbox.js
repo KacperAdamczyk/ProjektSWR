@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var controller = require("./controller");
+var alertifyjs = require("alertifyjs");
 var g_data;
 var new_msg_cnt = 0;
 function prepareInboxDocument() {
@@ -45,7 +46,7 @@ function parseMessages(data) {
             "</tr>";
         $(".inbox_table").append(line);
         var tr = $("#" + data[i].Id);
-        tr.click(function () { console.log(1); controller.loadContent(this.id, "inbox"); });
+        tr.click(function () { controller.loadContent(this.id, "inbox"); });
         tr.first().children().first().click(function (e) { e.stopPropagation(); });
     }
     $(controller.transitor).addClass(controller.transitorAcrivated);
@@ -71,10 +72,14 @@ function deleteMessages() {
         if (selectedMessages[i].id != "select_all")
             selectedMessageIds.push(Number(selectedMessages[i].id.substr(2)));
     }
-    $.ajax({
-        url: "/Messages/DeleteInbox",
-        method: "POST",
-        data: { "id": selectedMessageIds },
-        success: function () { controller.loadInbox(); }
+    if (selectedMessageIds.length == 0)
+        return;
+    alertifyjs.confirm("Czy na pewno chcesz usunąć " + selectedMessageIds.length + (selectedMessageIds.length > 1 ? " wiadomości" : " wiadomość") + "?", function () {
+        $.ajax({
+            url: "/Messages/DeleteInbox",
+            method: "POST",
+            data: { "id": selectedMessageIds },
+            success: function () { controller.loadInbox(); }
+        });
     });
 }

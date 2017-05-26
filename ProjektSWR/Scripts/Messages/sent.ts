@@ -1,4 +1,5 @@
 ﻿import * as controller from "./controller";
+import * as alertifyjs from 'alertifyjs';
 
 export function prepareSentDocument() {
     $.getJSON("/Messages/SentMessageHeaders", parseSentMessages);
@@ -16,7 +17,6 @@ export function prepareSentDocument() {
 
 function parseSentMessages(data) {
     data = JSON.parse(data);
-    console.log(data);
     var i : number, j : number, line : string;
     if (data.length == 0) {
             line = "<tr>" + "<td colspan='5'>" + "Brak wiadomości" + "</td>" + "</tr>"
@@ -58,10 +58,17 @@ function deleteMessages() {
         if (selectedMessages[i].id != "select_all")
             selectedMessageIds.push(Number(selectedMessages[i].id.substr(2)));
     }
-    $.ajax({
-        url: "/Messages/DeleteSent",
-        method: "POST",
-        data: {"id" : selectedMessageIds},
-        success: function() { controller.loadSent(); }
-    });
+
+   if (selectedMessageIds.length == 0)
+        return;
+
+    alertifyjs.confirm("Czy na pewno chcesz usunąć " + selectedMessageIds.length + (selectedMessageIds.length > 1 ? " wiadomości" : " wiadomość") + "?",
+        function(){
+            $.ajax({
+            url: "/Messages/DeleteSent",
+            method: "POST",
+            data: {"id" : selectedMessageIds},
+            success: function() { controller.loadSent(); }
+            });
+        });
 }

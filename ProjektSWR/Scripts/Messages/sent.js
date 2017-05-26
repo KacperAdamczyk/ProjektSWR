@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var controller = require("./controller");
+var alertifyjs = require("alertifyjs");
 function prepareSentDocument() {
     $.getJSON("/Messages/SentMessageHeaders", parseSentMessages);
     $("#delete_selected_btn").click(function () { deleteMessages(); });
@@ -16,7 +17,6 @@ function prepareSentDocument() {
 exports.prepareSentDocument = prepareSentDocument;
 function parseSentMessages(data) {
     data = JSON.parse(data);
-    console.log(data);
     var i, j, line;
     if (data.length == 0) {
         line = "<tr>" + "<td colspan='5'>" + "Brak wiadomości" + "</td>" + "</tr>";
@@ -57,10 +57,14 @@ function deleteMessages() {
         if (selectedMessages[i].id != "select_all")
             selectedMessageIds.push(Number(selectedMessages[i].id.substr(2)));
     }
-    $.ajax({
-        url: "/Messages/DeleteSent",
-        method: "POST",
-        data: { "id": selectedMessageIds },
-        success: function () { controller.loadSent(); }
+    if (selectedMessageIds.length == 0)
+        return;
+    alertifyjs.confirm("Czy na pewno chcesz usunąć " + selectedMessageIds.length + (selectedMessageIds.length > 1 ? " wiadomości" : " wiadomość") + "?", function () {
+        $.ajax({
+            url: "/Messages/DeleteSent",
+            method: "POST",
+            data: { "id": selectedMessageIds },
+            success: function () { controller.loadSent(); }
+        });
     });
 }

@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var controller = require("./controller");
+var alertifyjs = require("alertifyjs");
 var Quill = require("quill");
 require("quill/dist/quill.snow.css");
 var g_data;
@@ -59,18 +60,22 @@ function dispalyContent() {
     $(controller.transitor).addClass(controller.transitorAcrivated);
 }
 function deleteMessageInbox(id) {
-    $.ajax({
-        url: "/Messages/DeleteInbox",
-        method: "POST",
-        data: { "id": id },
-        success: function () { controller.loadInbox(); }
+    alertifyjs.confirm("Czy na pewno chcesz usunąć tę wiadomość?", function () {
+        $.ajax({
+            url: "/Messages/DeleteInbox",
+            method: "POST",
+            data: { "id": id },
+            success: function () { controller.loadInbox(); }
+        });
     });
 }
 function deleteMessageSent(id) {
-    $.ajax({
-        url: "/Messages/DeleteSent",
-        method: "POST",
-        data: { "id": id },
-        success: function () { controller.loadSent(); }
+    alertifyjs.confirm("Czy na pewno chcesz usunąć tę wiadomość?", function () {
+        $.ajax({
+            url: "/Messages/DeleteSent",
+            method: "POST",
+            data: { "id": id },
+            success: function () { controller.loadSent(); }
+        });
     });
 }

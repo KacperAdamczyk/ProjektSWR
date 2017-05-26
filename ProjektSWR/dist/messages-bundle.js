@@ -11546,6 +11546,7 @@ if(false) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var controller = __webpack_require__(0);
+var alertifyjs = __webpack_require__(11);
 var Quill = __webpack_require__(3);
 __webpack_require__(4);
 var g_data;
@@ -11604,19 +11605,23 @@ function dispalyContent() {
     $(controller.transitor).addClass(controller.transitorAcrivated);
 }
 function deleteMessageInbox(id) {
-    $.ajax({
-        url: "/Messages/DeleteInbox",
-        method: "POST",
-        data: { "id": id },
-        success: function () { controller.loadInbox(); }
+    alertifyjs.confirm("Czy na pewno chcesz usunąć tę wiadomość?", function () {
+        $.ajax({
+            url: "/Messages/DeleteInbox",
+            method: "POST",
+            data: { "id": id },
+            success: function () { controller.loadInbox(); }
+        });
     });
 }
 function deleteMessageSent(id) {
-    $.ajax({
-        url: "/Messages/DeleteSent",
-        method: "POST",
-        data: { "id": id },
-        success: function () { controller.loadSent(); }
+    alertifyjs.confirm("Czy na pewno chcesz usunąć tę wiadomość?", function () {
+        $.ajax({
+            url: "/Messages/DeleteSent",
+            method: "POST",
+            data: { "id": id },
+            success: function () { controller.loadSent(); }
+        });
     });
 }
 
@@ -11629,6 +11634,7 @@ function deleteMessageSent(id) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var controller = __webpack_require__(0);
+var alertifyjs = __webpack_require__(11);
 var g_data;
 var new_msg_cnt = 0;
 function prepareInboxDocument() {
@@ -11673,7 +11679,7 @@ function parseMessages(data) {
             "</tr>";
         $(".inbox_table").append(line);
         var tr = $("#" + data[i].Id);
-        tr.click(function () { console.log(1); controller.loadContent(this.id, "inbox"); });
+        tr.click(function () { controller.loadContent(this.id, "inbox"); });
         tr.first().children().first().click(function (e) { e.stopPropagation(); });
     }
     $(controller.transitor).addClass(controller.transitorAcrivated);
@@ -11699,11 +11705,15 @@ function deleteMessages() {
         if (selectedMessages[i].id != "select_all")
             selectedMessageIds.push(Number(selectedMessages[i].id.substr(2)));
     }
-    $.ajax({
-        url: "/Messages/DeleteInbox",
-        method: "POST",
-        data: { "id": selectedMessageIds },
-        success: function () { controller.loadInbox(); }
+    if (selectedMessageIds.length == 0)
+        return;
+    alertifyjs.confirm("Czy na pewno chcesz usunąć " + selectedMessageIds.length + (selectedMessageIds.length > 1 ? " wiadomości" : " wiadomość") + "?", function () {
+        $.ajax({
+            url: "/Messages/DeleteInbox",
+            method: "POST",
+            data: { "id": selectedMessageIds },
+            success: function () { controller.loadInbox(); }
+        });
     });
 }
 
@@ -11806,6 +11816,7 @@ function getAllRecipients() {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var controller = __webpack_require__(0);
+var alertifyjs = __webpack_require__(11);
 function prepareSentDocument() {
     $.getJSON("/Messages/SentMessageHeaders", parseSentMessages);
     $("#delete_selected_btn").click(function () { deleteMessages(); });
@@ -11821,7 +11832,6 @@ function prepareSentDocument() {
 exports.prepareSentDocument = prepareSentDocument;
 function parseSentMessages(data) {
     data = JSON.parse(data);
-    console.log(data);
     var i, j, line;
     if (data.length == 0) {
         line = "<tr>" + "<td colspan='5'>" + "Brak wiadomości" + "</td>" + "</tr>";
@@ -11862,11 +11872,15 @@ function deleteMessages() {
         if (selectedMessages[i].id != "select_all")
             selectedMessageIds.push(Number(selectedMessages[i].id.substr(2)));
     }
-    $.ajax({
-        url: "/Messages/DeleteSent",
-        method: "POST",
-        data: { "id": selectedMessageIds },
-        success: function () { controller.loadSent(); }
+    if (selectedMessageIds.length == 0)
+        return;
+    alertifyjs.confirm("Czy na pewno chcesz usunąć " + selectedMessageIds.length + (selectedMessageIds.length > 1 ? " wiadomości" : " wiadomość") + "?", function () {
+        $.ajax({
+            url: "/Messages/DeleteSent",
+            method: "POST",
+            data: { "id": selectedMessageIds },
+            success: function () { controller.loadSent(); }
+        });
     });
 }
 
