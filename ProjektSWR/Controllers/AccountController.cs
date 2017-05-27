@@ -114,7 +114,7 @@ namespace ProjektSWR.Controllers
             {
                 var db = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
                 Cathedral c = db.Cathedrals.FirstOrDefault(x => x.Department == model.CathedralName);
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FisrtName, LastName = model.LastName, CathedralID = c, UserConfirmed = false};
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FisrtName, LastName = model.LastName, CathedralID = c, UserConfirmed = false, LockoutEnabled = false};
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

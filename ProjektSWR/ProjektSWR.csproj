@@ -296,6 +296,7 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Scripts\Cathedral\cathedral.js" />
+    <Content Include="Scripts\Panel\confirm.js" />
     <Content Include="Scripts\Panel\index.js" />
     <Content Include="Scripts\Panel\katedry.js" />
     <Content Include="Scripts\Panel\lockedusers.js" />
@@ -481,6 +482,7 @@
     <Content Include="Views\Forum\CreateReply.cshtml" />
     <Content Include="Views\Panel\UserList.cshtml" />
     <Content Include="Views\Panel\UserProfile.cshtml" />
+    <Content Include="Views\Panel\ConfirmUsers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

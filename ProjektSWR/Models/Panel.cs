@@ -26,6 +26,8 @@ namespace ProjektSWR.Models
         [Display(Name = "Data blokady")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime LockDate { get; set; }
+
+        public bool UserConfirmed { get; set; }
     }
     public class UserProfileModel
     {
