@@ -96,16 +96,21 @@
         </div>
         <div id="pool">
             <p>
+                <div id="text">URL: </div>
+                <div id="textfield">
+                    @Html.EditorFor(model => model.Photo, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Photo, "", new { @class = "text-danger" })
+                </div>
+            </p>
+        </div>
+        <div id="pool">
+            <p>
                 <div id="text" style="padding-bottom: 5px">Zdjęcie:</div>
                 <div id="photo" style="float: left;">
                     <img src="https://branzadziecieca.pl/wp-content/uploads/2016/10/anek-WhaWhaWhacky-Kaktus-web.jpg" alt=" "
                          height="142" width="97" />
                 </div>
                 <div style="clear: both; padding-left: 125px; padding-top: 4px; float: left;" />
-                <div id="buttons">
-                    <input type="submit" value="Dodaj" class="btn btn-default" />
-                    <input type="submit" value="Usuń" class="btn btn-default" />
-                </div>
             </p>
         </div>
         <div id="buttons">

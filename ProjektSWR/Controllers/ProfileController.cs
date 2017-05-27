@@ -30,11 +30,12 @@ namespace ProjektSWR.Controllers
                 LastName = db.Users.Find(userId).LastName,
                 AcademicDegree = db.Users.Find(userId).AcademicDegree,
                 Photo = db.Users.Find(userId).Photo,
-                //DateOfBirth = db.Users.Find(userId).DateOfBirth,
+                DateOfBirth = db.Users.Find(userId).DateOfBirth,
                 Description = db.Users.Find(userId).Description,
                 Email = db.Users.Find(userId).Email,
                 PhoneNumber = db.Users.Find(userId).PhoneNumber,
                 CathedralName = db.Cathedrals.Find(1).Department,
+                
             };
 
             return View(m);

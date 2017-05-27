@@ -77,7 +77,7 @@ namespace ProjektSWR.Controllers
                 LastName = db.Users.Find(userId).LastName,
                 AcademicDegree = db.Users.Find(userId).AcademicDegree,
                 Photo = db.Users.Find(userId).Photo,
-                //DateOfBirth = UserManager.FindById(userId).DateOfBirth,
+                DateOfBirth = UserManager.FindById(userId).DateOfBirth,
                 Description = db.Users.Find(userId).Description,
                 Email = db.Users.Find(userId).Email,
                 PhoneNumber = db.Users.Find(userId).PhoneNumber,
@@ -176,7 +176,7 @@ namespace ProjektSWR.Controllers
                     UserManager.FindById(userId).CathedralID = c;
                     UserManager.FindById(userId).Description = m.Description;
                     UserManager.FindById(userId).DateOfBirth = m.DateOfBirth;
-
+                    UserManager.FindById(userId).Photo = m.Photo;
                     var dbToChange = db.Users.Find(userId);
                     db.Entry(db.Users.Find(userId)).State = System.Data.Entity.EntityState.Modified;
                     db.SaveChanges();
