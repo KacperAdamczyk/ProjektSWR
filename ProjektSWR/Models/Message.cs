@@ -21,7 +21,7 @@ namespace ProjektSWR.Models
         public string Content { get; set; }
         [Required] public DateTime SendDate { get; set; }
         [Required, DefaultValue(false)] public bool Archived { get; set; }
-        [DefaultValue(null)] public Message ResponseID { get; set; }
+        [DefaultValue(null)] public virtual Message ResponseID { get; set; }
 
         public virtual ICollection<Recipient> Recipients { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }

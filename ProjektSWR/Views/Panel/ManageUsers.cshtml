@@ -1,32 +1,46 @@
 ﻿@model ProjektSWR.Models.ManageUsersModel
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewBag.Title = "Panel";
+    ViewBag.Title = "LUL";
 }
-<script src="~/Scripts/Cathedral/cathedral.js"></script>
+<!--<script src="~/Scripts/Cathedral/cathedral.js"></script>-->
+<script src="~/Scripts/Panel/katedry.js"></script>
 <script src="~/Scripts/Panel/manage.js"></script>
 <script src="~/Scripts/Panel/show.js"></script>
-<script src="~/Scripts/Panel/index.js"></script>
-
-
-
+<link rel="stylesheet" type="text/css" href="~/Content/Panel.css" />
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-
-    <div style="float:left">
-        <link rel="stylesheet" href="~/Content/Panel.css">
-        <ul id="panelMenu" class="navbar-left">
-            <li><a href="~/Panel/ManageUsers">Użytkownicy</a></li>
-            <li><a href="~/Panel/ManageEvents">Wydarzenia</a></li>
-            <li><a href="~/Panel/ManageForums">Forum</a></li>
-        </ul>
+    <div>
+        <div class="dropdown">
+            <button class="dropbtn">Użytkownicy</button>
+            <div class="dropdown-content">
+                <a href="~/Panel/ManageUsers">Edytuj</a>
+                <a href="~/Panel/LockUsers">Blokuj</a>
+                <a href="~/Panel/UnlockUsers">Odblokuj</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Zdarzenia</button>
+            <div class="dropdown-content">
+                <a href="#">Kalendarz</a>
+                <a href="#">Lista zdarzeń</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Forum</button>
+            <div class="dropdown-content">
+                <a href="#">Link 1</a>
+                <a href="#">Link 2</a>
+                <a href="#">Link 3</a>
+            </div>
+        </div>
     </div>
-
     <div class="form-horizontal" style="margin-left:200px">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(m => m.Id, new { @id = "id" })
         <div class="form-group">
+            <label class="col-md-2 control-label">Wybór użytkownika</label>
             <div class="col-md-10">
                 <select id="user_select" name="LastNam" onchange="show()">
                     <option value="0">--Wybierz uzytkownka--</option>
@@ -63,5 +77,5 @@
                 <input type="submit" value="Edytuj" class="btn btn-default" />
             </div>
         </div>
-   </div>
+    </div>
 }

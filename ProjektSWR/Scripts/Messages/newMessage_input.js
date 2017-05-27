@@ -1,15 +1,35 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var Quill = require("quill");
 require("quill/dist/quill.snow.css");
-var users;
+exports.users = [];
 exports.combobox_cnt = 0;
-function parseUsers(data) {
-    users = data;
-    createCombobox();
+function parseUsers(data, create) {
+    exports.users = data;
+    if (create)
+        createCombobox();
 }
 exports.parseUsers = parseUsers;
 function loadContentInput() {
+    var toolbarOptions = [
+        ['bold', 'italic', 'underline', 'strike'],
+        ['blockquote', 'code-block'],
+        [{ 'header': 1 }, { 'header': 2 }],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+        [{ 'script': 'sub' }, { 'script': 'super' }],
+        [{ 'indent': '-1' }, { 'indent': '+1' }],
+        [{ 'direction': 'rtl' }],
+        [{ 'size': ['small', false, 'large', 'huge'] }],
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        [{ 'color': [] }, { 'background': [] }],
+        [{ 'font': [] }],
+        [{ 'align': [] }],
+        ['clean'] // remove formatting button
+    ];
     exports.quill_editor = new Quill('#messageContent', {
+        modules: {
+            toolbar: toolbarOptions
+        },
         theme: 'snow'
     });
 }
@@ -19,10 +39,17 @@ function createCombobox() {
         "<datalist id='users" + exports.combobox_cnt + "'></datalist>";
     $("#comboboxes").append(c);
     var i, line;
-    for (i = 0; i < users.length; i++) {
-        line = '<option' + ' data-id="user' + (i + 1) + ' value="' + users[i] + '">' + users[i] + '</option>';
+    for (i = 0; i < exports.users.length; i++) {
+        line = '<option' + ' data-id="user' + (i + 1) + ' value="' + exports.users[i] + '">' + exports.users[i] + '</option>';
         $("#users" + exports.combobox_cnt).append(line);
     }
     exports.combobox_cnt++;
 }
 exports.createCombobox = createCombobox;
+function removeLastCombobox() {
+    if (exports.combobox_cnt > 1) {
+        $("input.users_combobox").last().remove();
+        exports.combobox_cnt--;
+    }
+}
+exports.removeLastCombobox = removeLastCombobox;

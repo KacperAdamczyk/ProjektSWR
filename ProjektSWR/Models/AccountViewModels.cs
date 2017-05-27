@@ -47,6 +47,7 @@ namespace ProjektSWR.Models
         [Required]
         [EmailAddress]
         [Display(Name = "e-mail: (@prz.edu.pl)")]
+        [RegularExpression(@"^\w+(a-z0-9)*@prz.edu.pl$", ErrorMessage = "Email musi zawierać domenę 'prz.edu.pl'")]
         public string Email { get; set; }
 
         [Required]
@@ -74,6 +75,7 @@ namespace ProjektSWR.Models
 
         [Required]
         [Display(Name = "Katedra")]
+        [RegularExpression(@"^(?!.*--Wybierz katedrę--).*$", ErrorMessage = "Nie wybrano katedry.")] 
         public string CathedralName { get; set; }
     }
 

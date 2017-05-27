@@ -48,6 +48,7 @@ namespace ProjektSWR
             {
                 AllowOnlyAlphanumericUserNames = true,
                 RequireUniqueEmail = true
+                
             };
 
             // Configure validation logic for passwords

@@ -14,13 +14,14 @@ namespace ProjektSWR.Controllers
 {
     class MessageHeader
     {
-        [JsonProperty] private int Id { set; get; }
-        [JsonProperty] private List<string> Recipient { set; get; }
-        [JsonProperty] private string Sender { set; get; }
-        [JsonProperty] private string Subject { set; get; }
-        [JsonProperty] private DateTime SendDate { set; get; }
-        [JsonProperty] private DateTime? ReceivedDate { set; get; }
-        public MessageHeader(int Id, string Sender, List<string> Recipient, string Subject, DateTime SendDate, DateTime? ReceivedDate)
+        [JsonProperty] public int Id { set; get; }
+        [JsonProperty] public List<string> Recipient { set; get; }
+        [JsonProperty] public string Sender { set; get; }
+        [JsonProperty] public string Subject { set; get; }
+        [JsonProperty] public DateTime SendDate { set; get; }
+        [JsonProperty] public List<DateTime?> ReceivedDate { set; get; }
+        [JsonProperty] public int ResponseId { set; get; }
+        public MessageHeader(int Id, string Sender, List<string> Recipient, string Subject, DateTime SendDate, List<DateTime?> ReceivedDate, int ResponseId)
         {
             this.Id = Id;
             this.Sender = Sender;
@@ -28,9 +29,27 @@ namespace ProjektSWR.Controllers
             this.Subject = Subject;
             this.SendDate = SendDate;
             this.ReceivedDate = ReceivedDate;
+            this.ResponseId = ResponseId;
         }
     }
 
+    class MessageContent
+    {
+        [JsonProperty] public int Id { set; get; }
+        [JsonProperty] public string Sender { set; get; }
+        [JsonProperty] public string Subject { set; get; }
+        [JsonProperty] public string Content { set; get; }
+        [JsonProperty] public int ResponseId { set; get; }
+
+        public MessageContent(int Id, string Sender, string Subject, string Content, int ResponseId)
+        {
+            this.Id = Id;
+            this.Sender = Sender;
+            this.Subject = Subject;
+            this.Content = Content;
+            this.ResponseId = ResponseId;
+        }
+    }
     [Authorize]
     public class MessagesController : Controller
     {
@@ -40,33 +59,45 @@ namespace ProjektSWR.Controllers
             return View();
         }
 
+        [HttpGet]
         public ActionResult Inbox()
         {
             return View();
         }
 
+        [HttpGet]
         public ActionResult Sent()
         {
             return View();
         }
 
-        // GET: Messages/Create
+        [HttpGet]
         public ActionResult Create()
         {
             return View();
         }
 
+        [HttpGet]
+        public ActionResult Content()
+        {
+            return View();
+        }
+
+        [HttpGet]
         public JsonResult Users()
         {
             var users = from u in db.Users select u.Email;
             ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+            if (currentUser == null) return null;
             users = users.Where(u => u != currentUser.Email);
             return Json(users, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
         public JsonResult MessageHeaders()
         {
             ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+            if (currentUser == null) return null;
 
             List<MessageHeader> Jmessage = new List<MessageHeader>();
             List<string> recipients = new List<string>();
@@ -74,15 +105,24 @@ namespace ProjektSWR.Controllers
             {
                 if (m.Archived)
                     continue;
-                Jmessage.Add(new MessageHeader(m.ID, m.MessageID.SenderID.Email, recipients, m.MessageID.Subject, m.MessageID.SendDate,
-                    m.ReceivedDate));
+
+                int responseId = -1;
+                if (m.MessageID.ResponseID != null)
+                    responseId = m.MessageID.ResponseID.ID;
+                Jmessage.Add(new MessageHeader(m.MessageID.ID, m.MessageID.SenderID.Email, recipients, m.MessageID.Subject, m.MessageID.SendDate,
+                    new List<DateTime?> { m.ReceivedDate }, responseId));
             }
+            
+            Jmessage.Sort((x, y) => x.SendDate.CompareTo(y.SendDate));
+            Jmessage.Reverse();
             return Json(JsonConvert.SerializeObject(Jmessage), JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
         public JsonResult SentMessageHeaders()
         {
             ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+            if (currentUser == null) return null;
 
             List<MessageHeader> Jmessage = new List<MessageHeader>();
             foreach (var m in currentUser.Messages)
@@ -91,25 +131,44 @@ namespace ProjektSWR.Controllers
                     continue;
 
                 List<string> recipients = new List<string>();
+                List<DateTime?> recipients_dates = new List<DateTime?>();
                 foreach (var r in m.Recipients)
                 {
                     recipients.Add(r.UserID.UserName);
+                    recipients_dates.Add(r.ReceivedDate);
                 }
-                DateTime? RecivedDate = db.Recipients.FirstOrDefault(r => r.MessageID.ID == m.ID).ReceivedDate;
-                Jmessage.Add(new MessageHeader(m.ID, m.SenderID.Email, recipients, m.Subject, m.SendDate, RecivedDate));
+
+                int responseId = -1;
+                if (m.ResponseID != null)
+                    responseId = m.ResponseID.ID;
+
+                var rec = db.Recipients.FirstOrDefault(x => x.MessageID.ID == m.ID);
+                Jmessage.Add(new MessageHeader(m.ID, m.SenderID.Email, recipients, m.Subject, m.SendDate, recipients_dates, responseId));
             }
+            Jmessage.Sort((x, y) => x.SendDate.CompareTo(y.SendDate));
+            Jmessage.Reverse();
             return Json(JsonConvert.SerializeObject(Jmessage), JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult Content(int id)
+        [HttpGet]
+        public JsonResult MessageContent(int id)
         {
-            var js = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
             ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+            if (currentUser == null) return null;
+            var js = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
             var message = db.Messages.Find(id);
             if (message == null)
                 return null;
             if (message.SenderID == currentUser)
-                return Json(JsonConvert.SerializeObject(message.Content, Formatting.Indented, js), JsonRequestBehavior.AllowGet);
+            {
+                int ResponseId = -1;
+                if (message.ResponseID != null)
+                    ResponseId = message.ResponseID.ID;
+                return Json(JsonConvert.SerializeObject(new MessageContent(message.ID, message.SenderID.Email, message.Subject,
+                    message.Content, ResponseId),
+                    Formatting.Indented, js), JsonRequestBehavior.AllowGet);
+            }
+                
 
             var recipient = currentUser.Recipients.FirstOrDefault(m => m.MessageID == message);
             
@@ -121,7 +180,12 @@ namespace ProjektSWR.Controllers
                     db.Entry(recipient).State = EntityState.Modified;
                     db.SaveChanges();
                 }
-                return Json(JsonConvert.SerializeObject(message.Content, Formatting.Indented, js), JsonRequestBehavior.AllowGet);
+                int ResponseId = -1;
+                if (message.ResponseID != null)
+                    ResponseId = message.ResponseID.ID;
+                return Json(JsonConvert.SerializeObject(new MessageContent(message.ID, message.SenderID.Email, message.Subject,
+                    message.Content, ResponseId),
+                    Formatting.Indented, js), JsonRequestBehavior.AllowGet);
             }
             return null;
         }
@@ -129,17 +193,31 @@ namespace ProjektSWR.Controllers
         // POST: Messages/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        public ActionResult CreateMessage(List<string> UserName, string Subject, string Content)
+        [HttpPost]
+        public ActionResult CreateMessage(List<string> UserName, string Subject, string Content, List<int> ResponseId)
         {
+            string currentUserId = User.Identity.GetUserId();
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+            if (currentUser == null) return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
             if (UserName == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            UserName.RemoveAll(x => x == "");
+            UserName.RemoveAll(x => x == currentUser.Email);
 
             if (UserName.Count() == 0 || String.IsNullOrEmpty(Subject) || String.IsNullOrEmpty(Content))
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            string currentUserId = User.Identity.GetUserId();
-            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
-            List<ApplicationUser> recipientUser = new List<ApplicationUser>();//db.Users.FirstOrDefault(x => x.Email == UserName);
+            Message ResponseMessage = null;
+            if (ResponseId[0] >= 0)
+            {
+                ResponseMessage = db.Messages.Find(ResponseId[0]);
+                if (ResponseMessage == null)
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            List<ApplicationUser> recipientUser = new List<ApplicationUser>();
             foreach (var n in UserName)
             {
                 if (recipientUser.Find(u => u.Email == n) != null)
@@ -149,12 +227,17 @@ namespace ProjektSWR.Controllers
                     recipientUser.Add(r);
             }
 
+            if (Subject.Length > 50)
+            {
+                Subject = Subject.Substring(0, 50);
+            }
             Message message = new Message()
             {
                 SenderID = currentUser,
                 Subject = Subject,
                 Content = Content,
-                SendDate = DateTime.Now
+                SendDate = DateTime.Now,
+                ResponseID = ResponseMessage
             };
             db.Messages.Add(message);
 
@@ -171,6 +254,7 @@ namespace ProjektSWR.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
+        [HttpPost]
         public ActionResult DeleteInbox(List<int> id)
         {
             if (id == null)
@@ -180,6 +264,8 @@ namespace ProjektSWR.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+            if (currentUser == null) return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
             List<Message> messages = new List<Message>();
             foreach (var r in currentUser.Recipients)
             {
@@ -197,6 +283,7 @@ namespace ProjektSWR.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
+        [HttpPost]
         public ActionResult DeleteSent(List<int> id)
         {
             if (id == null)
@@ -206,6 +293,8 @@ namespace ProjektSWR.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+            if (currentUser == null) return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
             List<Message> messages = new List<Message>();
             foreach (var i in id)
             {

@@ -1,0 +1,30 @@
+﻿@model ProjektSWR.Models.Forum
+
+@{
+    ViewBag.Title = "Category";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<table class="table">
+
+    @foreach (var t in Model.Categories)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(t.Name, "Thr", new { t = t.ID }, t.ID)
+            </td>
+        </tr>
+    }
+
+</table>
+<div>
+    @Html.ActionLink("Wstecz", "Index")
+</div>
+
+<!--
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+    -->
