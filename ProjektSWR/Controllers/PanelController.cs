@@ -389,6 +389,23 @@ namespace ProjektSWR.Controllers
             }
             base.Dispose(disposing);
         }
+        public ActionResult UserList()
+        {
+            return View(db.Users.ToList());
+        }
+        public ActionResult UserProfile(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ApplicationUser @user =  UserManager.FindById(id);
+            if (@user == null)
+            {
+                return HttpNotFound();
+            }
+            return View(@user);
+        }
     }
 }
 
