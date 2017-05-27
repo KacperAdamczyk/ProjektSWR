@@ -51,14 +51,12 @@ function dispalyContent() {
     $("#content_sender").val(g_data.Sender);
     $("#content_subject").val(g_data.Subject);
 
-    var toolbarOptions = [];
     let quill = new Quill('#messageContent', {
     theme: 'snow',
     modules: {
-        toolbar: toolbarOptions
+        toolbar: false
     }
   });
-  $(".ql-toolbar").hide();
   quill.setContents(JSON.parse(g_data.Content));
   quill.disable();
 
@@ -66,7 +64,7 @@ function dispalyContent() {
 }
 
 function deleteMessageInbox(id : number) {
-    alertifyjs.confirm("Czy na pewno chcesz usunąć tę wiadomość?",
+    alertifyjs.confirm("Potwierdzenie", "Czy na pewno chcesz usunąć tę wiadomość?",
         function(){
             $.ajax({
         url: "/Messages/DeleteInbox",
@@ -74,10 +72,10 @@ function deleteMessageInbox(id : number) {
         data: {"id" : id},
         success: function() { controller.loadInbox(); }
             });
-        });
+        }, function() {});
 }
 function deleteMessageSent(id : number) {
-    alertifyjs.confirm("Czy na pewno chcesz usunąć tę wiadomość?",
+    alertifyjs.confirm("Potwierdzenie", "Czy na pewno chcesz usunąć tę wiadomość?",
         function(){
            $.ajax({
         url: "/Messages/DeleteSent",
@@ -85,6 +83,6 @@ function deleteMessageSent(id : number) {
         data: {"id" : id},
         success: function() { controller.loadSent(); }
             });
-        });
+        }, function() {});
     
 }

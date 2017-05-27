@@ -305,6 +305,7 @@
     <Content Include="webpack.config.js" />
     <Content Include="package.json" />
     <Content Include="ClassDiagram.cd" />
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

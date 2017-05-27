@@ -14,6 +14,7 @@
     <WebStackScaffolding_DbContextTypeFullName>ProjektSWR.Models.ApplicationDbContext</WebStackScaffolding_DbContextTypeFullName>
     <WebStackScaffolding_IsViewGenerationSelected>True</WebStackScaffolding_IsViewGenerationSelected>
     <ToolsVersionPromptShown>2.2</ToolsVersionPromptShown>
+    <NameOfLastUsedPublishProfile>CustomProfile</NameOfLastUsedPublishProfile>
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>

@@ -62,7 +62,7 @@ function deleteMessages() {
    if (selectedMessageIds.length == 0)
         return;
 
-    alertifyjs.confirm("Czy na pewno chcesz usunąć " + selectedMessageIds.length + (selectedMessageIds.length > 1 ? " wiadomości" : " wiadomość") + "?",
+    alertifyjs.confirm("Potwierdzenie", "Czy na pewno chcesz usunąć " + selectedMessageIds.length + (selectedMessageIds.length > 1 ? " wiadomości" : " wiadomość") + "?",
         function(){
             $.ajax({
             url: "/Messages/DeleteSent",
@@ -70,5 +70,5 @@ function deleteMessages() {
             data: {"id" : selectedMessageIds},
             success: function() { controller.loadSent(); }
             });
-        });
+        }, function() {});
 }

@@ -47,35 +47,33 @@ function parseContent(data) {
 function dispalyContent() {
     $("#content_sender").val(g_data.Sender);
     $("#content_subject").val(g_data.Subject);
-    var toolbarOptions = [];
     var quill = new Quill('#messageContent', {
         theme: 'snow',
         modules: {
-            toolbar: toolbarOptions
+            toolbar: false
         }
     });
-    $(".ql-toolbar").hide();
     quill.setContents(JSON.parse(g_data.Content));
     quill.disable();
     $(controller.transitor).addClass(controller.transitorAcrivated);
 }
 function deleteMessageInbox(id) {
-    alertifyjs.confirm("Czy na pewno chcesz usunąć tę wiadomość?", function () {
+    alertifyjs.confirm("Potwierdzenie", "Czy na pewno chcesz usunąć tę wiadomość?", function () {
         $.ajax({
             url: "/Messages/DeleteInbox",
             method: "POST",
             data: { "id": id },
             success: function () { controller.loadInbox(); }
         });
-    });
+    }, function () { });
 }
 function deleteMessageSent(id) {
-    alertifyjs.confirm("Czy na pewno chcesz usunąć tę wiadomość?", function () {
+    alertifyjs.confirm("Potwierdzenie", "Czy na pewno chcesz usunąć tę wiadomość?", function () {
         $.ajax({
             url: "/Messages/DeleteSent",
             method: "POST",
             data: { "id": id },
             success: function () { controller.loadSent(); }
         });
-    });
+    }, function () { });
 }
