@@ -55,7 +55,8 @@ function dispalyContent() {
     });
     quill.setContents(JSON.parse(g_data.Content));
     quill.disable();
-    $(controller.transitor).addClass(controller.transitorAcrivated);
+    controller.enableTransition();
+    controller.hideLoader();
 }
 function deleteMessageInbox(id) {
     alertifyjs.confirm("Potwierdzenie", "Czy na pewno chcesz usunąć tę wiadomość?", function () {

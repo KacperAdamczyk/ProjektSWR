@@ -30,7 +30,6 @@ function prepareNewMessageDocument(responseTo, responseToId) {
         $("#users").append(line);
         $(".users_combobox").first().val(responseTo);
     }
-    $(controller.transitor).addClass(controller.transitorAcrivated);
     $(subject_id).change(function () { $(subject_id).css("border", "solid 1px black"); });
 }
 exports.prepareNewMessageDocument = prepareNewMessageDocument;

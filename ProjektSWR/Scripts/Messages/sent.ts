@@ -47,7 +47,8 @@ function parseSentMessages(data) {
          tr.click(function() { controller.loadContent(this.id, "sent"); });
          tr.first().children().first().click(function(e) { e.stopPropagation(); });
     }
-   $(controller.transitor).addClass(controller.transitorAcrivated);
+   controller.enableTransition();
+   controller.hideLoader();
 }
 
 function deleteMessages() {

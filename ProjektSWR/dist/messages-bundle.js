@@ -79,14 +79,14 @@ var sent = __webpack_require__(9);
 var new_message = __webpack_require__(8);
 var content = __webpack_require__(6);
 exports.globalContainer = "#content";
-exports.transitor = ".transitor";
-exports.transitorAcrivated = "trans-activated";
+var transitor = ".transitor";
+var transitorAcrivated = "trans-activated";
 $(document).ready(function () {
     loadInbox(); // domyślna zakładka
     $("#new_message").click(function () { loadNewMessage(null, null); });
     $("#inbox").click(function () { loadInbox(); });
     $("#sent").click(function () { loadSent(); });
-    $(exports.transitor).addClass(exports.transitorAcrivated);
+    $(transitor).addClass(transitorAcrivated);
 });
 function changeActive(li) {
     var tags = ["inbox", "sent", "new_message"];
@@ -107,6 +107,7 @@ function load(label, url, fun) {
         url: "/Messages/" + url,
         success: function (data) {
             $(exports.globalContainer).html(data);
+            showLoader();
             fun();
         }
     });
@@ -127,6 +128,18 @@ function loadContent(id, type) {
     load(null, "Content", function () { content.prepareMessageContentDocument(id, type); });
 }
 exports.loadContent = loadContent;
+function hideLoader() {
+    $(".loader").hide();
+}
+exports.hideLoader = hideLoader;
+function showLoader() {
+    $(".loader").show();
+}
+exports.showLoader = showLoader;
+function enableTransition() {
+    $(transitor).addClass(transitorAcrivated);
+}
+exports.enableTransition = enableTransition;
 
 
 /***/ }),
@@ -15194,7 +15207,8 @@ function dispalyContent() {
     });
     quill.setContents(JSON.parse(g_data.Content));
     quill.disable();
-    $(controller.transitor).addClass(controller.transitorAcrivated);
+    controller.enableTransition();
+    controller.hideLoader();
 }
 function deleteMessageInbox(id) {
     alertifyjs.confirm("Potwierdzenie", "Czy na pewno chcesz usunąć tę wiadomość?", function () {
@@ -15227,8 +15241,10 @@ function deleteMessageSent(id) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var controller = __webpack_require__(0);
 var alertifyjs = __webpack_require__(1);
+var cookie = __webpack_require__(23);
 var g_data;
 var new_msg_cnt = 0;
+cookie.set("interval", "not set");
 function prepareInboxDocument() {
     $.getJSON("/Messages/MessageHeaders", parseMessages);
     $("#delete_selected_btn").click(function () { deleteMessages(); });
@@ -15238,9 +15254,12 @@ function prepareInboxDocument() {
         else
             $("input:checkbox").prop("checked", false);
     });
-    var interval = setInterval(function () {
-        updateHeaders();
-    }, 5000);
+    if (cookie.get("interval") == "not set") {
+        var interval = setInterval(function () {
+            updateHeaders();
+        }, 10000);
+        cookie.set("interval", interval);
+    }
 }
 exports.prepareInboxDocument = prepareInboxDocument;
 function parseMessages(data) {
@@ -15274,11 +15293,12 @@ function parseMessages(data) {
         tr.click(function () { controller.loadContent(this.id, "inbox"); });
         tr.first().children().first().click(function (e) { e.stopPropagation(); });
     }
-    $(controller.transitor).addClass(controller.transitorAcrivated);
     if (new_msg_cnt > 0)
         $("#inbox").html("Skrzynka odbiorcza (" + new_msg_cnt + ")");
     else
         $("#inbox").html("Skrzynka odbiorcza");
+    controller.enableTransition();
+    controller.hideLoader();
 }
 function updateHeaders() {
     $.getJSON("/Messages/MessageHeaders", function (data) {
@@ -15347,7 +15367,6 @@ function prepareNewMessageDocument(responseTo, responseToId) {
         $("#users").append(line);
         $(".users_combobox").first().val(responseTo);
     }
-    $(controller.transitor).addClass(controller.transitorAcrivated);
     $(subject_id).change(function () { $(subject_id).css("border", "solid 1px black"); });
 }
 exports.prepareNewMessageDocument = prepareNewMessageDocument;
@@ -15454,7 +15473,8 @@ function parseSentMessages(data) {
         tr.click(function () { controller.loadContent(this.id, "sent"); });
         tr.first().children().first().click(function (e) { e.stopPropagation(); });
     }
-    $(controller.transitor).addClass(controller.transitorAcrivated);
+    controller.enableTransition();
+    controller.hideLoader();
 }
 function deleteMessages() {
     var selectedMessages = $("input:checkbox:checked");
@@ -25745,6 +25765,7 @@ return jQuery;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Quill = __webpack_require__(4);
+var controller = __webpack_require__(0);
 __webpack_require__(5);
 exports.users = [];
 exports.combobox_cnt = 0;
@@ -25752,6 +25773,8 @@ function parseUsers(data, create) {
     exports.users = data;
     if (create)
         createCombobox();
+    controller.enableTransition();
+    controller.hideLoader();
 }
 exports.parseUsers = parseUsers;
 function loadContentInput() {
@@ -25768,7 +25791,7 @@ function loadContentInput() {
         [{ 'color': [] }, { 'background': [] }],
         [{ 'font': [] }],
         [{ 'align': [] }],
-        ['clean'] // remove formatting button
+        ['clean']
     ];
     exports.quill_editor = new Quill('#messageContent', {
         modules: {
@@ -27726,7 +27749,7 @@ exports = module.exports = __webpack_require__(2)(undefined);
 
 
 // module
-exports.push([module.i, "/**\r\n * alertifyjs 1.10.0 http://alertifyjs.com\r\n * AlertifyJS is a javascript framework for developing pretty browser dialogs and notifications.\r\n * Copyright 2017 Mohammad Younes <Mohammad@alertifyjs.com> (http://alertifyjs.com) \r\n * Licensed under GPL 3 <https://opensource.org/licenses/gpl-3.0>*/\r\n.alertify .ajs-dimmer {\n  position: fixed;\n  z-index: 1981;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  padding: 0;\n  margin: 0;\n  background-color: #252525;\n  opacity: .5;\n}\n.alertify .ajs-modal {\n  position: fixed;\n  top: 0;\n  right: 0;\n  left: 0;\n  bottom: 0;\n  padding: 0;\n  overflow-y: auto;\n  z-index: 1981;\n}\n.alertify .ajs-dialog {\n  position: relative;\n  margin: 5% auto;\n  min-height: 110px;\n  max-width: 500px;\n  padding: 24px 24px 0 24px;\n  outline: 0;\n  background-color: #fff;\n}\n.alertify .ajs-dialog.ajs-capture:before {\n  content: '';\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  display: block;\n  z-index: 1;\n}\n.alertify .ajs-reset {\n  position: absolute !important;\n  display: inline !important;\n  width: 0 !important;\n  height: 0 !important;\n  opacity: 0 !important;\n}\n.alertify .ajs-commands {\n  position: absolute;\n  right: 4px;\n  margin: -14px 24px 0 0;\n  z-index: 2;\n}\n.alertify .ajs-commands button {\n  display: none;\n  width: 10px;\n  height: 10px;\n  margin-left: 10px;\n  padding: 10px;\n  border: 0;\n  background-color: transparent;\n  background-repeat: no-repeat;\n  background-position: center;\n  cursor: pointer;\n}\n.alertify .ajs-commands button.ajs-close {\n  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABZ0RVh0Q3JlYXRpb24gVGltZQAwNy8xMy8xNOrZqugAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzbovLKMAAAAh0lEQVQYlY2QsQ0EIQwEB9cBAR1CJUaI/gigDnwR6NBL/7/xWLNrZ2b8EwGotVpr7eOitWa1VjugiNB7R1UPrKrWe0dEAHBbXUqxMQbeewDmnHjvyTm7C3zDwAUd9c63YQdUVdu6EAJzzquz7HXvTiklt+H9DQFYaxFjvDqllFyMkbXWvfpXHjJrWFgdBq/hAAAAAElFTkSuQmCC);\n}\n.alertify .ajs-commands button.ajs-maximize {\n  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABZ0RVh0Q3JlYXRpb24gVGltZQAwNy8xMy8xNOrZqugAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzbovLKMAAAAOUlEQVQYlWP8//8/AzGAhYGBgaG4uBiv6t7eXkYmooxjYGAgWiELsvHYFMCcRX2rSXcjoSBiJDbAAeD+EGu+8BZcAAAAAElFTkSuQmCC);\n}\n.alertify .ajs-header {\n  margin: -24px;\n  margin-bottom: 0;\n  padding: 16px 24px;\n  background-color: #fff;\n}\n.alertify .ajs-body {\n  min-height: 56px;\n}\n.alertify .ajs-body .ajs-content {\n  padding: 16px 24px 16px 16px;\n}\n.alertify .ajs-footer {\n  padding: 4px;\n  margin-left: -24px;\n  margin-right: -24px;\n  min-height: 43px;\n  background-color: #fff;\n}\n.alertify .ajs-footer .ajs-buttons.ajs-primary {\n  text-align: right;\n}\n.alertify .ajs-footer .ajs-buttons.ajs-primary .ajs-button {\n  margin: 4px;\n}\n.alertify .ajs-footer .ajs-buttons.ajs-auxiliary {\n  float: left;\n  clear: none;\n  text-align: left;\n}\n.alertify .ajs-footer .ajs-buttons.ajs-auxiliary .ajs-button {\n  margin: 4px;\n}\n.alertify .ajs-footer .ajs-buttons .ajs-button {\n  min-width: 88px;\n  min-height: 35px;\n}\n.alertify .ajs-handle {\n  position: absolute;\n  display: none;\n  width: 10px;\n  height: 10px;\n  right: 0;\n  bottom: 0;\n  z-index: 1;\n  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABZ0RVh0Q3JlYXRpb24gVGltZQAwNy8xMS8xNEDQYmMAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzbovLKMAAAAQ0lEQVQYlaXNMQoAIAxD0dT7H657l0KX3iJuUlBUNOsPPCGJm7VDp6ryeMxMuDsAQH7owW3pyn3RS26iKxERMLN3ugOaAkaL3sWVigAAAABJRU5ErkJggg==);\n  -webkit-transform: scaleX(1) /*rtl:scaleX(-1)*/;\n          transform: scaleX(1) /*rtl:scaleX(-1)*/;\n  cursor: se-resize;\n}\n.alertify.ajs-no-overflow .ajs-body .ajs-content {\n  overflow: hidden !important;\n}\n.alertify.ajs-no-padding.ajs-maximized .ajs-body .ajs-content {\n  left: 0;\n  right: 0;\n  padding: 0;\n}\n.alertify.ajs-no-padding:not(.ajs-maximized) .ajs-body {\n  margin-left: -24px;\n  margin-right: -24px;\n}\n.alertify.ajs-no-padding:not(.ajs-maximized) .ajs-body .ajs-content {\n  padding: 0;\n}\n.alertify.ajs-no-padding.ajs-resizable .ajs-body .ajs-content {\n  left: 0;\n  right: 0;\n}\n.alertify.ajs-maximizable .ajs-commands button.ajs-maximize,\n.alertify.ajs-maximizable .ajs-commands button.ajs-restore {\n  display: inline-block;\n}\n.alertify.ajs-closable .ajs-commands button.ajs-close {\n  display: inline-block;\n}\n.alertify.ajs-maximized .ajs-dialog {\n  width: 100% !important;\n  height: 100% !important;\n  max-width: none !important;\n  margin: 0 auto !important;\n  top: 0 !important;\n  left: 0 !important;\n}\n.alertify.ajs-maximized.ajs-modeless .ajs-modal {\n  position: fixed !important;\n  min-height: 100% !important;\n  max-height: none !important;\n  margin: 0 !important;\n}\n.alertify.ajs-maximized .ajs-commands button.ajs-maximize {\n  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABZ0RVh0Q3JlYXRpb24gVGltZQAwNy8xMy8xNOrZqugAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzbovLKMAAAASklEQVQYlZWQ0QkAMQhDtXRincOZX78KVtrDCwgqJNEoIB3MPLj7lRUROlpyVXGzby6zWuY+kz6tj5sBMTMAyVV3/595RbOh3cAXsww1raeiOcoAAAAASUVORK5CYII=);\n}\n.alertify.ajs-resizable .ajs-dialog,\n.alertify.ajs-maximized .ajs-dialog {\n  padding: 0;\n}\n.alertify.ajs-resizable .ajs-commands,\n.alertify.ajs-maximized .ajs-commands {\n  margin: 14px 24px 0 0;\n}\n.alertify.ajs-resizable .ajs-header,\n.alertify.ajs-maximized .ajs-header {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  margin: 0;\n  padding: 16px 24px;\n}\n.alertify.ajs-resizable .ajs-body,\n.alertify.ajs-maximized .ajs-body {\n  min-height: 224px;\n  display: inline-block;\n}\n.alertify.ajs-resizable .ajs-body .ajs-content,\n.alertify.ajs-maximized .ajs-body .ajs-content {\n  position: absolute;\n  top: 50px;\n  right: 24px;\n  bottom: 50px;\n  left: 24px;\n  overflow: auto;\n}\n.alertify.ajs-resizable .ajs-footer,\n.alertify.ajs-maximized .ajs-footer {\n  position: absolute;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  margin: 0;\n}\n.alertify.ajs-resizable:not(.ajs-maximized) .ajs-dialog {\n  min-width: 548px;\n}\n.alertify.ajs-resizable:not(.ajs-maximized) .ajs-handle {\n  display: block;\n}\n.alertify.ajs-movable:not(.ajs-maximized) .ajs-header {\n  cursor: move;\n}\n.alertify.ajs-modeless .ajs-dimmer,\n.alertify.ajs-modeless .ajs-reset {\n  display: none;\n}\n.alertify.ajs-modeless .ajs-modal {\n  overflow: visible;\n  max-width: none;\n  max-height: 0;\n}\n.alertify.ajs-modeless.ajs-pinnable .ajs-commands button.ajs-pin {\n  display: inline-block;\n  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABZ0RVh0Q3JlYXRpb24gVGltZQAwNy8xMy8xNOrZqugAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzbovLKMAAAAQklEQVQYlcWPMQ4AIAwCqU9u38GbcbHRWN1MvKQDhQFMEpKImGJA0gCgnYw0V0rwxseg5erT4oSkQVI5d9f+e9+xA0NbLpWfitPXAAAAAElFTkSuQmCC);\n}\n.alertify.ajs-modeless.ajs-unpinned .ajs-modal {\n  position: absolute;\n}\n.alertify.ajs-modeless.ajs-unpinned .ajs-commands button.ajs-pin {\n  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABZ0RVh0Q3JlYXRpb24gVGltZQAwNy8xMy8xNOrZqugAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzbovLKMAAAAO0lEQVQYlWP8//8/AzGAiShV6AqLi4txGs+CLoBLMYbC3t5eRmyaWfBZhwwYkX2NTxPRvibKjRhW4wMAhxkYGbLu3pEAAAAASUVORK5CYII=);\n}\n.alertify.ajs-modeless:not(.ajs-unpinned) .ajs-body {\n  max-height: 500px;\n  overflow: auto;\n}\n.alertify.ajs-basic .ajs-header {\n  opacity: 0;\n}\n.alertify.ajs-basic .ajs-footer {\n  visibility: hidden;\n}\n.alertify.ajs-frameless .ajs-header {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  min-height: 60px;\n  margin: 0;\n  padding: 0;\n  opacity: 0;\n  z-index: 1;\n}\n.alertify.ajs-frameless .ajs-footer {\n  display: none;\n}\n.alertify.ajs-frameless .ajs-body .ajs-content {\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n}\n.alertify.ajs-frameless:not(.ajs-resizable) .ajs-dialog {\n  padding-top: 0;\n}\n.alertify.ajs-frameless:not(.ajs-resizable) .ajs-dialog .ajs-commands {\n  margin-top: 0;\n}\n.ajs-no-overflow {\n  overflow: hidden !important;\n  outline: none;\n}\n.ajs-no-overflow.ajs-fixed {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  overflow-y: scroll!important;\n}\n.ajs-no-selection,\n.ajs-no-selection * {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n@media screen and (max-width: 568px) {\n  .alertify .ajs-dialog {\n    min-width: 150px;\n  }\n  .alertify:not(.ajs-maximized) .ajs-modal {\n    padding: 0 5%;\n  }\n  .alertify:not(.ajs-maximized).ajs-resizable .ajs-dialog {\n    min-width: initial;\n    min-width: auto /*IE fallback*/;\n  }\n}\n@-moz-document url-prefix() {\n  .alertify button:focus {\n    outline: 1px dotted #3593D2;\n  }\n}\n.alertify .ajs-dimmer,\n.alertify .ajs-modal {\n  -webkit-transform: translate3d(0, 0, 0);\n          transform: translate3d(0, 0, 0);\n  transition-property: opacity, visibility;\n  transition-timing-function: linear;\n  transition-duration: 250ms;\n}\n.alertify.ajs-hidden .ajs-dimmer,\n.alertify.ajs-hidden .ajs-modal {\n  visibility: hidden;\n  opacity: 0;\n}\n.alertify.ajs-in:not(.ajs-hidden) .ajs-dialog {\n  -webkit-animation-duration: 500ms;\n          animation-duration: 500ms;\n}\n.alertify.ajs-out.ajs-hidden .ajs-dialog {\n  -webkit-animation-duration: 250ms;\n          animation-duration: 250ms;\n}\n.alertify .ajs-dialog.ajs-shake {\n  -webkit-animation-name: ajs-shake;\n          animation-name: ajs-shake;\n  -webkit-animation-duration: .1s;\n          animation-duration: .1s;\n  -webkit-animation-fill-mode: both;\n          animation-fill-mode: both;\n}\n@-webkit-keyframes ajs-shake {\n  0%,\n  100% {\n    -webkit-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n  }\n  10%,\n  30%,\n  50%,\n  70%,\n  90% {\n    -webkit-transform: translate3d(-10px, 0, 0);\n            transform: translate3d(-10px, 0, 0);\n  }\n  20%,\n  40%,\n  60%,\n  80% {\n    -webkit-transform: translate3d(10px, 0, 0);\n            transform: translate3d(10px, 0, 0);\n  }\n}\n@keyframes ajs-shake {\n  0%,\n  100% {\n    -webkit-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n  }\n  10%,\n  30%,\n  50%,\n  70%,\n  90% {\n    -webkit-transform: translate3d(-10px, 0, 0);\n            transform: translate3d(-10px, 0, 0);\n  }\n  20%,\n  40%,\n  60%,\n  80% {\n    -webkit-transform: translate3d(10px, 0, 0);\n            transform: translate3d(10px, 0, 0);\n  }\n}\n.alertify.ajs-slide.ajs-in:not(.ajs-hidden) .ajs-dialog {\n  -webkit-animation-name: ajs-slideIn;\n          animation-name: ajs-slideIn;\n  -webkit-animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);\n          animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);\n}\n.alertify.ajs-slide.ajs-out.ajs-hidden .ajs-dialog {\n  -webkit-animation-name: ajs-slideOut;\n          animation-name: ajs-slideOut;\n  -webkit-animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.045);\n          animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.045);\n}\n.alertify.ajs-zoom.ajs-in:not(.ajs-hidden) .ajs-dialog {\n  -webkit-animation-name: ajs-zoomIn;\n          animation-name: ajs-zoomIn;\n}\n.alertify.ajs-zoom.ajs-out.ajs-hidden .ajs-dialog {\n  -webkit-animation-name: ajs-zoomOut;\n          animation-name: ajs-zoomOut;\n}\n.alertify.ajs-fade.ajs-in:not(.ajs-hidden) .ajs-dialog {\n  -webkit-animation-name: ajs-fadeIn;\n          animation-name: ajs-fadeIn;\n}\n.alertify.ajs-fade.ajs-out.ajs-hidden .ajs-dialog {\n  -webkit-animation-name: ajs-fadeOut;\n          animation-name: ajs-fadeOut;\n}\n.alertify.ajs-pulse.ajs-in:not(.ajs-hidden) .ajs-dialog {\n  -webkit-animation-name: ajs-pulseIn;\n          animation-name: ajs-pulseIn;\n}\n.alertify.ajs-pulse.ajs-out.ajs-hidden .ajs-dialog {\n  -webkit-animation-name: ajs-pulseOut;\n          animation-name: ajs-pulseOut;\n}\n.alertify.ajs-flipx.ajs-in:not(.ajs-hidden) .ajs-dialog {\n  -webkit-animation-name: ajs-flipInX;\n          animation-name: ajs-flipInX;\n}\n.alertify.ajs-flipx.ajs-out.ajs-hidden .ajs-dialog {\n  -webkit-animation-name: ajs-flipOutX;\n          animation-name: ajs-flipOutX;\n}\n.alertify.ajs-flipy.ajs-in:not(.ajs-hidden) .ajs-dialog {\n  -webkit-animation-name: ajs-flipInY;\n          animation-name: ajs-flipInY;\n}\n.alertify.ajs-flipy.ajs-out.ajs-hidden .ajs-dialog {\n  -webkit-animation-name: ajs-flipOutY;\n          animation-name: ajs-flipOutY;\n}\n@-webkit-keyframes ajs-pulseIn {\n  0%,\n  20%,\n  40%,\n  60%,\n  80%,\n  100% {\n    transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);\n  }\n  0% {\n    opacity: 0;\n    -webkit-transform: scale3d(0.3, 0.3, 0.3);\n            transform: scale3d(0.3, 0.3, 0.3);\n  }\n  20% {\n    -webkit-transform: scale3d(1.1, 1.1, 1.1);\n            transform: scale3d(1.1, 1.1, 1.1);\n  }\n  40% {\n    -webkit-transform: scale3d(0.9, 0.9, 0.9);\n            transform: scale3d(0.9, 0.9, 0.9);\n  }\n  60% {\n    opacity: 1;\n    -webkit-transform: scale3d(1.03, 1.03, 1.03);\n            transform: scale3d(1.03, 1.03, 1.03);\n  }\n  80% {\n    -webkit-transform: scale3d(0.97, 0.97, 0.97);\n            transform: scale3d(0.97, 0.97, 0.97);\n  }\n  100% {\n    opacity: 1;\n    -webkit-transform: scale3d(1, 1, 1);\n            transform: scale3d(1, 1, 1);\n  }\n}\n@keyframes ajs-pulseIn {\n  0%,\n  20%,\n  40%,\n  60%,\n  80%,\n  100% {\n    transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);\n  }\n  0% {\n    opacity: 0;\n    -webkit-transform: scale3d(0.3, 0.3, 0.3);\n            transform: scale3d(0.3, 0.3, 0.3);\n  }\n  20% {\n    -webkit-transform: scale3d(1.1, 1.1, 1.1);\n            transform: scale3d(1.1, 1.1, 1.1);\n  }\n  40% {\n    -webkit-transform: scale3d(0.9, 0.9, 0.9);\n            transform: scale3d(0.9, 0.9, 0.9);\n  }\n  60% {\n    opacity: 1;\n    -webkit-transform: scale3d(1.03, 1.03, 1.03);\n            transform: scale3d(1.03, 1.03, 1.03);\n  }\n  80% {\n    -webkit-transform: scale3d(0.97, 0.97, 0.97);\n            transform: scale3d(0.97, 0.97, 0.97);\n  }\n  100% {\n    opacity: 1;\n    -webkit-transform: scale3d(1, 1, 1);\n            transform: scale3d(1, 1, 1);\n  }\n}\n@-webkit-keyframes ajs-pulseOut {\n  20% {\n    -webkit-transform: scale3d(0.9, 0.9, 0.9);\n            transform: scale3d(0.9, 0.9, 0.9);\n  }\n  50%,\n  55% {\n    opacity: 1;\n    -webkit-transform: scale3d(1.1, 1.1, 1.1);\n            transform: scale3d(1.1, 1.1, 1.1);\n  }\n  100% {\n    opacity: 0;\n    -webkit-transform: scale3d(0.3, 0.3, 0.3);\n            transform: scale3d(0.3, 0.3, 0.3);\n  }\n}\n@keyframes ajs-pulseOut {\n  20% {\n    -webkit-transform: scale3d(0.9, 0.9, 0.9);\n            transform: scale3d(0.9, 0.9, 0.9);\n  }\n  50%,\n  55% {\n    opacity: 1;\n    -webkit-transform: scale3d(1.1, 1.1, 1.1);\n            transform: scale3d(1.1, 1.1, 1.1);\n  }\n  100% {\n    opacity: 0;\n    -webkit-transform: scale3d(0.3, 0.3, 0.3);\n            transform: scale3d(0.3, 0.3, 0.3);\n  }\n}\n@-webkit-keyframes ajs-zoomIn {\n  0% {\n    opacity: 0;\n    -webkit-transform: scale3d(0.25, 0.25, 0.25);\n            transform: scale3d(0.25, 0.25, 0.25);\n  }\n  100% {\n    opacity: 1;\n    -webkit-transform: scale3d(1, 1, 1);\n            transform: scale3d(1, 1, 1);\n  }\n}\n@keyframes ajs-zoomIn {\n  0% {\n    opacity: 0;\n    -webkit-transform: scale3d(0.25, 0.25, 0.25);\n            transform: scale3d(0.25, 0.25, 0.25);\n  }\n  100% {\n    opacity: 1;\n    -webkit-transform: scale3d(1, 1, 1);\n            transform: scale3d(1, 1, 1);\n  }\n}\n@-webkit-keyframes ajs-zoomOut {\n  0% {\n    opacity: 1;\n    -webkit-transform: scale3d(1, 1, 1);\n            transform: scale3d(1, 1, 1);\n  }\n  100% {\n    opacity: 0;\n    -webkit-transform: scale3d(0.25, 0.25, 0.25);\n            transform: scale3d(0.25, 0.25, 0.25);\n  }\n}\n@keyframes ajs-zoomOut {\n  0% {\n    opacity: 1;\n    -webkit-transform: scale3d(1, 1, 1);\n            transform: scale3d(1, 1, 1);\n  }\n  100% {\n    opacity: 0;\n    -webkit-transform: scale3d(0.25, 0.25, 0.25);\n            transform: scale3d(0.25, 0.25, 0.25);\n  }\n}\n@-webkit-keyframes ajs-fadeIn {\n  0% {\n    opacity: 0;\n  }\n  100% {\n    opacity: 1;\n  }\n}\n@keyframes ajs-fadeIn {\n  0% {\n    opacity: 0;\n  }\n  100% {\n    opacity: 1;\n  }\n}\n@-webkit-keyframes ajs-fadeOut {\n  0% {\n    opacity: 1;\n  }\n  100% {\n    opacity: 0;\n  }\n}\n@keyframes ajs-fadeOut {\n  0% {\n    opacity: 1;\n  }\n  100% {\n    opacity: 0;\n  }\n}\n@-webkit-keyframes ajs-flipInX {\n  0% {\n    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, 90deg);\n            transform: perspective(400px) rotate3d(1, 0, 0, 90deg);\n    transition-timing-function: ease-in;\n    opacity: 0;\n  }\n  40% {\n    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, -20deg);\n            transform: perspective(400px) rotate3d(1, 0, 0, -20deg);\n    transition-timing-function: ease-in;\n  }\n  60% {\n    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, 10deg);\n            transform: perspective(400px) rotate3d(1, 0, 0, 10deg);\n    opacity: 1;\n  }\n  80% {\n    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, -5deg);\n            transform: perspective(400px) rotate3d(1, 0, 0, -5deg);\n  }\n  100% {\n    -webkit-transform: perspective(400px);\n            transform: perspective(400px);\n  }\n}\n@keyframes ajs-flipInX {\n  0% {\n    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, 90deg);\n            transform: perspective(400px) rotate3d(1, 0, 0, 90deg);\n    transition-timing-function: ease-in;\n    opacity: 0;\n  }\n  40% {\n    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, -20deg);\n            transform: perspective(400px) rotate3d(1, 0, 0, -20deg);\n    transition-timing-function: ease-in;\n  }\n  60% {\n    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, 10deg);\n            transform: perspective(400px) rotate3d(1, 0, 0, 10deg);\n    opacity: 1;\n  }\n  80% {\n    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, -5deg);\n            transform: perspective(400px) rotate3d(1, 0, 0, -5deg);\n  }\n  100% {\n    -webkit-transform: perspective(400px);\n            transform: perspective(400px);\n  }\n}\n@-webkit-keyframes ajs-flipOutX {\n  0% {\n    -webkit-transform: perspective(400px);\n            transform: perspective(400px);\n  }\n  30% {\n    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, -20deg);\n            transform: perspective(400px) rotate3d(1, 0, 0, -20deg);\n    opacity: 1;\n  }\n  100% {\n    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, 90deg);\n            transform: perspective(400px) rotate3d(1, 0, 0, 90deg);\n    opacity: 0;\n  }\n}\n@keyframes ajs-flipOutX {\n  0% {\n    -webkit-transform: perspective(400px);\n            transform: perspective(400px);\n  }\n  30% {\n    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, -20deg);\n            transform: perspective(400px) rotate3d(1, 0, 0, -20deg);\n    opacity: 1;\n  }\n  100% {\n    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, 90deg);\n            transform: perspective(400px) rotate3d(1, 0, 0, 90deg);\n    opacity: 0;\n  }\n}\n@-webkit-keyframes ajs-flipInY {\n  0% {\n    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, 90deg);\n            transform: perspective(400px) rotate3d(0, 1, 0, 90deg);\n    transition-timing-function: ease-in;\n    opacity: 0;\n  }\n  40% {\n    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, -20deg);\n            transform: perspective(400px) rotate3d(0, 1, 0, -20deg);\n    transition-timing-function: ease-in;\n  }\n  60% {\n    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, 10deg);\n            transform: perspective(400px) rotate3d(0, 1, 0, 10deg);\n    opacity: 1;\n  }\n  80% {\n    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, -5deg);\n            transform: perspective(400px) rotate3d(0, 1, 0, -5deg);\n  }\n  100% {\n    -webkit-transform: perspective(400px);\n            transform: perspective(400px);\n  }\n}\n@keyframes ajs-flipInY {\n  0% {\n    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, 90deg);\n            transform: perspective(400px) rotate3d(0, 1, 0, 90deg);\n    transition-timing-function: ease-in;\n    opacity: 0;\n  }\n  40% {\n    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, -20deg);\n            transform: perspective(400px) rotate3d(0, 1, 0, -20deg);\n    transition-timing-function: ease-in;\n  }\n  60% {\n    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, 10deg);\n            transform: perspective(400px) rotate3d(0, 1, 0, 10deg);\n    opacity: 1;\n  }\n  80% {\n    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, -5deg);\n            transform: perspective(400px) rotate3d(0, 1, 0, -5deg);\n  }\n  100% {\n    -webkit-transform: perspective(400px);\n            transform: perspective(400px);\n  }\n}\n@-webkit-keyframes ajs-flipOutY {\n  0% {\n    -webkit-transform: perspective(400px);\n            transform: perspective(400px);\n  }\n  30% {\n    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, -15deg);\n            transform: perspective(400px) rotate3d(0, 1, 0, -15deg);\n    opacity: 1;\n  }\n  100% {\n    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, 90deg);\n            transform: perspective(400px) rotate3d(0, 1, 0, 90deg);\n    opacity: 0;\n  }\n}\n@keyframes ajs-flipOutY {\n  0% {\n    -webkit-transform: perspective(400px);\n            transform: perspective(400px);\n  }\n  30% {\n    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, -15deg);\n            transform: perspective(400px) rotate3d(0, 1, 0, -15deg);\n    opacity: 1;\n  }\n  100% {\n    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, 90deg);\n            transform: perspective(400px) rotate3d(0, 1, 0, 90deg);\n    opacity: 0;\n  }\n}\n@-webkit-keyframes ajs-slideIn {\n  0% {\n    margin-top: -100%;\n  }\n  100% {\n    margin-top: 5%;\n  }\n}\n@keyframes ajs-slideIn {\n  0% {\n    margin-top: -100%;\n  }\n  100% {\n    margin-top: 5%;\n  }\n}\n@-webkit-keyframes ajs-slideOut {\n  0% {\n    margin-top: 5%;\n  }\n  100% {\n    margin-top: -100%;\n  }\n}\n@keyframes ajs-slideOut {\n  0% {\n    margin-top: 5%;\n  }\n  100% {\n    margin-top: -100%;\n  }\n}\n.alertify-notifier {\n  position: fixed;\n  width: 0;\n  overflow: visible;\n  z-index: 1982;\n  -webkit-transform: translate3d(0, 0, 0);\n          transform: translate3d(0, 0, 0);\n}\n.alertify-notifier .ajs-message {\n  position: relative;\n  width: 260px;\n  max-height: 0;\n  padding: 0;\n  opacity: 0;\n  margin: 0;\n  -webkit-transform: translate3d(0, 0, 0);\n          transform: translate3d(0, 0, 0);\n  transition-duration: 250ms;\n  transition-timing-function: linear;\n}\n.alertify-notifier .ajs-message.ajs-visible {\n  transition-duration: 500ms;\n  transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);\n  opacity: 1;\n  max-height: 100%;\n  padding: 15px;\n  margin-top: 10px;\n}\n.alertify-notifier .ajs-message.ajs-success {\n  background: rgba(91, 189, 114, 0.95);\n}\n.alertify-notifier .ajs-message.ajs-error {\n  background: rgba(217, 92, 92, 0.95);\n}\n.alertify-notifier .ajs-message.ajs-warning {\n  background: rgba(252, 248, 215, 0.95);\n}\n.alertify-notifier .ajs-message .ajs-close {\n  position: absolute;\n  top: 0;\n  right: 0;\n  width: 16px;\n  height: 16px;\n  cursor: pointer;\n  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAABGdBTUEAALGPC/xhBQAAAFBJREFUGBl1j0EKADEIA+ve/P9f9bh1hEihNBfjVCO1v7RKVqJK4h8gM5cAPR42AkQEpSXPwMTyoi13n5N9YqJehm3Fnr7nL1D0ZEbD5OubGyC7a9gx+9eNAAAAAElFTkSuQmCC);\n  background-repeat: no-repeat;\n  background-position: center center;\n  background-color: rgba(0, 0, 0, 0.5);\n  border-top-right-radius: 2px;\n}\n.alertify-notifier.ajs-top {\n  top: 10px;\n}\n.alertify-notifier.ajs-bottom {\n  bottom: 10px;\n}\n.alertify-notifier.ajs-right {\n  right: 10px;\n}\n.alertify-notifier.ajs-right .ajs-message {\n  right: -320px;\n}\n.alertify-notifier.ajs-right .ajs-message.ajs-visible {\n  right: 290px;\n}\n.alertify-notifier.ajs-left {\n  left: 10px;\n}\n.alertify-notifier.ajs-left .ajs-message {\n  left: -300px;\n}\n.alertify-notifier.ajs-left .ajs-message.ajs-visible {\n  left: 0;\n}\n", ""]);
+exports.push([module.i, "/**\r\n * alertifyjs 1.10.0 http://alertifyjs.com\r\n * AlertifyJS is a javascript framework for developing pretty browser dialogs and notifications.\r\n * Copyright 2017 Mohammad Younes <Mohammad@alertifyjs.com> (http://alertifyjs.com) \r\n * Licensed under GPL 3 <https://opensource.org/licenses/gpl-3.0>*/\r\n.alertify .ajs-dimmer {\r\n  position: fixed;\r\n  z-index: 1981;\r\n  top: 0;\r\n  right: 0;\r\n  bottom: 0;\r\n  left: 0;\r\n  padding: 0;\r\n  margin: 0;\r\n  background-color: #252525;\r\n  opacity: .5;\r\n}\r\n.alertify .ajs-modal {\r\n  position: fixed;\r\n  top: 0;\r\n  right: 0;\r\n  left: 0;\r\n  bottom: 0;\r\n  padding: 0;\r\n  overflow-y: auto;\r\n  z-index: 1981;\r\n}\r\n.alertify .ajs-dialog {\r\n  position: relative;\r\n  margin: 5% auto;\r\n  min-height: 110px;\r\n  max-width: 500px;\r\n  padding: 24px 24px 0 24px;\r\n  outline: 0;\r\n  background-color: #fff;\r\n}\r\n.alertify .ajs-dialog.ajs-capture:before {\r\n  content: '';\r\n  position: absolute;\r\n  top: 0;\r\n  right: 0;\r\n  bottom: 0;\r\n  left: 0;\r\n  display: block;\r\n  z-index: 1;\r\n}\r\n.alertify .ajs-reset {\r\n  position: absolute !important;\r\n  display: inline !important;\r\n  width: 0 !important;\r\n  height: 0 !important;\r\n  opacity: 0 !important;\r\n}\r\n.alertify .ajs-commands {\r\n  position: absolute;\r\n  right: 4px;\r\n  margin: -14px 24px 0 0;\r\n  z-index: 2;\r\n}\r\n.alertify .ajs-commands button {\r\n  display: none;\r\n  width: 10px;\r\n  height: 10px;\r\n  margin-left: 10px;\r\n  padding: 10px;\r\n  border: 0;\r\n  background-color: transparent;\r\n  background-repeat: no-repeat;\r\n  background-position: center;\r\n  cursor: pointer;\r\n}\r\n.alertify .ajs-commands button.ajs-close {\r\n  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABZ0RVh0Q3JlYXRpb24gVGltZQAwNy8xMy8xNOrZqugAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzbovLKMAAAAh0lEQVQYlY2QsQ0EIQwEB9cBAR1CJUaI/gigDnwR6NBL/7/xWLNrZ2b8EwGotVpr7eOitWa1VjugiNB7R1UPrKrWe0dEAHBbXUqxMQbeewDmnHjvyTm7C3zDwAUd9c63YQdUVdu6EAJzzquz7HXvTiklt+H9DQFYaxFjvDqllFyMkbXWvfpXHjJrWFgdBq/hAAAAAElFTkSuQmCC);\r\n}\r\n.alertify .ajs-commands button.ajs-maximize {\r\n  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABZ0RVh0Q3JlYXRpb24gVGltZQAwNy8xMy8xNOrZqugAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzbovLKMAAAAOUlEQVQYlWP8//8/AzGAhYGBgaG4uBiv6t7eXkYmooxjYGAgWiELsvHYFMCcRX2rSXcjoSBiJDbAAeD+EGu+8BZcAAAAAElFTkSuQmCC);\r\n}\r\n.alertify .ajs-header {\r\n  margin: -24px;\r\n  margin-bottom: 0;\r\n  padding: 16px 24px;\r\n  background-color: #fff;\r\n}\r\n.alertify .ajs-body {\r\n  min-height: 56px;\r\n}\r\n.alertify .ajs-body .ajs-content {\r\n  padding: 16px 24px 16px 16px;\r\n}\r\n.alertify .ajs-footer {\r\n  padding: 4px;\r\n  margin-left: -24px;\r\n  margin-right: -24px;\r\n  min-height: 43px;\r\n  background-color: #fff;\r\n}\r\n.alertify .ajs-footer .ajs-buttons.ajs-primary {\r\n  text-align: right;\r\n}\r\n.alertify .ajs-footer .ajs-buttons.ajs-primary .ajs-button {\r\n  margin: 4px;\r\n}\r\n.alertify .ajs-footer .ajs-buttons.ajs-auxiliary {\r\n  float: left;\r\n  clear: none;\r\n  text-align: left;\r\n}\r\n.alertify .ajs-footer .ajs-buttons.ajs-auxiliary .ajs-button {\r\n  margin: 4px;\r\n}\r\n.alertify .ajs-footer .ajs-buttons .ajs-button {\r\n  min-width: 88px;\r\n  min-height: 35px;\r\n}\r\n.alertify .ajs-handle {\r\n  position: absolute;\r\n  display: none;\r\n  width: 10px;\r\n  height: 10px;\r\n  right: 0;\r\n  bottom: 0;\r\n  z-index: 1;\r\n  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABZ0RVh0Q3JlYXRpb24gVGltZQAwNy8xMS8xNEDQYmMAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzbovLKMAAAAQ0lEQVQYlaXNMQoAIAxD0dT7H657l0KX3iJuUlBUNOsPPCGJm7VDp6ryeMxMuDsAQH7owW3pyn3RS26iKxERMLN3ugOaAkaL3sWVigAAAABJRU5ErkJggg==);\r\n  -webkit-transform: scaleX(1) /*rtl:scaleX(-1)*/;\r\n          transform: scaleX(1) /*rtl:scaleX(-1)*/;\r\n  cursor: se-resize;\r\n}\r\n.alertify.ajs-no-overflow .ajs-body .ajs-content {\r\n  overflow: hidden !important;\r\n}\r\n.alertify.ajs-no-padding.ajs-maximized .ajs-body .ajs-content {\r\n  left: 0;\r\n  right: 0;\r\n  padding: 0;\r\n}\r\n.alertify.ajs-no-padding:not(.ajs-maximized) .ajs-body {\r\n  margin-left: -24px;\r\n  margin-right: -24px;\r\n}\r\n.alertify.ajs-no-padding:not(.ajs-maximized) .ajs-body .ajs-content {\r\n  padding: 0;\r\n}\r\n.alertify.ajs-no-padding.ajs-resizable .ajs-body .ajs-content {\r\n  left: 0;\r\n  right: 0;\r\n}\r\n.alertify.ajs-maximizable .ajs-commands button.ajs-maximize,\r\n.alertify.ajs-maximizable .ajs-commands button.ajs-restore {\r\n  display: inline-block;\r\n}\r\n.alertify.ajs-closable .ajs-commands button.ajs-close {\r\n  display: inline-block;\r\n}\r\n.alertify.ajs-maximized .ajs-dialog {\r\n  width: 100% !important;\r\n  height: 100% !important;\r\n  max-width: none !important;\r\n  margin: 0 auto !important;\r\n  top: 0 !important;\r\n  left: 0 !important;\r\n}\r\n.alertify.ajs-maximized.ajs-modeless .ajs-modal {\r\n  position: fixed !important;\r\n  min-height: 100% !important;\r\n  max-height: none !important;\r\n  margin: 0 !important;\r\n}\r\n.alertify.ajs-maximized .ajs-commands button.ajs-maximize {\r\n  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABZ0RVh0Q3JlYXRpb24gVGltZQAwNy8xMy8xNOrZqugAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzbovLKMAAAASklEQVQYlZWQ0QkAMQhDtXRincOZX78KVtrDCwgqJNEoIB3MPLj7lRUROlpyVXGzby6zWuY+kz6tj5sBMTMAyVV3/595RbOh3cAXsww1raeiOcoAAAAASUVORK5CYII=);\r\n}\r\n.alertify.ajs-resizable .ajs-dialog,\r\n.alertify.ajs-maximized .ajs-dialog {\r\n  padding: 0;\r\n}\r\n.alertify.ajs-resizable .ajs-commands,\r\n.alertify.ajs-maximized .ajs-commands {\r\n  margin: 14px 24px 0 0;\r\n}\r\n.alertify.ajs-resizable .ajs-header,\r\n.alertify.ajs-maximized .ajs-header {\r\n  position: absolute;\r\n  top: 0;\r\n  left: 0;\r\n  right: 0;\r\n  margin: 0;\r\n  padding: 16px 24px;\r\n}\r\n.alertify.ajs-resizable .ajs-body,\r\n.alertify.ajs-maximized .ajs-body {\r\n  min-height: 224px;\r\n  display: inline-block;\r\n}\r\n.alertify.ajs-resizable .ajs-body .ajs-content,\r\n.alertify.ajs-maximized .ajs-body .ajs-content {\r\n  position: absolute;\r\n  top: 50px;\r\n  right: 24px;\r\n  bottom: 50px;\r\n  left: 24px;\r\n  overflow: auto;\r\n}\r\n.alertify.ajs-resizable .ajs-footer,\r\n.alertify.ajs-maximized .ajs-footer {\r\n  position: absolute;\r\n  left: 0;\r\n  right: 0;\r\n  bottom: 0;\r\n  margin: 0;\r\n}\r\n.alertify.ajs-resizable:not(.ajs-maximized) .ajs-dialog {\r\n  min-width: 548px;\r\n}\r\n.alertify.ajs-resizable:not(.ajs-maximized) .ajs-handle {\r\n  display: block;\r\n}\r\n.alertify.ajs-movable:not(.ajs-maximized) .ajs-header {\r\n  cursor: move;\r\n}\r\n.alertify.ajs-modeless .ajs-dimmer,\r\n.alertify.ajs-modeless .ajs-reset {\r\n  display: none;\r\n}\r\n.alertify.ajs-modeless .ajs-modal {\r\n  overflow: visible;\r\n  max-width: none;\r\n  max-height: 0;\r\n}\r\n.alertify.ajs-modeless.ajs-pinnable .ajs-commands button.ajs-pin {\r\n  display: inline-block;\r\n  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABZ0RVh0Q3JlYXRpb24gVGltZQAwNy8xMy8xNOrZqugAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzbovLKMAAAAQklEQVQYlcWPMQ4AIAwCqU9u38GbcbHRWN1MvKQDhQFMEpKImGJA0gCgnYw0V0rwxseg5erT4oSkQVI5d9f+e9+xA0NbLpWfitPXAAAAAElFTkSuQmCC);\r\n}\r\n.alertify.ajs-modeless.ajs-unpinned .ajs-modal {\r\n  position: absolute;\r\n}\r\n.alertify.ajs-modeless.ajs-unpinned .ajs-commands button.ajs-pin {\r\n  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABZ0RVh0Q3JlYXRpb24gVGltZQAwNy8xMy8xNOrZqugAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzbovLKMAAAAO0lEQVQYlWP8//8/AzGAiShV6AqLi4txGs+CLoBLMYbC3t5eRmyaWfBZhwwYkX2NTxPRvibKjRhW4wMAhxkYGbLu3pEAAAAASUVORK5CYII=);\r\n}\r\n.alertify.ajs-modeless:not(.ajs-unpinned) .ajs-body {\r\n  max-height: 500px;\r\n  overflow: auto;\r\n}\r\n.alertify.ajs-basic .ajs-header {\r\n  opacity: 0;\r\n}\r\n.alertify.ajs-basic .ajs-footer {\r\n  visibility: hidden;\r\n}\r\n.alertify.ajs-frameless .ajs-header {\r\n  position: absolute;\r\n  top: 0;\r\n  left: 0;\r\n  right: 0;\r\n  min-height: 60px;\r\n  margin: 0;\r\n  padding: 0;\r\n  opacity: 0;\r\n  z-index: 1;\r\n}\r\n.alertify.ajs-frameless .ajs-footer {\r\n  display: none;\r\n}\r\n.alertify.ajs-frameless .ajs-body .ajs-content {\r\n  position: absolute;\r\n  top: 0;\r\n  right: 0;\r\n  bottom: 0;\r\n  left: 0;\r\n}\r\n.alertify.ajs-frameless:not(.ajs-resizable) .ajs-dialog {\r\n  padding-top: 0;\r\n}\r\n.alertify.ajs-frameless:not(.ajs-resizable) .ajs-dialog .ajs-commands {\r\n  margin-top: 0;\r\n}\r\n.ajs-no-overflow {\r\n  overflow: hidden !important;\r\n  outline: none;\r\n}\r\n.ajs-no-overflow.ajs-fixed {\r\n  position: fixed;\r\n  top: 0;\r\n  right: 0;\r\n  bottom: 0;\r\n  left: 0;\r\n  overflow-y: scroll!important;\r\n}\r\n.ajs-no-selection,\r\n.ajs-no-selection * {\r\n  -webkit-user-select: none;\r\n     -moz-user-select: none;\r\n      -ms-user-select: none;\r\n          user-select: none;\r\n}\r\n@media screen and (max-width: 568px) {\r\n  .alertify .ajs-dialog {\r\n    min-width: 150px;\r\n  }\r\n  .alertify:not(.ajs-maximized) .ajs-modal {\r\n    padding: 0 5%;\r\n  }\r\n  .alertify:not(.ajs-maximized).ajs-resizable .ajs-dialog {\r\n    min-width: initial;\r\n    min-width: auto /*IE fallback*/;\r\n  }\r\n}\r\n@-moz-document url-prefix() {\r\n  .alertify button:focus {\r\n    outline: 1px dotted #3593D2;\r\n  }\r\n}\r\n.alertify .ajs-dimmer,\r\n.alertify .ajs-modal {\r\n  -webkit-transform: translate3d(0, 0, 0);\r\n          transform: translate3d(0, 0, 0);\r\n  transition-property: opacity, visibility;\r\n  transition-timing-function: linear;\r\n  transition-duration: 250ms;\r\n}\r\n.alertify.ajs-hidden .ajs-dimmer,\r\n.alertify.ajs-hidden .ajs-modal {\r\n  visibility: hidden;\r\n  opacity: 0;\r\n}\r\n.alertify.ajs-in:not(.ajs-hidden) .ajs-dialog {\r\n  -webkit-animation-duration: 500ms;\r\n          animation-duration: 500ms;\r\n}\r\n.alertify.ajs-out.ajs-hidden .ajs-dialog {\r\n  -webkit-animation-duration: 250ms;\r\n          animation-duration: 250ms;\r\n}\r\n.alertify .ajs-dialog.ajs-shake {\r\n  -webkit-animation-name: ajs-shake;\r\n          animation-name: ajs-shake;\r\n  -webkit-animation-duration: .1s;\r\n          animation-duration: .1s;\r\n  -webkit-animation-fill-mode: both;\r\n          animation-fill-mode: both;\r\n}\r\n@-webkit-keyframes ajs-shake {\r\n  0%,\r\n  100% {\r\n    -webkit-transform: translate3d(0, 0, 0);\r\n            transform: translate3d(0, 0, 0);\r\n  }\r\n  10%,\r\n  30%,\r\n  50%,\r\n  70%,\r\n  90% {\r\n    -webkit-transform: translate3d(-10px, 0, 0);\r\n            transform: translate3d(-10px, 0, 0);\r\n  }\r\n  20%,\r\n  40%,\r\n  60%,\r\n  80% {\r\n    -webkit-transform: translate3d(10px, 0, 0);\r\n            transform: translate3d(10px, 0, 0);\r\n  }\r\n}\r\n@keyframes ajs-shake {\r\n  0%,\r\n  100% {\r\n    -webkit-transform: translate3d(0, 0, 0);\r\n            transform: translate3d(0, 0, 0);\r\n  }\r\n  10%,\r\n  30%,\r\n  50%,\r\n  70%,\r\n  90% {\r\n    -webkit-transform: translate3d(-10px, 0, 0);\r\n            transform: translate3d(-10px, 0, 0);\r\n  }\r\n  20%,\r\n  40%,\r\n  60%,\r\n  80% {\r\n    -webkit-transform: translate3d(10px, 0, 0);\r\n            transform: translate3d(10px, 0, 0);\r\n  }\r\n}\r\n.alertify.ajs-slide.ajs-in:not(.ajs-hidden) .ajs-dialog {\r\n  -webkit-animation-name: ajs-slideIn;\r\n          animation-name: ajs-slideIn;\r\n  -webkit-animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);\r\n          animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);\r\n}\r\n.alertify.ajs-slide.ajs-out.ajs-hidden .ajs-dialog {\r\n  -webkit-animation-name: ajs-slideOut;\r\n          animation-name: ajs-slideOut;\r\n  -webkit-animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.045);\r\n          animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.045);\r\n}\r\n.alertify.ajs-zoom.ajs-in:not(.ajs-hidden) .ajs-dialog {\r\n  -webkit-animation-name: ajs-zoomIn;\r\n          animation-name: ajs-zoomIn;\r\n}\r\n.alertify.ajs-zoom.ajs-out.ajs-hidden .ajs-dialog {\r\n  -webkit-animation-name: ajs-zoomOut;\r\n          animation-name: ajs-zoomOut;\r\n}\r\n.alertify.ajs-fade.ajs-in:not(.ajs-hidden) .ajs-dialog {\r\n  -webkit-animation-name: ajs-fadeIn;\r\n          animation-name: ajs-fadeIn;\r\n}\r\n.alertify.ajs-fade.ajs-out.ajs-hidden .ajs-dialog {\r\n  -webkit-animation-name: ajs-fadeOut;\r\n          animation-name: ajs-fadeOut;\r\n}\r\n.alertify.ajs-pulse.ajs-in:not(.ajs-hidden) .ajs-dialog {\r\n  -webkit-animation-name: ajs-pulseIn;\r\n          animation-name: ajs-pulseIn;\r\n}\r\n.alertify.ajs-pulse.ajs-out.ajs-hidden .ajs-dialog {\r\n  -webkit-animation-name: ajs-pulseOut;\r\n          animation-name: ajs-pulseOut;\r\n}\r\n.alertify.ajs-flipx.ajs-in:not(.ajs-hidden) .ajs-dialog {\r\n  -webkit-animation-name: ajs-flipInX;\r\n          animation-name: ajs-flipInX;\r\n}\r\n.alertify.ajs-flipx.ajs-out.ajs-hidden .ajs-dialog {\r\n  -webkit-animation-name: ajs-flipOutX;\r\n          animation-name: ajs-flipOutX;\r\n}\r\n.alertify.ajs-flipy.ajs-in:not(.ajs-hidden) .ajs-dialog {\r\n  -webkit-animation-name: ajs-flipInY;\r\n          animation-name: ajs-flipInY;\r\n}\r\n.alertify.ajs-flipy.ajs-out.ajs-hidden .ajs-dialog {\r\n  -webkit-animation-name: ajs-flipOutY;\r\n          animation-name: ajs-flipOutY;\r\n}\r\n@-webkit-keyframes ajs-pulseIn {\r\n  0%,\r\n  20%,\r\n  40%,\r\n  60%,\r\n  80%,\r\n  100% {\r\n    transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);\r\n  }\r\n  0% {\r\n    opacity: 0;\r\n    -webkit-transform: scale3d(0.3, 0.3, 0.3);\r\n            transform: scale3d(0.3, 0.3, 0.3);\r\n  }\r\n  20% {\r\n    -webkit-transform: scale3d(1.1, 1.1, 1.1);\r\n            transform: scale3d(1.1, 1.1, 1.1);\r\n  }\r\n  40% {\r\n    -webkit-transform: scale3d(0.9, 0.9, 0.9);\r\n            transform: scale3d(0.9, 0.9, 0.9);\r\n  }\r\n  60% {\r\n    opacity: 1;\r\n    -webkit-transform: scale3d(1.03, 1.03, 1.03);\r\n            transform: scale3d(1.03, 1.03, 1.03);\r\n  }\r\n  80% {\r\n    -webkit-transform: scale3d(0.97, 0.97, 0.97);\r\n            transform: scale3d(0.97, 0.97, 0.97);\r\n  }\r\n  100% {\r\n    opacity: 1;\r\n    -webkit-transform: scale3d(1, 1, 1);\r\n            transform: scale3d(1, 1, 1);\r\n  }\r\n}\r\n@keyframes ajs-pulseIn {\r\n  0%,\r\n  20%,\r\n  40%,\r\n  60%,\r\n  80%,\r\n  100% {\r\n    transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);\r\n  }\r\n  0% {\r\n    opacity: 0;\r\n    -webkit-transform: scale3d(0.3, 0.3, 0.3);\r\n            transform: scale3d(0.3, 0.3, 0.3);\r\n  }\r\n  20% {\r\n    -webkit-transform: scale3d(1.1, 1.1, 1.1);\r\n            transform: scale3d(1.1, 1.1, 1.1);\r\n  }\r\n  40% {\r\n    -webkit-transform: scale3d(0.9, 0.9, 0.9);\r\n            transform: scale3d(0.9, 0.9, 0.9);\r\n  }\r\n  60% {\r\n    opacity: 1;\r\n    -webkit-transform: scale3d(1.03, 1.03, 1.03);\r\n            transform: scale3d(1.03, 1.03, 1.03);\r\n  }\r\n  80% {\r\n    -webkit-transform: scale3d(0.97, 0.97, 0.97);\r\n            transform: scale3d(0.97, 0.97, 0.97);\r\n  }\r\n  100% {\r\n    opacity: 1;\r\n    -webkit-transform: scale3d(1, 1, 1);\r\n            transform: scale3d(1, 1, 1);\r\n  }\r\n}\r\n@-webkit-keyframes ajs-pulseOut {\r\n  20% {\r\n    -webkit-transform: scale3d(0.9, 0.9, 0.9);\r\n            transform: scale3d(0.9, 0.9, 0.9);\r\n  }\r\n  50%,\r\n  55% {\r\n    opacity: 1;\r\n    -webkit-transform: scale3d(1.1, 1.1, 1.1);\r\n            transform: scale3d(1.1, 1.1, 1.1);\r\n  }\r\n  100% {\r\n    opacity: 0;\r\n    -webkit-transform: scale3d(0.3, 0.3, 0.3);\r\n            transform: scale3d(0.3, 0.3, 0.3);\r\n  }\r\n}\r\n@keyframes ajs-pulseOut {\r\n  20% {\r\n    -webkit-transform: scale3d(0.9, 0.9, 0.9);\r\n            transform: scale3d(0.9, 0.9, 0.9);\r\n  }\r\n  50%,\r\n  55% {\r\n    opacity: 1;\r\n    -webkit-transform: scale3d(1.1, 1.1, 1.1);\r\n            transform: scale3d(1.1, 1.1, 1.1);\r\n  }\r\n  100% {\r\n    opacity: 0;\r\n    -webkit-transform: scale3d(0.3, 0.3, 0.3);\r\n            transform: scale3d(0.3, 0.3, 0.3);\r\n  }\r\n}\r\n@-webkit-keyframes ajs-zoomIn {\r\n  0% {\r\n    opacity: 0;\r\n    -webkit-transform: scale3d(0.25, 0.25, 0.25);\r\n            transform: scale3d(0.25, 0.25, 0.25);\r\n  }\r\n  100% {\r\n    opacity: 1;\r\n    -webkit-transform: scale3d(1, 1, 1);\r\n            transform: scale3d(1, 1, 1);\r\n  }\r\n}\r\n@keyframes ajs-zoomIn {\r\n  0% {\r\n    opacity: 0;\r\n    -webkit-transform: scale3d(0.25, 0.25, 0.25);\r\n            transform: scale3d(0.25, 0.25, 0.25);\r\n  }\r\n  100% {\r\n    opacity: 1;\r\n    -webkit-transform: scale3d(1, 1, 1);\r\n            transform: scale3d(1, 1, 1);\r\n  }\r\n}\r\n@-webkit-keyframes ajs-zoomOut {\r\n  0% {\r\n    opacity: 1;\r\n    -webkit-transform: scale3d(1, 1, 1);\r\n            transform: scale3d(1, 1, 1);\r\n  }\r\n  100% {\r\n    opacity: 0;\r\n    -webkit-transform: scale3d(0.25, 0.25, 0.25);\r\n            transform: scale3d(0.25, 0.25, 0.25);\r\n  }\r\n}\r\n@keyframes ajs-zoomOut {\r\n  0% {\r\n    opacity: 1;\r\n    -webkit-transform: scale3d(1, 1, 1);\r\n            transform: scale3d(1, 1, 1);\r\n  }\r\n  100% {\r\n    opacity: 0;\r\n    -webkit-transform: scale3d(0.25, 0.25, 0.25);\r\n            transform: scale3d(0.25, 0.25, 0.25);\r\n  }\r\n}\r\n@-webkit-keyframes ajs-fadeIn {\r\n  0% {\r\n    opacity: 0;\r\n  }\r\n  100% {\r\n    opacity: 1;\r\n  }\r\n}\r\n@keyframes ajs-fadeIn {\r\n  0% {\r\n    opacity: 0;\r\n  }\r\n  100% {\r\n    opacity: 1;\r\n  }\r\n}\r\n@-webkit-keyframes ajs-fadeOut {\r\n  0% {\r\n    opacity: 1;\r\n  }\r\n  100% {\r\n    opacity: 0;\r\n  }\r\n}\r\n@keyframes ajs-fadeOut {\r\n  0% {\r\n    opacity: 1;\r\n  }\r\n  100% {\r\n    opacity: 0;\r\n  }\r\n}\r\n@-webkit-keyframes ajs-flipInX {\r\n  0% {\r\n    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, 90deg);\r\n            transform: perspective(400px) rotate3d(1, 0, 0, 90deg);\r\n    transition-timing-function: ease-in;\r\n    opacity: 0;\r\n  }\r\n  40% {\r\n    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, -20deg);\r\n            transform: perspective(400px) rotate3d(1, 0, 0, -20deg);\r\n    transition-timing-function: ease-in;\r\n  }\r\n  60% {\r\n    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, 10deg);\r\n            transform: perspective(400px) rotate3d(1, 0, 0, 10deg);\r\n    opacity: 1;\r\n  }\r\n  80% {\r\n    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, -5deg);\r\n            transform: perspective(400px) rotate3d(1, 0, 0, -5deg);\r\n  }\r\n  100% {\r\n    -webkit-transform: perspective(400px);\r\n            transform: perspective(400px);\r\n  }\r\n}\r\n@keyframes ajs-flipInX {\r\n  0% {\r\n    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, 90deg);\r\n            transform: perspective(400px) rotate3d(1, 0, 0, 90deg);\r\n    transition-timing-function: ease-in;\r\n    opacity: 0;\r\n  }\r\n  40% {\r\n    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, -20deg);\r\n            transform: perspective(400px) rotate3d(1, 0, 0, -20deg);\r\n    transition-timing-function: ease-in;\r\n  }\r\n  60% {\r\n    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, 10deg);\r\n            transform: perspective(400px) rotate3d(1, 0, 0, 10deg);\r\n    opacity: 1;\r\n  }\r\n  80% {\r\n    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, -5deg);\r\n            transform: perspective(400px) rotate3d(1, 0, 0, -5deg);\r\n  }\r\n  100% {\r\n    -webkit-transform: perspective(400px);\r\n            transform: perspective(400px);\r\n  }\r\n}\r\n@-webkit-keyframes ajs-flipOutX {\r\n  0% {\r\n    -webkit-transform: perspective(400px);\r\n            transform: perspective(400px);\r\n  }\r\n  30% {\r\n    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, -20deg);\r\n            transform: perspective(400px) rotate3d(1, 0, 0, -20deg);\r\n    opacity: 1;\r\n  }\r\n  100% {\r\n    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, 90deg);\r\n            transform: perspective(400px) rotate3d(1, 0, 0, 90deg);\r\n    opacity: 0;\r\n  }\r\n}\r\n@keyframes ajs-flipOutX {\r\n  0% {\r\n    -webkit-transform: perspective(400px);\r\n            transform: perspective(400px);\r\n  }\r\n  30% {\r\n    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, -20deg);\r\n            transform: perspective(400px) rotate3d(1, 0, 0, -20deg);\r\n    opacity: 1;\r\n  }\r\n  100% {\r\n    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, 90deg);\r\n            transform: perspective(400px) rotate3d(1, 0, 0, 90deg);\r\n    opacity: 0;\r\n  }\r\n}\r\n@-webkit-keyframes ajs-flipInY {\r\n  0% {\r\n    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, 90deg);\r\n            transform: perspective(400px) rotate3d(0, 1, 0, 90deg);\r\n    transition-timing-function: ease-in;\r\n    opacity: 0;\r\n  }\r\n  40% {\r\n    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, -20deg);\r\n            transform: perspective(400px) rotate3d(0, 1, 0, -20deg);\r\n    transition-timing-function: ease-in;\r\n  }\r\n  60% {\r\n    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, 10deg);\r\n            transform: perspective(400px) rotate3d(0, 1, 0, 10deg);\r\n    opacity: 1;\r\n  }\r\n  80% {\r\n    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, -5deg);\r\n            transform: perspective(400px) rotate3d(0, 1, 0, -5deg);\r\n  }\r\n  100% {\r\n    -webkit-transform: perspective(400px);\r\n            transform: perspective(400px);\r\n  }\r\n}\r\n@keyframes ajs-flipInY {\r\n  0% {\r\n    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, 90deg);\r\n            transform: perspective(400px) rotate3d(0, 1, 0, 90deg);\r\n    transition-timing-function: ease-in;\r\n    opacity: 0;\r\n  }\r\n  40% {\r\n    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, -20deg);\r\n            transform: perspective(400px) rotate3d(0, 1, 0, -20deg);\r\n    transition-timing-function: ease-in;\r\n  }\r\n  60% {\r\n    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, 10deg);\r\n            transform: perspective(400px) rotate3d(0, 1, 0, 10deg);\r\n    opacity: 1;\r\n  }\r\n  80% {\r\n    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, -5deg);\r\n            transform: perspective(400px) rotate3d(0, 1, 0, -5deg);\r\n  }\r\n  100% {\r\n    -webkit-transform: perspective(400px);\r\n            transform: perspective(400px);\r\n  }\r\n}\r\n@-webkit-keyframes ajs-flipOutY {\r\n  0% {\r\n    -webkit-transform: perspective(400px);\r\n            transform: perspective(400px);\r\n  }\r\n  30% {\r\n    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, -15deg);\r\n            transform: perspective(400px) rotate3d(0, 1, 0, -15deg);\r\n    opacity: 1;\r\n  }\r\n  100% {\r\n    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, 90deg);\r\n            transform: perspective(400px) rotate3d(0, 1, 0, 90deg);\r\n    opacity: 0;\r\n  }\r\n}\r\n@keyframes ajs-flipOutY {\r\n  0% {\r\n    -webkit-transform: perspective(400px);\r\n            transform: perspective(400px);\r\n  }\r\n  30% {\r\n    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, -15deg);\r\n            transform: perspective(400px) rotate3d(0, 1, 0, -15deg);\r\n    opacity: 1;\r\n  }\r\n  100% {\r\n    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, 90deg);\r\n            transform: perspective(400px) rotate3d(0, 1, 0, 90deg);\r\n    opacity: 0;\r\n  }\r\n}\r\n@-webkit-keyframes ajs-slideIn {\r\n  0% {\r\n    margin-top: -100%;\r\n  }\r\n  100% {\r\n    margin-top: 5%;\r\n  }\r\n}\r\n@keyframes ajs-slideIn {\r\n  0% {\r\n    margin-top: -100%;\r\n  }\r\n  100% {\r\n    margin-top: 5%;\r\n  }\r\n}\r\n@-webkit-keyframes ajs-slideOut {\r\n  0% {\r\n    margin-top: 5%;\r\n  }\r\n  100% {\r\n    margin-top: -100%;\r\n  }\r\n}\r\n@keyframes ajs-slideOut {\r\n  0% {\r\n    margin-top: 5%;\r\n  }\r\n  100% {\r\n    margin-top: -100%;\r\n  }\r\n}\r\n.alertify-notifier {\r\n  position: fixed;\r\n  width: 0;\r\n  overflow: visible;\r\n  z-index: 1982;\r\n  -webkit-transform: translate3d(0, 0, 0);\r\n          transform: translate3d(0, 0, 0);\r\n}\r\n.alertify-notifier .ajs-message {\r\n  position: relative;\r\n  width: 260px;\r\n  max-height: 0;\r\n  padding: 0;\r\n  opacity: 0;\r\n  margin: 0;\r\n  -webkit-transform: translate3d(0, 0, 0);\r\n          transform: translate3d(0, 0, 0);\r\n  transition-duration: 250ms;\r\n  transition-timing-function: linear;\r\n}\r\n.alertify-notifier .ajs-message.ajs-visible {\r\n  transition-duration: 500ms;\r\n  transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);\r\n  opacity: 1;\r\n  max-height: 100%;\r\n  padding: 15px;\r\n  margin-top: 10px;\r\n}\r\n.alertify-notifier .ajs-message.ajs-success {\r\n  background: rgba(91, 189, 114, 0.95);\r\n}\r\n.alertify-notifier .ajs-message.ajs-error {\r\n  background: rgba(217, 92, 92, 0.95);\r\n}\r\n.alertify-notifier .ajs-message.ajs-warning {\r\n  background: rgba(252, 248, 215, 0.95);\r\n}\r\n.alertify-notifier .ajs-message .ajs-close {\r\n  position: absolute;\r\n  top: 0;\r\n  right: 0;\r\n  width: 16px;\r\n  height: 16px;\r\n  cursor: pointer;\r\n  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAABGdBTUEAALGPC/xhBQAAAFBJREFUGBl1j0EKADEIA+ve/P9f9bh1hEihNBfjVCO1v7RKVqJK4h8gM5cAPR42AkQEpSXPwMTyoi13n5N9YqJehm3Fnr7nL1D0ZEbD5OubGyC7a9gx+9eNAAAAAElFTkSuQmCC);\r\n  background-repeat: no-repeat;\r\n  background-position: center center;\r\n  background-color: rgba(0, 0, 0, 0.5);\r\n  border-top-right-radius: 2px;\r\n}\r\n.alertify-notifier.ajs-top {\r\n  top: 10px;\r\n}\r\n.alertify-notifier.ajs-bottom {\r\n  bottom: 10px;\r\n}\r\n.alertify-notifier.ajs-right {\r\n  right: 10px;\r\n}\r\n.alertify-notifier.ajs-right .ajs-message {\r\n  right: -320px;\r\n}\r\n.alertify-notifier.ajs-right .ajs-message.ajs-visible {\r\n  right: 290px;\r\n}\r\n.alertify-notifier.ajs-left {\r\n  left: 10px;\r\n}\r\n.alertify-notifier.ajs-left .ajs-message {\r\n  left: -300px;\r\n}\r\n.alertify-notifier.ajs-left .ajs-message.ajs-visible {\r\n  left: 0;\r\n}\r\n", ""]);
 
 // exports
 
@@ -27740,7 +27763,7 @@ exports = module.exports = __webpack_require__(2)(undefined);
 
 
 // module
-exports.push([module.i, "/**\r\n * alertifyjs 1.10.0 http://alertifyjs.com\r\n * AlertifyJS is a javascript framework for developing pretty browser dialogs and notifications.\r\n * Copyright 2017 Mohammad Younes <Mohammad@alertifyjs.com> (http://alertifyjs.com) \r\n * Licensed under GPL 3 <https://opensource.org/licenses/gpl-3.0>*/\r\n.alertify .ajs-dimmer {\n  background-color: #000;\n  opacity: .5;\n}\n.alertify .ajs-dialog {\n  max-width: 600px;\n  min-height: 122px;\n  background-color: #fff;\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);\n  border-radius: 6px;\n}\n.alertify .ajs-header {\n  color: #333;\n  border-bottom: 1px solid #e5e5e5;\n  border-radius: 6px 6px 0 0;\n  font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n  font-size: 18px;\n}\n.alertify .ajs-body {\n  font-family: 'Roboto', sans-serif;\n  color: black;\n}\n.alertify.ajs-resizable .ajs-content,\n.alertify.ajs-maximized:not(.ajs-resizable) .ajs-content {\n  top: 58px;\n  bottom: 68px;\n}\n.alertify .ajs-footer {\n  background-color: #fff;\n  padding: 15px;\n  border-top: 1px solid #e5e5e5;\n  border-radius: 0 0 6px 6px;\n}\n.alertify-notifier .ajs-message {\n  background: rgba(255, 255, 255, 0.95);\n  color: #000;\n  text-align: center;\n  border: solid 1px #ddd;\n  border-radius: 2px;\n}\n.alertify-notifier .ajs-message.ajs-success {\n  color: #fff;\n  background: rgba(91, 189, 114, 0.95);\n  text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.5);\n}\n.alertify-notifier .ajs-message.ajs-error {\n  color: #fff;\n  background: rgba(217, 92, 92, 0.95);\n  text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.5);\n}\n.alertify-notifier .ajs-message.ajs-warning {\n  background: rgba(252, 248, 215, 0.95);\n  border-color: #999;\n}\n", ""]);
+exports.push([module.i, "/**\r\n * alertifyjs 1.10.0 http://alertifyjs.com\r\n * AlertifyJS is a javascript framework for developing pretty browser dialogs and notifications.\r\n * Copyright 2017 Mohammad Younes <Mohammad@alertifyjs.com> (http://alertifyjs.com) \r\n * Licensed under GPL 3 <https://opensource.org/licenses/gpl-3.0>*/\r\n.alertify .ajs-dimmer {\r\n  background-color: #000;\r\n  opacity: .5;\r\n}\r\n.alertify .ajs-dialog {\r\n  max-width: 600px;\r\n  min-height: 122px;\r\n  background-color: #fff;\r\n  border: 1px solid rgba(0, 0, 0, 0.2);\r\n  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);\r\n  border-radius: 6px;\r\n}\r\n.alertify .ajs-header {\r\n  color: #333;\r\n  border-bottom: 1px solid #e5e5e5;\r\n  border-radius: 6px 6px 0 0;\r\n  font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\r\n  font-size: 18px;\r\n}\r\n.alertify .ajs-body {\r\n  font-family: 'Roboto', sans-serif;\r\n  color: black;\r\n}\r\n.alertify.ajs-resizable .ajs-content,\r\n.alertify.ajs-maximized:not(.ajs-resizable) .ajs-content {\r\n  top: 58px;\r\n  bottom: 68px;\r\n}\r\n.alertify .ajs-footer {\r\n  background-color: #fff;\r\n  padding: 15px;\r\n  border-top: 1px solid #e5e5e5;\r\n  border-radius: 0 0 6px 6px;\r\n}\r\n.alertify-notifier .ajs-message {\r\n  background: rgba(255, 255, 255, 0.95);\r\n  color: #000;\r\n  text-align: center;\r\n  border: solid 1px #ddd;\r\n  border-radius: 2px;\r\n}\r\n.alertify-notifier .ajs-message.ajs-success {\r\n  color: #fff;\r\n  background: rgba(91, 189, 114, 0.95);\r\n  text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.5);\r\n}\r\n.alertify-notifier .ajs-message.ajs-error {\r\n  color: #fff;\r\n  background: rgba(217, 92, 92, 0.95);\r\n  text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.5);\r\n}\r\n.alertify-notifier .ajs-message.ajs-warning {\r\n  background: rgba(252, 248, 215, 0.95);\r\n  border-color: #999;\r\n}\r\n", ""]);
 
 // exports
 
@@ -28042,6 +28065,181 @@ try {
 // easier to handle this case. if(!global) { ...}
 
 module.exports = g;
+
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+ * JavaScript Cookie v2.1.4
+ * https://github.com/js-cookie/js-cookie
+ *
+ * Copyright 2006, 2015 Klaus Hartl & Fagner Brack
+ * Released under the MIT license
+ */
+;(function (factory) {
+	var registeredInModuleLoader = false;
+	if (true) {
+		!(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
+				__WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		registeredInModuleLoader = true;
+	}
+	if (true) {
+		module.exports = factory();
+		registeredInModuleLoader = true;
+	}
+	if (!registeredInModuleLoader) {
+		var OldCookies = window.Cookies;
+		var api = window.Cookies = factory();
+		api.noConflict = function () {
+			window.Cookies = OldCookies;
+			return api;
+		};
+	}
+}(function () {
+	function extend () {
+		var i = 0;
+		var result = {};
+		for (; i < arguments.length; i++) {
+			var attributes = arguments[ i ];
+			for (var key in attributes) {
+				result[key] = attributes[key];
+			}
+		}
+		return result;
+	}
+
+	function init (converter) {
+		function api (key, value, attributes) {
+			var result;
+			if (typeof document === 'undefined') {
+				return;
+			}
+
+			// Write
+
+			if (arguments.length > 1) {
+				attributes = extend({
+					path: '/'
+				}, api.defaults, attributes);
+
+				if (typeof attributes.expires === 'number') {
+					var expires = new Date();
+					expires.setMilliseconds(expires.getMilliseconds() + attributes.expires * 864e+5);
+					attributes.expires = expires;
+				}
+
+				// We're using "expires" because "max-age" is not supported by IE
+				attributes.expires = attributes.expires ? attributes.expires.toUTCString() : '';
+
+				try {
+					result = JSON.stringify(value);
+					if (/^[\{\[]/.test(result)) {
+						value = result;
+					}
+				} catch (e) {}
+
+				if (!converter.write) {
+					value = encodeURIComponent(String(value))
+						.replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g, decodeURIComponent);
+				} else {
+					value = converter.write(value, key);
+				}
+
+				key = encodeURIComponent(String(key));
+				key = key.replace(/%(23|24|26|2B|5E|60|7C)/g, decodeURIComponent);
+				key = key.replace(/[\(\)]/g, escape);
+
+				var stringifiedAttributes = '';
+
+				for (var attributeName in attributes) {
+					if (!attributes[attributeName]) {
+						continue;
+					}
+					stringifiedAttributes += '; ' + attributeName;
+					if (attributes[attributeName] === true) {
+						continue;
+					}
+					stringifiedAttributes += '=' + attributes[attributeName];
+				}
+				return (document.cookie = key + '=' + value + stringifiedAttributes);
+			}
+
+			// Read
+
+			if (!key) {
+				result = {};
+			}
+
+			// To prevent the for loop in the first place assign an empty array
+			// in case there are no cookies at all. Also prevents odd result when
+			// calling "get()"
+			var cookies = document.cookie ? document.cookie.split('; ') : [];
+			var rdecode = /(%[0-9A-Z]{2})+/g;
+			var i = 0;
+
+			for (; i < cookies.length; i++) {
+				var parts = cookies[i].split('=');
+				var cookie = parts.slice(1).join('=');
+
+				if (cookie.charAt(0) === '"') {
+					cookie = cookie.slice(1, -1);
+				}
+
+				try {
+					var name = parts[0].replace(rdecode, decodeURIComponent);
+					cookie = converter.read ?
+						converter.read(cookie, name) : converter(cookie, name) ||
+						cookie.replace(rdecode, decodeURIComponent);
+
+					if (this.json) {
+						try {
+							cookie = JSON.parse(cookie);
+						} catch (e) {}
+					}
+
+					if (key === name) {
+						result = cookie;
+						break;
+					}
+
+					if (!key) {
+						result[name] = cookie;
+					}
+				} catch (e) {}
+			}
+
+			return result;
+		}
+
+		api.set = api;
+		api.get = function (key) {
+			return api.call(api, key);
+		};
+		api.getJSON = function () {
+			return api.apply({
+				json: true
+			}, [].slice.call(arguments));
+		};
+		api.defaults = {};
+
+		api.remove = function (key, attributes) {
+			api(key, '', extend(attributes, {
+				expires: -1
+			}));
+		};
+
+		api.withConverter = init;
+
+		return api;
+	}
+
+	return init(function () {});
+}));
 
 
 /***/ })

@@ -2,8 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var controller = require("./controller");
 var alertifyjs = require("alertifyjs");
+var cookie = require("js-cookie");
 var g_data;
 var new_msg_cnt = 0;
+cookie.set("interval", "not set");
 function prepareInboxDocument() {
     $.getJSON("/Messages/MessageHeaders", parseMessages);
     $("#delete_selected_btn").click(function () { deleteMessages(); });
@@ -13,9 +15,12 @@ function prepareInboxDocument() {
         else
             $("input:checkbox").prop("checked", false);
     });
-    var interval = setInterval(function () {
-        updateHeaders();
-    }, 5000);
+    if (cookie.get("interval") == "not set") {
+        var interval = setInterval(function () {
+            updateHeaders();
+        }, 10000);
+        cookie.set("interval", interval);
+    }
 }
 exports.prepareInboxDocument = prepareInboxDocument;
 function parseMessages(data) {
@@ -49,11 +54,12 @@ function parseMessages(data) {
         tr.click(function () { controller.loadContent(this.id, "inbox"); });
         tr.first().children().first().click(function (e) { e.stopPropagation(); });
     }
-    $(controller.transitor).addClass(controller.transitorAcrivated);
     if (new_msg_cnt > 0)
         $("#inbox").html("Skrzynka odbiorcza (" + new_msg_cnt + ")");
     else
         $("#inbox").html("Skrzynka odbiorcza");
+    controller.enableTransition();
+    controller.hideLoader();
 }
 function updateHeaders() {
     $.getJSON("/Messages/MessageHeaders", function (data) {

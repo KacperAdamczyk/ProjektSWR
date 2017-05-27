@@ -1,5 +1,4 @@
 ﻿import * as controller from "./controller";
-import { quill_editor } from './newMessage_input';
 import { globalContainer } from "./controller";
 import * as alertifyjs from 'alertifyjs';
 import * as Quill from "quill";
@@ -60,7 +59,8 @@ function dispalyContent() {
   quill.setContents(JSON.parse(g_data.Content));
   quill.disable();
 
-  $(controller.transitor).addClass(controller.transitorAcrivated);
+  controller.enableTransition();
+  controller.hideLoader();
 }
 
 function deleteMessageInbox(id : number) {

@@ -13,6 +13,7 @@
     "@types/alertify": "^0.3.29",
     "@types/jquery": "^2.0.41",
     "@types/jqueryui": "^1.11.32",
+    "@types/js-cookie": "^2.0.28",
     "css-loader": "^0.28.0",
     "style-loader": "^0.17.0",
     "ts-loader": "^2.0.3",
@@ -22,8 +23,10 @@
     "webpack-init": "^0.1.2"
   },
   "dependencies": {
+    "@types/js-cookie": "^2.0.28",
     "alertifyjs": "^1.10.0",
     "jquery": "^3.2.1",
-    "jquery-ui": "^1.12.1"
+    "jquery-ui": "^1.12.1",
+    "js-cookie": "^2.1.4"
   }
 }

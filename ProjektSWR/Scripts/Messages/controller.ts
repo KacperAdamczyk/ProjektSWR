@@ -5,8 +5,8 @@ import * as new_message from "./newMessage";
 import * as content from "./MessageContent";
 
 export const globalContainer = "#content";
-export const transitor = ".transitor";
-export const transitorAcrivated = "trans-activated";
+const transitor = ".transitor";
+const transitorAcrivated = "trans-activated";
 
 $(document).ready(function () {
     loadInbox(); // domyślna zakładka
@@ -37,6 +37,7 @@ function load(label, url, fun) {
         url: "/Messages/" + url,
         success: function (data) {
             $(globalContainer).html(data);
+            showLoader();
             fun();
         }
     });
@@ -57,4 +58,16 @@ export function loadSent() {
 
 export function loadContent(id : number, type : string) {
     load(null, "Content", function() { content.prepareMessageContentDocument(id, type); });
+}
+
+export function hideLoader() {
+    $(".loader").hide();
+}
+
+export function showLoader() {
+    $(".loader").show();
+}
+
+export function enableTransition() {
+    $(transitor).addClass(transitorAcrivated);
 }
