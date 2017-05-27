@@ -74,19 +74,28 @@ namespace ProjektSWR.Controllers
         // GET: Panel
         public ActionResult Index()
         {
-            return View();
+            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true)
+                return View();
+            else
+                return RedirectToAction("../Account/Login");
         }
 
         // GET: Panel/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true)
+                return View();
+            else
+                return RedirectToAction("../Account/Login");
         }
 
         // GET: Panel/Create
         public ActionResult Create()
         {
-            return View();
+            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true)
+                return View();
+            else
+                return RedirectToAction("../Account/Login");
         }
 
         // POST: Panel/Create
@@ -101,14 +110,20 @@ namespace ProjektSWR.Controllers
             }
             catch
             {
-                return View();
+                if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true)
+                    return View();
+                else
+                    return RedirectToAction("../Account/Login");
             }
         }
 
         // GET: Panel/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true)
+                return View();
+            else
+                return RedirectToAction("../Account/Login");
         }
 
         // POST: Panel/Edit/5
@@ -123,14 +138,20 @@ namespace ProjektSWR.Controllers
             }
             catch
             {
-                return View();
+                if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true)
+                    return View();
+                else
+                    return RedirectToAction("../Account/Login");
             }
         }
 
         // GET: Panel/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true)
+                return View();
+            else
+                return RedirectToAction("../Account/Login");
         }
 
         // POST: Panel/Delete/5
@@ -145,7 +166,10 @@ namespace ProjektSWR.Controllers
             }
             catch
             {
-                return View();
+                if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true)
+                    return View();
+                else
+                    return RedirectToAction("../Account/Login");
             }
 
         }
@@ -155,7 +179,10 @@ namespace ProjektSWR.Controllers
         {
             var viewModel = new ManageUsersModel();
 
-            return View(viewModel);
+            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true)
+                return View(viewModel);
+            else
+                return RedirectToAction("../Account/Login");
         }
 
 
@@ -164,7 +191,10 @@ namespace ProjektSWR.Controllers
         public ActionResult ManageForums()
         {
 
-            return View();
+            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true)
+                return View();
+            else
+                return RedirectToAction("../Account/Login");
         }
 
 
@@ -196,7 +226,10 @@ namespace ProjektSWR.Controllers
         {
             var viewModel = new ManageUsersModel();
 
-            return View(viewModel);
+            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true)
+                return View(viewModel);
+            else
+                return RedirectToAction("../Account/Login");
         }
 
 
@@ -207,19 +240,25 @@ namespace ProjektSWR.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> LockUsers(ManageUsersModel model)
         {
-            if (ModelState.IsValid)
+            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true)
             {
-                var db = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
-                var user = UserManager.FindById(model.Id);
-                Cathedral c = db.Cathedrals.FirstOrDefault(x => x.Department == model.CathedralName);
-                user.CathedralID = c;
-                user.LockoutEndDateUtc = model.LockDate;
-                user.LockoutEnabled = true;
-                var result = await UserManager.UpdateAsync(user);
-                db.SaveChanges();
-                // If we got this far, something failed, redisplay form
+                if (ModelState.IsValid)
+                {
+                    var db = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
+                    var user = UserManager.FindById(model.Id);
+                    Cathedral c = db.Cathedrals.FirstOrDefault(x => x.Department == model.CathedralName);
+                    user.CathedralID = c;
+                    user.LockoutEndDateUtc = model.LockDate;
+                    user.LockoutEnabled = true;
+                    var result = await UserManager.UpdateAsync(user);
+                    db.SaveChanges();
+                    // If we got this far, something failed, redisplay form
+                }
+                return View(model);
             }
-            return View(model);
+            else
+                return RedirectToAction("../Account/Login");
+
         }
         // GET: /Panel/UnlockUsers
         [AllowAnonymous]
@@ -227,7 +266,10 @@ namespace ProjektSWR.Controllers
         {
             var viewModel = new ManageUsersModel();
 
-            return View(viewModel);
+            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true)
+                return View(viewModel);
+            else
+                return RedirectToAction("../Account/Login");
         }
 
 
@@ -238,23 +280,31 @@ namespace ProjektSWR.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> UnlockUsers(ManageUsersModel model)
         {
-            if (ModelState.IsValid)
+            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true)
             {
-                var db = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
-                var user = UserManager.FindById(model.Id);
-                Cathedral c = db.Cathedrals.FirstOrDefault(x => x.Department == model.CathedralName);
-                user.CathedralID = c;
-                user.LockoutEnabled = false;
-                var result = await UserManager.UpdateAsync(user);
-                db.SaveChanges();
-                // If we got this far, something failed, redisplay form
+                if (ModelState.IsValid)
+                {
+                    var db = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
+                    var user = UserManager.FindById(model.Id);
+                    Cathedral c = db.Cathedrals.FirstOrDefault(x => x.Department == model.CathedralName);
+                    user.CathedralID = c;
+                    user.LockoutEnabled = false;
+                    var result = await UserManager.UpdateAsync(user);
+                    db.SaveChanges();
+                    // If we got this far, something failed, redisplay form
+                }
+                return View(model);
             }
-            return View(model);
+            else
+                return RedirectToAction("../Account/Login");
         }
         // GET: Events/Create
         public ActionResult EventsCreate()
         {
-            return View();
+            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true)
+                return View();
+            else
+                return RedirectToAction("../Account/Login");
         }
 
         // POST: Events/Create
