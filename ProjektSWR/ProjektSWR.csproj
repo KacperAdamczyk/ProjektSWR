@@ -479,6 +479,8 @@
     <Content Include="Views\Panel\EventsDetails.cshtml" />
     <Content Include="Views\Panel\EventsEdit.cshtml" />
     <Content Include="Views\Forum\CreateReply.cshtml" />
+    <Content Include="Views\Panel\UserList.cshtml" />
+    <Content Include="Views\Panel\UserProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
