@@ -1,0 +1,20 @@
+﻿@model IEnumerable<ProjektSWR.Models.Forum>
+
+@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Forum dyskusyjne</h2>
+
+<table class="table">
+    @foreach (var i in Model)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(i.Name, "Cat", new { i = i.ID }, i.ID)
+            </td>
+        </tr>
+    }
+
+</table>
+

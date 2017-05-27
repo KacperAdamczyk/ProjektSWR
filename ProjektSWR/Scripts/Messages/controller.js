@@ -1,14 +1,19 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var $ = require("jquery");
 var inbox = require("./inbox");
 var sent = require("./sent");
 var new_message = require("./newMessage");
+var content = require("./MessageContent");
 exports.globalContainer = "#content";
+exports.transitor = ".transitor";
+exports.transitorAcrivated = "trans-activated";
 $(document).ready(function () {
     loadInbox(); // domyślna zakładka
-    $("#new_message").click(function () { loadNewMessage(); });
+    $("#new_message").click(function () { loadNewMessage(null, null); });
     $("#inbox").click(function () { loadInbox(); });
     $("#sent").click(function () { loadSent(); });
+    $(exports.transitor).addClass(exports.transitorAcrivated);
 });
 function changeActive(li) {
     var tags = ["inbox", "sent", "new_message"];
@@ -23,7 +28,8 @@ function changeActive(li) {
     }
 }
 function load(label, url, fun) {
-    changeActive(label);
+    if (label != null)
+        changeActive(label);
     $.ajax({
         url: "/Messages/" + url,
         success: function (data) {
@@ -32,8 +38,8 @@ function load(label, url, fun) {
         }
     });
 }
-function loadNewMessage() {
-    load("new_message", "Create", new_message.prepareNewMessageDocument);
+function loadNewMessage(responseTo, responseToId) {
+    load("new_message", "Create", function () { new_message.prepareNewMessageDocument(responseTo, responseToId); });
 }
 exports.loadNewMessage = loadNewMessage;
 function loadInbox() {
@@ -44,3 +50,7 @@ function loadSent() {
     load("sent", "Sent", sent.prepareSentDocument);
 }
 exports.loadSent = loadSent;
+function loadContent(id, type) {
+    load(null, "Content", function () { content.prepareMessageContentDocument(id, type); });
+}
+exports.loadContent = loadContent;

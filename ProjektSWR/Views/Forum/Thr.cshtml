@@ -1,0 +1,28 @@
+﻿@model ProjektSWR.Models.Category
+@{
+    ViewBag.Title = "Thread";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<table class="table">
+
+    @foreach (var th in Model.Threads)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(th.Name, "Rep", new { th = th.ID }, th.ID)
+            </td>
+        </tr>
+    }
+
+</table>
+<div>
+    @Html.ActionLink("Utwórz nowy wątek", "CreateThread")
+</div>
+
+<!--
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+    -->
