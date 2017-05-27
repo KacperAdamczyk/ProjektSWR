@@ -38,7 +38,7 @@ namespace ProjektSWR.Controllers
         public JsonResult Users()
         {
 
-            var users = db.Users.Select(x => new { x.FirstName, x.LastName, x.Email, x.CathedralID.Department, x.Id, x.LockoutEndDateUtc, x.LockoutEnabled });
+            var users = db.Users.Select(x => new { x.FirstName, x.LastName, x.Email, x.CathedralID.Department, x.Id, x.LockoutEndDateUtc, x.LockoutEnabled, x.UserConfirmed });
             return Json(users, JsonRequestBehavior.AllowGet);
             /*
             return Json(JsonConvert.SerializeObject(db.Users, Formatting.Indented,
@@ -405,6 +405,36 @@ namespace ProjektSWR.Controllers
                 return HttpNotFound();
             }
             return View(@user);
+
+            
+        }
+
+        public ActionResult ConfirmUsers()
+        {
+            return View();
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ConfirmUsers(ManageUsersModel model)
+        {
+            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true)
+            {
+                if (ModelState.IsValid)
+                {
+                    var db = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
+                    var user = UserManager.FindById(model.Id);
+                    Cathedral c = db.Cathedrals.FirstOrDefault(x => x.Department == model.CathedralName);
+                    user.CathedralID = c;
+                    user.UserConfirmed = true;
+                    var result = await UserManager.UpdateAsync(user);
+                    db.SaveChanges();
+                    // If we got this far, something failed, redisplay form
+                }
+                return View(model);
+            }
+            else
+                return RedirectToAction("../Account/Login");
         }
     }
 }
