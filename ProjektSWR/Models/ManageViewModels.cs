@@ -29,8 +29,7 @@ namespace ProjektSWR.Models
 
         public string Photo { get; set; }
 
-        [Required]
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
 
         public string Description { get; set; }
 
@@ -43,6 +42,8 @@ namespace ProjektSWR.Models
         [Required]
         [Display(Name = "Katedra: ")]
         public string CathedralName { get; set; }
+
+
     }
 
     public class ManageLoginsViewModel

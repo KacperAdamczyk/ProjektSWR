@@ -23,7 +23,7 @@ namespace ProjektSWR.Models
 
         public string Photo { get; set; }
 
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
 
         public string Description { get; set; }
 
