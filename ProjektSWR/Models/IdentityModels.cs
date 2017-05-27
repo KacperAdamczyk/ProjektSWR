@@ -40,6 +40,7 @@ namespace ProjektSWR.Models
         [Required] public virtual Cathedral CathedralID { get; set; }
         public virtual Admin AdminID { get; set; }
         public virtual NormalUser NormalUserID { get; set; }
+        public bool UserConfirmed { get; set; }
 
         public virtual ICollection<Recipient> Recipients { get; set; }
         public virtual ICollection<Message> Messages { get; set; }
