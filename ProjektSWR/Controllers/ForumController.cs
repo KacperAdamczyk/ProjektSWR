@@ -65,10 +65,28 @@ namespace ProjektSWR.Controllers
         }
 
         // GET: Forum/Create
-        public ActionResult CreateThread()
+        public ActionResult CreateThread(/*int? th*/)
         {
+            /*      if (th == null)
+                      return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                  var Category = db.Categories.Find(th);
+                  if (Category == null)
+                      return HttpNotFound();
+
+                  ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+
+                  Thread thread = new Thread
+                  {
+                      Email = currentUser?.Email,
+                      CategoryID = Category
+                  };
+                  return View(thread);*/
             return View();
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> refs/heads/pr/40
         public ActionResult CreateReply(int? th)
         {
             if (th == null)
@@ -114,13 +132,37 @@ namespace ProjektSWR.Controllers
                 return HttpNotFound();
 
             forum.ThreadID = Thread;
+<<<<<<< HEAD
 
                 db.Replys.Add(forum);
                 db.SaveChanges();
                 return RedirectToAction("Index");  
+=======
+            db.Replys.Add(forum);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateThread(int? th, [Bind(Include = "Name, MainMessage, Email")] Thread forum)
+        {
+            if (th == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            var Category = db.Categories.Find(th);
+            if (Category == null)
+                return HttpNotFound();
+
+            forum.CategoryID = Category;
+
+            db.Threads.Add(forum);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+>>>>>>> refs/heads/pr/40
         }
 
         // GET: Forum/Edit/5
+
         public ActionResult Edit(int? id)
         {
             if (id == null)
