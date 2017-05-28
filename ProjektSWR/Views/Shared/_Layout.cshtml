@@ -32,8 +32,10 @@
                       <li>@Html.ActionLink("Wiadomości", "index", "Messages", null, new { @class="white_link" })</li>
                       <li>@Html.ActionLink("Kalendarz", "Index", "Events", null, new { @class = "white_link" })</li>
                       <li>@Html.ActionLink("Panel", "Index", "Panel", null, new { @class = "white_link" })</li>
-                      <li id="notify"><button class="btn btn-primary"  type="button">
-                           Powiadomienia <span class="badge">68</span></button></li>
+                    <li id="notify"><button type="button" class="btn btn-primary show-notifications">
+                        Powiadomienia
+                        @Html.Action("UnreadBadge", "Notifications")
+                        </button></li>
                      }
                 </ul>
             </div>
@@ -48,5 +50,6 @@
         @Html.ActionLink("Kontakt", "Contact", "Home", null, new { @class = "white_link" })
     </footer>
     @RenderSection("scripts", required: false)
+    <script src="~/Scripts/Notifications.js"></script>
 </body>
 </html>
