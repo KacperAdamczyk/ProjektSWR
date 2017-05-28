@@ -78,17 +78,14 @@ namespace ProjektSWR.Controllers
 
             Thread thread = new Thread
             {
-               // UserID = currentUser?.Id,
+                UserID = currentUser,
                 Email = currentUser?.Email,
                 CategoryID = Category
             };
             return View(thread);
 
         }
-<<<<<<< HEAD
-=======
 
->>>>>>> refs/heads/pr/40
         public ActionResult CreateReply(int? th)
         {
             if (th == null)
@@ -121,20 +118,9 @@ namespace ProjektSWR.Controllers
             if (Category == null)
                 return HttpNotFound();
 
-<<<<<<< HEAD
-            forum.ThreadID = Thread;
-<<<<<<< HEAD
-
-                db.Replys.Add(forum);
-                db.SaveChanges();
-                return RedirectToAction("Index");  
-=======
-            db.Replys.Add(forum);
-=======
             forum.CategoryID = Category;
 
             db.Threads.Add(forum);
->>>>>>> refs/heads/pr/43
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -153,7 +139,6 @@ namespace ProjektSWR.Controllers
             db.Replys.Add(forum);
             db.SaveChanges();
             return RedirectToAction("Index");
->>>>>>> refs/heads/pr/40
         }
 
 
