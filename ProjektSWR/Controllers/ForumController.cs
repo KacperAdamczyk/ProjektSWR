@@ -65,23 +65,25 @@ namespace ProjektSWR.Controllers
         }
 
         // GET: Forum/Create
-        public ActionResult CreateThread(/*int? th*/)
+        public ActionResult CreateThread(int? th)
         {
-            /*      if (th == null)
-                      return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                  var Category = db.Categories.Find(th);
-                  if (Category == null)
-                      return HttpNotFound();
+            int x = 0;
+            if (th == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            var Category = db.Categories.Find(th);
+            if (Category == null)
+                return HttpNotFound();
 
-                  ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
 
-                  Thread thread = new Thread
-                  {
-                      Email = currentUser?.Email,
-                      CategoryID = Category
-                  };
-                  return View(thread);*/
-            return View();
+            Thread thread = new Thread
+            {
+               // UserID = currentUser?.Id,
+                Email = currentUser?.Email,
+                CategoryID = Category
+            };
+            return View(thread);
+
         }
 
         public ActionResult CreateReply(int? th)
@@ -105,19 +107,24 @@ namespace ProjektSWR.Controllers
         // POST: Forum/Create
         // Aby zapewnić ochronę przed atakami polegającymi na przesyłaniu dodatkowych danych, włącz określone właściwości, z którymi chcesz utworzyć powiązania.
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateThread([Bind(Include = "ID, Name, MainMessage, AdminID_ID, CategoryID_ID, UserID_Id")] Thread forum)
+        public ActionResult CreateThread(int? th, [Bind(Include = "Name, MainMessage, UserID_Id, Email")] Thread forum)
         {
-            if (ModelState.IsValid)
-            {
-                db.Threads.Add(forum);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+            if (th == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            var Category = db.Categories.Find(th);
+            if (Category == null)
+                return HttpNotFound();
 
-            return View(forum);
+            forum.CategoryID = Category;
+
+            db.Threads.Add(forum);
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CreateReply(int? th, [Bind(Include = "Email, Answer")] Reply forum)
@@ -134,22 +141,7 @@ namespace ProjektSWR.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult CreateThread(int? th, [Bind(Include = "Name, MainMessage, Email")] Thread forum)
-        {
-            if (th == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            var Category = db.Categories.Find(th);
-            if (Category == null)
-                return HttpNotFound();
 
-            forum.CategoryID = Category;
-
-            db.Threads.Add(forum);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
 
         // GET: Forum/Edit/5
 

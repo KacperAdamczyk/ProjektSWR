@@ -23,7 +23,7 @@
 </table>
 
 <div style="margin-left:100px">
-    @Html.ActionLink("Utwórz nowy wątek", "CreateThread")
+    @Html.ActionLink("Utwórz nowy wątek", "CreateThread", new { th = Model.ID }, Model.ID)
 </div>
 
 <!--
