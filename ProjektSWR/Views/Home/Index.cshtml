@@ -1,25 +1,5 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-<h1>Kalendarz ogólny</h1>
 
-<script>
-    var eventsList= [
-@foreach (var item in Model) {
-    @("{")
-        @:title: "@item.Title", //You will need ID here to identify object for EDIT it must be taken from DB
-        @:start: "@item.StartDate",
-        @:end: "@item.EndDate",
-        @:location: "@item.Location",
-        @:details: "@item.Details"
-    @("},")
-}
-        ]
-</script>
-<link href='~/Content/fullcalendar.min.css' rel='stylesheet' />
-<link href='~/Content/fullcalendar.print.css' rel='stylesheet' media='print' />
-<script src='~/Scripts/moment.js'></script>
-<script src='~/Scripts/Calendar/fullcalendar.min.js'></script>
-<script src="~/Scripts/Calendar/calendar.js"></script>
-<script src="~/Scripts/locale-all.js"></script>
-<div id='calendar'></div>
+<h1>Kalendarz ogólny</h1>
