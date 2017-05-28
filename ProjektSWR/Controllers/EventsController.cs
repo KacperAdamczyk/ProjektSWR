@@ -57,6 +57,20 @@ namespace ProjektSWR.Controllers
 
             return View(@event);
         }
+        // POST: Events/AjaxCreate
+          [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AjaxCreate([Bind(Include = "ID,Title,StartDate,EndDate,Location,Details")] Event @event)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Events.Add(@event);
+                db.SaveChanges();
+                return Json(true);
+            }
+
+            return View(@event);
+        }
 
         // GET: Events/Edit/5
         public ActionResult Edit(int? id)
@@ -84,11 +98,26 @@ namespace ProjektSWR.Controllers
             {
                 db.Entry(@event).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return Json(true);
             }
             return View(@event);
         }
 
+        // POST: Events/AjaxEdit/5
+        // Aby zapewnić ochronę przed atakami polegającymi na przesyłaniu dodatkowych danych, włącz określone właściwości, z którymi chcesz utworzyć powiązania.
+        // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AjaxEdit([Bind(Include = "ID,Title,StartDate,EndDate,Location,Details")] Event @event)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(@event).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(@event);
+        }
         // GET: Events/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -113,6 +142,17 @@ namespace ProjektSWR.Controllers
             db.Events.Remove(@event);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        // POST: Events/AjaxDelete/5
+        [HttpPost, ActionName("AjaxDelete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult AjaxDeleteConfirmed(int id)
+        {
+            Event @event = db.Events.Find(id);
+            db.Events.Remove(@event);
+            db.SaveChanges();
+            return Json(true);
         }
 
         protected override void Dispose(bool disposing)
