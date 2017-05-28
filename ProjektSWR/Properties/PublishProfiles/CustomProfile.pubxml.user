@@ -14,10 +14,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/21/2017 18:57:21</publishTime>
     </File>
     <File Include="App_Data/Data.mdf">
-      <publishTime>05/26/2017 21:37:59</publishTime>
+      <publishTime>05/28/2017 17:27:23</publishTime>
     </File>
     <File Include="App_Data/Data_log.ldf">
-      <publishTime>05/26/2017 21:37:59</publishTime>
+      <publishTime>05/28/2017 17:27:23</publishTime>
     </File>
     <File Include="bin/Antlr3.Runtime.dll">
       <publishTime>05/21/2017 18:57:37</publishTime>
@@ -176,10 +176,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/11/2017 15:41:05</publishTime>
     </File>
     <File Include="bin/ProjektSWR.dll">
-      <publishTime>05/26/2017 21:46:48</publishTime>
+      <publishTime>05/28/2017 17:32:33</publishTime>
     </File>
     <File Include="bin/ProjektSWR.pdb">
-      <publishTime>05/26/2017 21:46:48</publishTime>
+      <publishTime>05/28/2017 17:32:33</publishTime>
     </File>
     <File Include="bin/pt-BR/Microsoft.Build.resources.dll">
       <publishTime>05/11/2017 15:41:05</publishTime>
@@ -422,13 +422,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/21/2017 18:57:21</publishTime>
     </File>
     <File Include="Content/Messages.css">
-      <publishTime>05/26/2017 17:45:53</publishTime>
+      <publishTime>05/27/2017 23:21:01</publishTime>
     </File>
     <File Include="Content/Panel.css">
-      <publishTime>05/26/2017 17:45:53</publishTime>
+      <publishTime>05/27/2017 16:44:17</publishTime>
     </File>
     <File Include="Content/Site.css">
-      <publishTime>05/26/2017 17:45:53</publishTime>
+      <publishTime>05/27/2017 22:57:11</publishTime>
     </File>
     <File Include="Content/themes/base/accordion.css">
       <publishTime>05/21/2017 18:57:21</publishTime>
@@ -578,7 +578,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/21/2017 18:57:21</publishTime>
     </File>
     <File Include="package.json">
-      <publishTime>05/24/2017 09:43:29</publishTime>
+      <publishTime>05/27/2017 22:27:52</publishTime>
     </File>
     <File Include="packages.config">
       <publishTime>05/21/2017 18:57:37</publishTime>
@@ -590,16 +590,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/21/2017 18:57:21</publishTime>
     </File>
     <File Include="Scripts/Calendar/calendar.js">
-      <publishTime>05/25/2017 11:56:53</publishTime>
+      <publishTime>05/27/2017 16:44:17</publishTime>
     </File>
     <File Include="Scripts/Calendar/fullcalendar.js">
-      <publishTime>05/22/2017 13:19:57</publishTime>
+      <publishTime>05/27/2017 16:44:19</publishTime>
     </File>
     <File Include="Scripts/Calendar/fullcalendar.min.js">
-      <publishTime>05/22/2017 13:19:57</publishTime>
+      <publishTime>05/27/2017 16:44:19</publishTime>
     </File>
     <File Include="Scripts/Cathedral/cathedral.js">
-      <publishTime>05/25/2017 11:56:53</publishTime>
+      <publishTime>05/27/2017 16:44:17</publishTime>
     </File>
     <File Include="Scripts/gcal.js">
       <publishTime>05/21/2017 18:57:21</publishTime>
@@ -890,22 +890,22 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/21/2017 18:57:21</publishTime>
     </File>
     <File Include="Scripts/Messages/controller.js">
-      <publishTime>05/26/2017 22:26:38</publishTime>
+      <publishTime>05/28/2017 17:32:28</publishTime>
     </File>
     <File Include="Scripts/Messages/inbox.js">
-      <publishTime>05/26/2017 22:26:38</publishTime>
+      <publishTime>05/28/2017 17:32:28</publishTime>
     </File>
     <File Include="Scripts/Messages/MessageContent.js">
-      <publishTime>05/26/2017 22:26:38</publishTime>
+      <publishTime>05/28/2017 17:32:28</publishTime>
     </File>
     <File Include="Scripts/Messages/newMessage.js">
-      <publishTime>05/26/2017 22:26:38</publishTime>
+      <publishTime>05/28/2017 17:32:28</publishTime>
     </File>
     <File Include="Scripts/Messages/newMessage_input.js">
-      <publishTime>05/26/2017 22:26:38</publishTime>
+      <publishTime>05/28/2017 17:32:28</publishTime>
     </File>
     <File Include="Scripts/Messages/sent.js">
-      <publishTime>05/26/2017 22:26:38</publishTime>
+      <publishTime>05/28/2017 17:32:28</publishTime>
     </File>
     <File Include="Scripts/modernizr-2.8.3.js">
       <publishTime>05/21/2017 18:57:21</publishTime>
@@ -922,23 +922,26 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Scripts/moment.min.js">
       <publishTime>05/21/2017 18:57:21</publishTime>
     </File>
+    <File Include="Scripts/Panel/confirm.js">
+      <publishTime>05/27/2017 23:21:08</publishTime>
+    </File>
     <File Include="Scripts/Panel/index.js">
       <publishTime>05/21/2017 18:57:21</publishTime>
     </File>
     <File Include="Scripts/Panel/katedry.js">
-      <publishTime>05/26/2017 17:45:53</publishTime>
+      <publishTime>05/27/2017 16:44:17</publishTime>
     </File>
     <File Include="Scripts/Panel/lockedusers.js">
-      <publishTime>05/26/2017 17:45:53</publishTime>
+      <publishTime>05/27/2017 16:44:17</publishTime>
     </File>
     <File Include="Scripts/Panel/manage.js">
-      <publishTime>05/26/2017 17:45:53</publishTime>
+      <publishTime>05/27/2017 16:44:17</publishTime>
     </File>
     <File Include="Scripts/Panel/show.js">
-      <publishTime>05/26/2017 17:45:53</publishTime>
+      <publishTime>05/27/2017 16:44:17</publishTime>
     </File>
     <File Include="Scripts/Panel/show2.js">
-      <publishTime>05/26/2017 17:45:53</publishTime>
+      <publishTime>05/27/2017 16:44:17</publishTime>
     </File>
     <File Include="Scripts/respond.js">
       <publishTime>05/21/2017 18:57:21</publishTime>
@@ -962,10 +965,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/21/2017 18:57:21</publishTime>
     </File>
     <File Include="Views/Account/Login.cshtml">
-      <publishTime>05/25/2017 11:56:53</publishTime>
+      <publishTime>05/27/2017 16:44:17</publishTime>
     </File>
     <File Include="Views/Account/Register.cshtml">
-      <publishTime>05/25/2017 11:56:53</publishTime>
+      <publishTime>05/27/2017 16:44:17</publishTime>
     </File>
     <File Include="Views/Account/ResetPassword.cshtml">
       <publishTime>05/21/2017 18:57:21</publishTime>
@@ -989,46 +992,46 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/21/2017 18:57:21</publishTime>
     </File>
     <File Include="Views/Events/Create.cshtml">
-      <publishTime>05/22/2017 13:19:57</publishTime>
+      <publishTime>05/27/2017 16:44:17</publishTime>
     </File>
     <File Include="Views/Events/Delete.cshtml">
-      <publishTime>05/22/2017 13:19:57</publishTime>
+      <publishTime>05/27/2017 16:44:17</publishTime>
     </File>
     <File Include="Views/Events/Details.cshtml">
-      <publishTime>05/22/2017 13:19:57</publishTime>
+      <publishTime>05/27/2017 16:44:17</publishTime>
     </File>
     <File Include="Views/Events/Edit.cshtml">
-      <publishTime>05/22/2017 13:19:57</publishTime>
+      <publishTime>05/27/2017 16:44:17</publishTime>
     </File>
     <File Include="Views/Events/Index.cshtml">
-      <publishTime>05/25/2017 11:56:53</publishTime>
+      <publishTime>05/27/2017 16:44:17</publishTime>
     </File>
     <File Include="Views/Forum/Cat.cshtml">
-      <publishTime>05/25/2017 16:28:05</publishTime>
+      <publishTime>05/27/2017 16:44:17</publishTime>
     </File>
     <File Include="Views/Forum/CreateReply.cshtml">
-      <publishTime>05/26/2017 19:21:09</publishTime>
+      <publishTime>05/27/2017 16:56:28</publishTime>
     </File>
     <File Include="Views/Forum/CreateThread.cshtml">
-      <publishTime>05/26/2017 17:45:21</publishTime>
+      <publishTime>05/27/2017 16:44:17</publishTime>
     </File>
     <File Include="Views/Forum/Delete.cshtml">
-      <publishTime>05/25/2017 16:28:05</publishTime>
+      <publishTime>05/27/2017 16:44:17</publishTime>
     </File>
     <File Include="Views/Forum/Details.cshtml">
-      <publishTime>05/25/2017 16:28:05</publishTime>
+      <publishTime>05/27/2017 16:44:17</publishTime>
     </File>
     <File Include="Views/Forum/Edit.cshtml">
-      <publishTime>05/25/2017 16:28:05</publishTime>
+      <publishTime>05/27/2017 16:44:17</publishTime>
     </File>
     <File Include="Views/Forum/Index.cshtml">
-      <publishTime>05/25/2017 16:28:05</publishTime>
+      <publishTime>05/27/2017 16:44:17</publishTime>
     </File>
     <File Include="Views/Forum/Rep.cshtml">
-      <publishTime>05/26/2017 18:36:43</publishTime>
+      <publishTime>05/27/2017 16:56:28</publishTime>
     </File>
     <File Include="Views/Forum/Thr.cshtml">
-      <publishTime>05/25/2017 16:28:05</publishTime>
+      <publishTime>05/27/2017 16:44:17</publishTime>
     </File>
     <File Include="Views/Home/About.cshtml">
       <publishTime>05/21/2017 18:57:21</publishTime>
@@ -1043,58 +1046,67 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/21/2017 18:57:21</publishTime>
     </File>
     <File Include="Views/Manage/Index.cshtml">
-      <publishTime>05/21/2017 20:36:26</publishTime>
+      <publishTime>05/27/2017 16:56:28</publishTime>
     </File>
     <File Include="Views/Messages/Content.cshtml">
-      <publishTime>05/26/2017 17:45:53</publishTime>
+      <publishTime>05/27/2017 16:44:17</publishTime>
     </File>
     <File Include="Views/Messages/Create.cshtml">
-      <publishTime>05/26/2017 17:45:53</publishTime>
+      <publishTime>05/27/2017 16:44:17</publishTime>
     </File>
     <File Include="Views/Messages/Inbox.cshtml">
-      <publishTime>05/25/2017 07:52:58</publishTime>
+      <publishTime>05/27/2017 16:44:17</publishTime>
     </File>
     <File Include="Views/Messages/Index.cshtml">
-      <publishTime>05/26/2017 17:45:53</publishTime>
+      <publishTime>05/27/2017 22:27:51</publishTime>
     </File>
     <File Include="Views/Messages/Sent.cshtml">
-      <publishTime>05/25/2017 07:53:44</publishTime>
+      <publishTime>05/27/2017 16:44:17</publishTime>
+    </File>
+    <File Include="Views/Panel/ConfirmUsers.cshtml">
+      <publishTime>05/27/2017 23:21:08</publishTime>
     </File>
     <File Include="Views/Panel/EventsCreate.cshtml">
-      <publishTime>05/26/2017 17:45:53</publishTime>
+      <publishTime>05/27/2017 16:44:17</publishTime>
     </File>
     <File Include="Views/Panel/EventsDelete.cshtml">
-      <publishTime>05/26/2017 17:45:53</publishTime>
+      <publishTime>05/27/2017 16:44:17</publishTime>
     </File>
     <File Include="Views/Panel/EventsDetails.cshtml">
-      <publishTime>05/26/2017 17:45:53</publishTime>
+      <publishTime>05/27/2017 16:44:17</publishTime>
     </File>
     <File Include="Views/Panel/EventsEdit.cshtml">
-      <publishTime>05/26/2017 17:45:53</publishTime>
+      <publishTime>05/27/2017 16:44:17</publishTime>
     </File>
     <File Include="Views/Panel/EventsList.cshtml">
-      <publishTime>05/26/2017 17:45:53</publishTime>
+      <publishTime>05/27/2017 23:21:08</publishTime>
     </File>
     <File Include="Views/Panel/Index.cshtml">
-      <publishTime>05/26/2017 17:45:53</publishTime>
+      <publishTime>05/27/2017 23:21:08</publishTime>
     </File>
     <File Include="Views/Panel/LockUsers.cshtml">
-      <publishTime>05/26/2017 17:45:53</publishTime>
+      <publishTime>05/27/2017 23:21:08</publishTime>
     </File>
     <File Include="Views/Panel/ManageEvents.cshtml">
-      <publishTime>05/26/2017 17:45:53</publishTime>
+      <publishTime>05/27/2017 23:21:08</publishTime>
     </File>
     <File Include="Views/Panel/ManageForums.cshtml">
       <publishTime>05/21/2017 18:57:21</publishTime>
     </File>
     <File Include="Views/Panel/ManageUsers.cshtml">
-      <publishTime>05/26/2017 17:45:53</publishTime>
+      <publishTime>05/27/2017 23:21:08</publishTime>
     </File>
     <File Include="Views/Panel/UnlockUsers.cshtml">
-      <publishTime>05/26/2017 17:45:53</publishTime>
+      <publishTime>05/27/2017 23:21:08</publishTime>
+    </File>
+    <File Include="Views/Panel/UserList.cshtml">
+      <publishTime>05/27/2017 23:21:08</publishTime>
+    </File>
+    <File Include="Views/Panel/UserProfile.cshtml">
+      <publishTime>05/27/2017 22:28:14</publishTime>
     </File>
     <File Include="Views/Profile/Index.cshtml">
-      <publishTime>05/21/2017 20:36:26</publishTime>
+      <publishTime>05/27/2017 16:56:28</publishTime>
     </File>
     <File Include="Views/Shared/Error.cshtml">
       <publishTime>05/21/2017 18:57:21</publishTime>
@@ -1103,7 +1115,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/21/2017 18:57:21</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>05/26/2017 17:45:21</publishTime>
+      <publishTime>05/27/2017 16:44:18</publishTime>
     </File>
     <File Include="Views/Shared/_LoginPartial.cshtml">
       <publishTime>05/21/2017 18:57:21</publishTime>
@@ -1115,7 +1127,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/21/2017 18:57:21</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>05/26/2017 22:26:44</publishTime>
+      <publishTime>05/28/2017 17:32:44</publishTime>
     </File>
     <File Include="webpack.config.js">
       <publishTime>05/21/2017 18:57:37</publishTime>
