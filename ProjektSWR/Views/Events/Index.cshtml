@@ -10,6 +10,7 @@
     var eventsList= [
 @foreach (var item in Model) {
     @("{")
+        @:id: "@item.ID",
         @:title: "@item.Title", //You will need ID here to identify object for EDIT it must be taken from DB
         @:start: "@item.StartDate",
         @:end: "@item.EndDate",
@@ -133,7 +134,7 @@
                     </form>
 </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger pull-left hidden delete-btn" data-dismiss="modal">Delete <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                <button type="button" class="btn btn-danger pull-left hidden delete-btn" data-dismiss="modal">Delete<span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <button type="button" name = "saveChanges" class="btn btn-primary" data-dismiss="modal">Save changes</button>
             </div>
