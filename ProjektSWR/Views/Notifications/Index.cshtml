@@ -1,0 +1,15 @@
+﻿@model IEnumerable<ProjektSWR.Models.Notification>
+
+@{
+    Layout = null;
+}
+
+@foreach (var item in Model)
+{
+        <div class="notification notification-@item.Status" data-id="@item.ID">
+            <div class="notification-title">
+                <span class="notification-mark-read">⬤</span>
+            @Html.DisplayFor(modelItem => item.Contents)
+            </div>
+        </div>
+}

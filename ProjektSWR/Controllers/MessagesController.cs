@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using ProjektSWR.Models;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace ProjektSWR.Controllers
 {
@@ -248,10 +249,25 @@ namespace ProjektSWR.Controllers
                     UserID = r,
                 };
                 db.Recipients.Add(recipient);
+                CreateMessageNotification(message, r);
             }
             db.SaveChanges();
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+        
+        private void CreateMessageNotification(Message message, ApplicationUser recipientUser)
+        {
+            var notification = new Notification()
+            {
+                Status = "unread",
+                Contents = String.Format("Nowa wiadomość od {0} {1}: {2}",
+                    message.SenderID.FirstName, message.SenderID.LastName, message.Subject),
+                MessageID = message,
+                UserID = recipientUser
+            };
+            db.Notifications.Add(notification);
+            db.SaveChanges();
         }
 
         [HttpPost]
