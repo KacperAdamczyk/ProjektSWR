@@ -4,39 +4,40 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h3>
+<h2 style="margin-left: 100px; margin-right:50px; background-color:#003D82;color:white; border-radius:5px; height:38px;text-indent:10px">
     @Model.Name
-</h3>
+</h2>
 
 
-<table class="table">
+<table class="table" style="margin-left:120px;width:1150px;border:solid;border-color:#9F9F9F;border-width:2px">
+    <tr>
+        <td width="50">
+            <b>
+                Email?
+            </b>
+        </td>
+        <td>
+            <b>
+                @Model.MainMessage
+            </b>
+        </td>
+    </tr>
+    @foreach (var th in Model.Replies)
+    {
         <tr>
-                <td width="50">
-                    <b>
-                        Nazwa uzytkownika
-                    </b>
-                </td>
-                <td>
-                    <b>
-                        @Model.MainMessage
-                    </b>
-                </td>
+            <td>
+                @th.Email
+            </td>
+            <td>
+                @th.Answer
+            </td>
         </tr>
-        @foreach (var th in Model.Replies)
-        {
-            <tr>
-                <td>
-                    Nazwa uzytkownika
-                </td>
-                <td>
-                    @th.Answer
-                </td>
-            </tr>
-        }
+    }
 
-    </table>
-<div>
-    @Html.ActionLink("Dodaj nową odpowiedź", "CreateReply")
+</table>
+
+<div style="margin-left:100px">
+    @Html.ActionLink("Dodaj nową odpowiedź", "CreateReply", new { th = Model.ID }, Model.ID)
 </div>
 
 <!--

@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ProjektSWR.Models;
+using Microsoft.AspNet.Identity;
 
 namespace ProjektSWR.Controllers
 {
@@ -64,13 +65,41 @@ namespace ProjektSWR.Controllers
         }
 
         // GET: Forum/Create
-        public ActionResult CreateThread()
+        public ActionResult CreateThread(/*int? th*/)
         {
+            /*      if (th == null)
+                      return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                  var Category = db.Categories.Find(th);
+                  if (Category == null)
+                      return HttpNotFound();
+
+                  ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+
+                  Thread thread = new Thread
+                  {
+                      Email = currentUser?.Email,
+                      CategoryID = Category
+                  };
+                  return View(thread);*/
             return View();
         }
-        public ActionResult CreateReply()
+
+        public ActionResult CreateReply(int? th)
         {
-            return View();
+            if (th == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            var Thread = db.Threads.Find(th);
+            if (Thread == null)
+                return HttpNotFound();
+
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+
+            Reply reply = new Reply
+            {
+                Email = currentUser?.Email,
+                ThreadID = Thread
+            };
+            return View(reply);
         }
 
         // POST: Forum/Create
@@ -91,19 +120,39 @@ namespace ProjektSWR.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateReply([Bind(Include = "ID, Answer")] Reply forum)
+        public ActionResult CreateReply(int? th, [Bind(Include = "Email, Answer")] Reply forum)
         {
-            if (ModelState.IsValid)
-            {
-                db.Replys.Add(forum);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+            if (th == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            var Thread = db.Threads.Find(th);
+            if (Thread == null)
+                return HttpNotFound();
 
-            return View(forum);
+            forum.ThreadID = Thread;
+            db.Replys.Add(forum);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateThread(int? th, [Bind(Include = "Name, MainMessage, Email")] Thread forum)
+        {
+            if (th == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            var Category = db.Categories.Find(th);
+            if (Category == null)
+                return HttpNotFound();
+
+            forum.CategoryID = Category;
+
+            db.Threads.Add(forum);
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         // GET: Forum/Edit/5
+
         public ActionResult Edit(int? id)
         {
             if (id == null)
