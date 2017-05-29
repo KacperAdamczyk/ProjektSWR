@@ -7,17 +7,92 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ProjektSWR.Models;
+using Microsoft.AspNet.Identity;
 
 namespace ProjektSWR.Controllers
 {
     public class EventsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private PrivateEvent currentPEvent = new PrivateEvent();
+
+        public PrivateEvent getCurrentPrivateEvent()
+        {
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+
+            PrivateEvent currentPrivateEvent = new PrivateEvent();
+            bool found = false;
+            foreach (PrivateEvent myEvent in db.PrivateEvents)
+            {
+                if (myEvent.UserID == currentUser)
+                {
+                    currentPrivateEvent = myEvent;
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found)
+            {
+                PrivateEvent newPrivateList = new PrivateEvent();
+                newPrivateList.UserID = currentUser;
+                newPrivateList.AdminID = db.Admins.FirstOrDefault();
+                db.PrivateEvents.Add(newPrivateList);
+                db.SaveChanges();
+                currentPrivateEvent = newPrivateList;
+            }
+
+            return currentPrivateEvent;
+        }
 
         // GET: Events
         public ActionResult Index()
         {
-            return View(db.Events.ToList());
+            //ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+
+            //PrivateEvent currentPrivateEvent = new PrivateEvent();
+            //bool found = false;
+            //foreach (PrivateEvent myEvent in db.PrivateEvents)
+            //{
+            //    if(myEvent.UserID == currentUser)
+            //    {
+            //        currentPrivateEvent = myEvent;
+            //        found = true;
+            //        break;
+            //    }
+            //}
+
+            //if(!found)
+            //{
+            //    PrivateEvent newPrivateList = new PrivateEvent();
+            //    newPrivateList.UserID = currentUser;
+            //    newPrivateList.AdminID = db.Admins.FirstOrDefault();
+            //    db.PrivateEvents.Add(newPrivateList);
+            //    db.SaveChanges();
+            //    currentPrivateEvent = db.PrivateEvents.LastOrDefault();
+            //}
+
+            //PrivateEvent currentUserPrivateEvents = db.PrivateEvents.Where("UserID_id", currentUser.Id);
+
+            //PrivateEvent nowe = db.PrivateEvents.FirstOrDefault();
+
+            //Event test = nowe.Events.FirstOrDefault();
+
+            //nowe.ToString();
+            //PrivateEvent test = new PrivateEvent();
+            //Event wyd = db.Events.Find(20);
+            //test.Events.Add(wyd);
+            //test.AdminID = db.Admins.Find(1);
+            //test.UserID = db.Users.FirstOrDefault();
+            //db.PrivateEvents.Add(test);
+            //db.SaveChanges();
+
+            //var admin = new Admin();
+            //admin.ID = 1;
+            //db.Admins.Add(admin);
+            //db.SaveChanges();
+            
+            return View(this.getCurrentPrivateEvent().Events.ToList());
         }
 
         // GET: Events/Details/5
@@ -64,12 +139,39 @@ namespace ProjektSWR.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Events.Add(@event);
+                //this.getCurrentPrivateEvent().Events.Add(@event);
+                db.Events.Add(@event);                
                 db.SaveChanges();
-                return Json(true);
+                return Json(@event);
             }
 
             return View(@event);
+        }
+
+        // POST: Events/AjaxCreatePrivateEvent
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AjaxCreatePrivateEvent([Bind(Include = "ID,Title,StartDate,EndDate,Location,Details")] Event @event)
+        {
+            if (ModelState.IsValid)
+            {
+                this.getCurrentPrivateEvent().Events.Add(@event);
+                Event changedEvent = this.getCurrentPrivateEvent().Events.LastOrDefault();
+                //db.PrivateEvents.Add(@event);
+                db.SaveChanges();
+                Event response = new Event();
+                response.ID = changedEvent.ID;
+                response.Title = changedEvent.Title;
+                response.Location = changedEvent.Location;
+                response.Details = changedEvent.Details;
+                response.StartDate = changedEvent.StartDate;
+                response.EndDate = changedEvent.EndDate;
+                return Json(response);
+            }
+            else
+            {
+                return Json(ModelState.Keys);
+            }
         }
 
         // GET: Events/Edit/5
@@ -114,7 +216,7 @@ namespace ProjektSWR.Controllers
             {
                 db.Entry(@event).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return Json(true);
             }
             return View(@event);
         }

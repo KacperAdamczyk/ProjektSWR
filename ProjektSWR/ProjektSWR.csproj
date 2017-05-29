@@ -295,6 +295,8 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Scripts\Calendar\calendar_home_no_admin.js" />
+    <Content Include="Scripts\Calendar\calendar_home.js" />
     <Content Include="Scripts\Cathedral\cathedral.js" />
     <Content Include="Scripts\Panel\index.js" />
     <Content Include="Scripts\Panel\katedry.js" />
