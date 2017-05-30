@@ -73,6 +73,14 @@
                 <select id="cathedrals_select" name="CathedralName"></select>
             </div>
         </div>
+
+        <div class="form_group">
+            @Html.Label("Admin", new { @class = "col-md-2 control-label"})
+            <div class="col-md-10">
+                @Html.CheckBox("isAdmin", false)
+            </div>
+        </div>
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Edytuj" class="btn btn-default" />
