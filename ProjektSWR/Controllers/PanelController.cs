@@ -65,43 +65,55 @@ namespace ProjektSWR.Controllers
         }
         public ActionResult ManageEvents()
         {
-            return View(db.Events.ToList());
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+            if(currentUser.AdminID != null)
+                return View(db.Events.ToList());
+            else
+                return RedirectToAction("../Home/Index");
         }
         public ActionResult EventsList()
         {
-            return View(db.Events.ToList());
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+            if (currentUser.AdminID != null)
+                return View(db.Events.ToList());
+            else
+                return RedirectToAction("../Home/Index");
         }
         // GET: Panel
         public ActionResult Index()
         {
-            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true)
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+            if (currentUser.AdminID != null)
                 return View();
             else
-                return RedirectToAction("../Account/Login");
+                return RedirectToAction("../Home/Index");
         }
 
         // GET: Panel/Details/5
         public ActionResult Details(int id)
         {
-            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true)
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+            if (currentUser.AdminID != null)
                 return View();
             else
-                return RedirectToAction("../Account/Login");
+                return RedirectToAction("../Home/Index");
         }
 
         // GET: Panel/Create
         public ActionResult Create()
         {
-            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true)
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+            if (currentUser.AdminID != null)
                 return View();
             else
-                return RedirectToAction("../Account/Login");
+                return RedirectToAction("../Home/Index");
         }
 
         // POST: Panel/Create
         [HttpPost]
         public ActionResult Create(FormCollection collection)
         {
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
             try
             {
                 // TODO: Add insert logic here
@@ -110,26 +122,28 @@ namespace ProjektSWR.Controllers
             }
             catch
             {
-                if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true)
+                if (currentUser.AdminID != null)
                     return View();
                 else
-                    return RedirectToAction("../Account/Login");
+                    return RedirectToAction("../Home/Index");
             }
         }
 
         // GET: Panel/Edit/5
         public ActionResult Edit(int id)
         {
-            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true)
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+            if (currentUser.AdminID != null)
                 return View();
             else
-                return RedirectToAction("../Account/Login");
+                return RedirectToAction("../Home/Index");
         }
 
         // POST: Panel/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
             try
             {
                 // TODO: Add update logic here
@@ -138,26 +152,28 @@ namespace ProjektSWR.Controllers
             }
             catch
             {
-                if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true)
+                if (currentUser.AdminID != null)
                     return View();
                 else
-                    return RedirectToAction("../Account/Login");
+                    return RedirectToAction("../Home/Index");
             }
         }
 
         // GET: Panel/Delete/5
         public ActionResult Delete(int id)
         {
-            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true)
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+            if (currentUser.AdminID != null)
                 return View();
             else
-                return RedirectToAction("../Account/Login");
+                return RedirectToAction("../Home/Index");
         }
 
         // POST: Panel/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
             try
             {
                 // TODO: Add delete logic here
@@ -166,10 +182,10 @@ namespace ProjektSWR.Controllers
             }
             catch
             {
-                if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true)
+                if (currentUser.AdminID != null)
                     return View();
                 else
-                    return RedirectToAction("../Account/Login");
+                    return RedirectToAction("../Home/Index");
             }
 
         }
@@ -177,33 +193,21 @@ namespace ProjektSWR.Controllers
         [AllowAnonymous]
         public ActionResult ManageUsers()
         {
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
             var viewModel = new ManageUsersModel();
 
-            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true)
+            if (currentUser.AdminID != null)
                 return View(viewModel);
             else
-                return RedirectToAction("../Account/Login");
+                return RedirectToAction("../Home/Index");
         }
-
-
-        // GET: /Panel/ManageForums
-        [AllowAnonymous]
-        public ActionResult ManageForums()
-        {
-
-            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true)
-                return View();
-            else
-                return RedirectToAction("../Account/Login");
-        }
-
 
         //
         // POST: /Panel/ManageUsers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ManageUsers(ManageUsersModel model)
+        public async Task<ActionResult> ManageUsers(ManageUsersModel model, bool isAdmin)
         {
             if (ModelState.IsValid)
             {
@@ -214,6 +218,22 @@ namespace ProjektSWR.Controllers
                 user.LastName = model.LastName;
                 user.Email = model.Email;
                 user.CathedralID = c;
+
+                //Działa przy debugowaniu krok po kroku, ale tak normalnie to nie działa?!?
+                if (isAdmin == true)
+                {
+                    Admin op = new Admin();
+                    int val = 0;
+                    Int32.TryParse(user.Id, out val);
+                    op.ID = val;
+                    user.AdminID = op;
+                }
+                else
+                    user.AdminID = null;
+                //
+
+
+                db.Entry(user).State = EntityState.Modified;
                 var result = await UserManager.UpdateAsync(user);
                 db.SaveChanges();
                 // If we got this far, something failed, redisplay form
@@ -224,12 +244,13 @@ namespace ProjektSWR.Controllers
         [AllowAnonymous]
         public ActionResult LockUsers()
         {
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
             var viewModel = new ManageUsersModel();
 
-            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true)
+            if (currentUser.AdminID != null)
                 return View(viewModel);
             else
-                return RedirectToAction("../Account/Login");
+                return RedirectToAction("../Home/Index");
         }
 
 
@@ -240,7 +261,8 @@ namespace ProjektSWR.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> LockUsers(ManageUsersModel model)
         {
-            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true)
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+            if (currentUser.AdminID != null)
             {
                 if (ModelState.IsValid)
                 {
@@ -257,19 +279,20 @@ namespace ProjektSWR.Controllers
                 return View(model);
             }
             else
-                return RedirectToAction("../Account/Login");
+                return RedirectToAction("../Home/Index");
 
         }
         // GET: /Panel/UnlockUsers
         [AllowAnonymous]
         public ActionResult UnlockUsers()
         {
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
             var viewModel = new ManageUsersModel();
 
-            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true)
+                if (currentUser.AdminID != null)
                 return View(viewModel);
             else
-                return RedirectToAction("../Account/Login");
+                return RedirectToAction("../Home/Index");
         }
 
 
@@ -280,7 +303,8 @@ namespace ProjektSWR.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> UnlockUsers(ManageUsersModel model)
         {
-            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true)
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+            if (currentUser.AdminID != null)
             {
                 if (ModelState.IsValid)
                 {
@@ -296,15 +320,16 @@ namespace ProjektSWR.Controllers
                 return View(model);
             }
             else
-                return RedirectToAction("../Account/Login");
+                return RedirectToAction("../Home/Index");
         }
         // GET: Events/Create
         public ActionResult EventsCreate()
         {
-            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true)
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+            if (currentUser.AdminID != null)
                 return View();
             else
-                return RedirectToAction("../Account/Login");
+                return RedirectToAction("../Home/Index");
         }
 
         // POST: Events/Create
@@ -346,28 +371,41 @@ namespace ProjektSWR.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EventsEdit([Bind(Include = "ID,Title,StartDate,EndDate,Location,Details")] Event @event)
         {
-            if (ModelState.IsValid)
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+            if (currentUser.AdminID != null)
             {
-                db.Entry(@event).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("EventsList");
+                if (ModelState.IsValid)
+                {
+                    db.Entry(@event).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("EventsList");
+                }
+                return View(@event);
             }
-            return View(@event);
+            else
+                return RedirectToAction("../Home/Index");
+
         }
 
         // GET: Events/Delete/5
         public ActionResult EventsDelete(int? id)
         {
-            if (id == null)
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+            if (currentUser.AdminID != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Event @event = db.Events.Find(id);
+                if (@event == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(@event);
             }
-            Event @event = db.Events.Find(id);
-            if (@event == null)
-            {
-                return HttpNotFound();
-            }
-            return View(@event);
+            else
+                return RedirectToAction("../Home/Index");
         }
 
         // POST: Events/Delete/5
@@ -434,7 +472,7 @@ namespace ProjektSWR.Controllers
                 return View(model);
             }
             else
-                return RedirectToAction("../Account/Login");
+                return RedirectToAction("../Home/Index");
         }
     }
 }
