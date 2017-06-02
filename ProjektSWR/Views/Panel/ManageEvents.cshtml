@@ -9,6 +9,7 @@
     var eventsList= [
 @foreach (var item in Model) {
     @("{")
+        @:id: "@item.ID",
         @:title: "@item.Title", //You will need ID here to identify object for EDIT it must be taken from DB
         @:start: "@item.StartDate",
         @:end: "@item.EndDate",
@@ -26,7 +27,8 @@
 <link href='~/Content/fullcalendar.print.css' rel='stylesheet' media='print' />
 <script src='~/Scripts/moment.js'></script>
 <script src='~/Scripts/Calendar/fullcalendar.min.js'></script>
-<script src="~/Scripts/Calendar/calendar_view.js"></script>   <!-- wyswietla tylko widok kalendarza, mozna tu pomyslec czy nie dorobic warunku że może go edytować użytkownik który jest zalogowany -->
+<!--<script src="~/Scripts/Calendar/calendar_view.js"></script> -->
+<script src="~/Scripts/Calendar/calendar.js"></script>  
 <script src="~/Scripts/locale-all.js"></script>
 <div>
     <div class="dropdown">
@@ -56,7 +58,6 @@
 </div>
 
 <div id='calendar'></div>
-
 
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -109,12 +110,12 @@
                         </div>
                     </div>
 
-                    </form>
-</div>
+                </form>
+            </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger pull-left hidden delete-btn" data-dismiss="modal">Delete <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                <button type="button" class="btn btn-danger pull-left hidden delete-btn" data-dismiss="modal">Delete<span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" name = "saveChanges" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+                <button type="button" name="saveChanges" class="btn btn-primary" data-dismiss="modal">Save changes</button>
             </div>
         </div>
     </div>

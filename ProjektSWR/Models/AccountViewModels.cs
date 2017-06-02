@@ -39,6 +39,7 @@ namespace ProjektSWR.Models
 
         [Display(Name = "Pamiętaj mnie")]
         public bool RememberMe { get; set; }
+
     }
 
     public class RegisterViewModel

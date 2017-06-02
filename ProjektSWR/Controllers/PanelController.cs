@@ -38,7 +38,7 @@ namespace ProjektSWR.Controllers
         public JsonResult Users()
         {
 
-            var users = db.Users.Select(x => new { x.FirstName, x.LastName, x.Email, x.CathedralID.Department, x.Id, x.LockoutEndDateUtc, x.LockoutEnabled, x.UserConfirmed });
+            var users = db.Users.Select(x => new { x.FirstName, x.LastName, x.Email, x.CathedralID.Department, x.Id, x.LockoutEndDateUtc, x.LockoutEnabled, x.UserConfirmed, x.AdminID });
             return Json(users, JsonRequestBehavior.AllowGet);
             /*
             return Json(JsonConvert.SerializeObject(db.Users, Formatting.Indented,
@@ -207,7 +207,7 @@ namespace ProjektSWR.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ManageUsers(ManageUsersModel model, bool isAdmin)
+        public async Task<ActionResult> ManageUsers(ManageUsersModel model)
         {
             if (ModelState.IsValid)
             {
@@ -220,7 +220,7 @@ namespace ProjektSWR.Controllers
                 user.CathedralID = c;
 
                 //Działa przy debugowaniu krok po kroku, ale tak normalnie to nie działa?!?
-                if (isAdmin == true)
+                if (model.isAdmin == true)
                 {
                     Admin op = new Admin();
                     int val = 0;
