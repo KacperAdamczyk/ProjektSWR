@@ -13,6 +13,10 @@ function show() {
             document.getElementById("nazwisko").value = json[nr - 1].LastName;
             document.getElementById("id").value = json[nr - 1].Id;
             document.getElementById("cathedrals_select").value = json[nr - 1].Department;
+            if (json[nr - 1].AdminID == null)
+                document.getElementById("admin").checked = false;
+            else
+                document.getElementById("admin").checked = true;
         }
     });
     /* $.ajax({

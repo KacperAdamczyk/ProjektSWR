@@ -28,6 +28,9 @@ namespace ProjektSWR.Models
         public DateTime LockDate { get; set; }
 
         public bool UserConfirmed { get; set; }
+
+        [Display(Name = "Admin")]
+        public bool isAdmin { get; set; }
     }
     public class UserProfileModel
     {
