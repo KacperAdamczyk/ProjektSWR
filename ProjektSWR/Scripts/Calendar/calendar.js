@@ -15,7 +15,7 @@ $(document).ready(function () {
 
             if (temporaryEvent == null) {
                 eventData = {
-                    id: title + location + start, //ID needs to be unique best way would be to generate uuid and save it to db
+                    id: null, //title + location + start, //ID needs to be unique best way would be to generate uuid and save it to db
                     title: title,
                     details: details,
                     location: location,
@@ -34,20 +34,44 @@ $(document).ready(function () {
                 };
 
                 //Sending POST request to action Events/Create
-                $.post("/Events/Create", eventDataPost, function (response) {
-                    console.log(response);
+                $.post("/Events/AjaxCreatePrivateEvent", eventDataPost, function (response) {
+                    if (typeof response.ID !== "undefined") {
+                        //alert("Dobre miejsce");
+                        eventData.id = response.ID;
+                        $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+                    } else {
+                        alert("Zapis zakończył się błędem");
+                    }
                 });
 
-                $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
             } else {
-                temporaryEvent.title = title;
-                temporaryEvent.details = details; 
-                temporaryEvent.location = location;
-                temporaryEvent.start = start;
-                temporaryEvent.end = end;
 
-                $('#calendar').fullCalendar('updateEvent', temporaryEvent);
-            }
+                var eventDataPost = {
+                    '__RequestVerificationToken': $('[name="__RequestVerificationToken"]').val(),
+                    Title: title,
+                    Details: details, 
+                    Location: location,
+                    startDate: start,
+                    endDate: end
+                };
+
+                console.info(temporaryEvent);
+
+                $.post("/Events/AjaxEdit/" + temporaryEvent.id, eventDataPost, function (response) {
+                    if (response) {
+                        temporaryEvent.title = title;
+                        temporaryEvent.start = start;
+                        temporaryEvent.end = end;
+                        temporaryEvent.location = location;
+                        temporaryEvent.details = details;
+                        console.log(temporaryEvent);
+                        $('#calendar').fullCalendar('updateEvent', temporaryEvent);
+                    } else {
+                        alert("Nie udało się zmodyfikować wydarzenia!");
+                    }
+                }, 'json');
+            };
+                
         }
         else {
             alert("Tytuł wydarzenia jest obowiązkowy.");
@@ -57,7 +81,18 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '.delete-btn', function () {
-        $('#calendar').fullCalendar('removeEvents', temporaryEvent.id);
+        var eventDataPost = {
+            '__RequestVerificationToken': $('[name="__RequestVerificationToken"]').val(),
+            id: temporaryEvent.id
+        };
+
+        $.post("/Events/AjaxDelete/" + temporaryEvent.id, eventDataPost, function (response) {
+            if (response) {
+                $('#calendar').fullCalendar('removeEvents', temporaryEvent.id);
+            } else {
+                alert("Nie udało się usunąć wydarzenia!");
+            }
+        }, 'json');
     });
 
     $('#calendar').fullCalendar({
@@ -101,16 +136,34 @@ $(document).ready(function () {
             $('#myModal').modal('show');
 
         },
+        eventDrop: function (calEvent, delta, revertFunc, jsEvent, ui, view) {
+            var eventDataPost = {
+                '__RequestVerificationToken': $('[name="__RequestVerificationToken"]').val(),
+                Title: calEvent.title,
+                Details: calEvent.details,
+                Location: calEvent.location,
+                startDate: calEvent.start.format(),
+                endDate: calEvent.end.format()
+            };
+
+            $.post("/Events/AjaxEdit/" + calEvent.id, eventDataPost, function (response) {
+            }, 'json');
+        },
+        eventResize: function (calEvent, delta, revertFunc, jsEvent, ui, view) {
+            var eventDataPost = {
+                '__RequestVerificationToken': $('[name="__RequestVerificationToken"]').val(),
+                Title: calEvent.title,
+                Details: calEvent.details,
+                Location: calEvent.location,
+                startDate: calEvent.start.format(),
+                endDate: calEvent.end.format()
+            };
+
+            $.post("/Events/AjaxEdit/" + calEvent.id, eventDataPost, function (response) {
+            }, 'json');
+        },
         editable: true,
         eventLimit: true, // allow "more" link when too many events
         events: eventsList
-        //[
-        //    {
-        //        title: 'Zdarzenie',
-        //        start: '2017-05-23T10:00:00',
-        //        end: '2017-05-23T12:00:00'
-        //    }
-        //]
     });
-
 });

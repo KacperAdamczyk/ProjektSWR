@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var controller = require("./controller");
 var alertifyjs = require("alertifyjs");
 function prepareSentDocument() {
@@ -47,7 +46,8 @@ function parseSentMessages(data) {
         tr.click(function () { controller.loadContent(this.id, "sent"); });
         tr.first().children().first().click(function (e) { e.stopPropagation(); });
     }
-    $(controller.transitor).addClass(controller.transitorAcrivated);
+    controller.enableTransition();
+    controller.hideLoader();
 }
 function deleteMessages() {
     var selectedMessages = $("input:checkbox:checked");

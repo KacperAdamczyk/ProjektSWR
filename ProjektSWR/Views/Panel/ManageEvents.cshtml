@@ -19,14 +19,44 @@
         ]
 </script>
 
+
+
 <h2>@ViewBag.Title</h2>
 <link href='~/Content/fullcalendar.min.css' rel='stylesheet' />
 <link href='~/Content/fullcalendar.print.css' rel='stylesheet' media='print' />
 <script src='~/Scripts/moment.js'></script>
 <script src='~/Scripts/Calendar/fullcalendar.min.js'></script>
-<script src="~/Scripts/Calendar/calendar.js"></script>
+<script src="~/Scripts/Calendar/calendar_view.js"></script>   <!-- wyswietla tylko widok kalendarza, mozna tu pomyslec czy nie dorobic warunku że może go edytować użytkownik który jest zalogowany -->
 <script src="~/Scripts/locale-all.js"></script>
+<div>
+    <div class="dropdown">
+        <button class="dropbtn">Użytkownicy</button>
+        <div class="dropdown-content">
+            <a href="~/Panel/ManageUsers">Edytuj</a>
+            <a href="~/Panel/LockUsers">Blokuj</a>
+            <a href="~/Panel/UnlockUsers">Odblokuj</a>
+            <a href="~/Panel/UserList">Lista użytkowników</a>
+            <a href="~/Panel/ConfirmUsers">Autoryzuj</a>
+        </div>
+    </div>
+    <div class="dropdown">
+        <button class="dropbtn">Zdarzenia</button>
+        <div class="dropdown-content">
+            <a href="~/Panel/ManageEvents">Kalendarz</a>
+            <a href="~/Panel/EventsList">Lista zdarzeń</a>
+        </div>
+    </div>
+    <div class="dropdown">
+        <button class="dropbtn">Forum</button>
+        <div class="dropdown-content">
+            <a href="/Forum/Cat?i=1">Forum główne</a>
+            <a href="/Forum/Cat?i=2">Forum techniczne</a>
+        </div>
+    </div>
+</div>
+
 <div id='calendar'></div>
+
 
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

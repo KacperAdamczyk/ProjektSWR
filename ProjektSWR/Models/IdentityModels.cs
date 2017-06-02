@@ -24,17 +24,23 @@ namespace ProjektSWR.Models
             PrivateEvents = new List<PrivateEvent>();
             GlobalEvents = new List<GlobalEvent>();
         }
-
+        [Display(Name ="Imie")]
         [Required] public string FirstName { get; set; }
+        [Display(Name = "Nazwisko")]
         [Required] public string LastName { get; set; }
+        [Display(Name = "Stopień naukowy")]
         public string AcademicDegree { get; set; }
         public string Photo { get; set; }
+        [Display(Name = "Data urodzenia")]
         public DateTime? DateOfBirth { get; set; }
+        [Display(Name = "Opis")]
         public string Description { get; set; }
+        [Display(Name = "Strona domowa")]
         public string Homepage { get; set; }
         [Required] public virtual Cathedral CathedralID { get; set; }
         public virtual Admin AdminID { get; set; }
         public virtual NormalUser NormalUserID { get; set; }
+        public bool UserConfirmed { get; set; }
 
         public virtual ICollection<Recipient> Recipients { get; set; }
         public virtual ICollection<Message> Messages { get; set; }

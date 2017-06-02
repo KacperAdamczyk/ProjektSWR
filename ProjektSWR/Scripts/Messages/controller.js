@@ -1,19 +1,18 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var $ = require("jquery");
 var inbox = require("./inbox");
 var sent = require("./sent");
 var new_message = require("./newMessage");
 var content = require("./MessageContent");
 exports.globalContainer = "#content";
-exports.transitor = ".transitor";
-exports.transitorAcrivated = "trans-activated";
+var transitor = ".transitor";
+var transitorAcrivated = "trans-activated";
 $(document).ready(function () {
     loadInbox(); // domyślna zakładka
     $("#new_message").click(function () { loadNewMessage(null, null); });
     $("#inbox").click(function () { loadInbox(); });
     $("#sent").click(function () { loadSent(); });
-    $(exports.transitor).addClass(exports.transitorAcrivated);
+    $(transitor).addClass(transitorAcrivated);
 });
 function changeActive(li) {
     var tags = ["inbox", "sent", "new_message"];
@@ -34,6 +33,7 @@ function load(label, url, fun) {
         url: "/Messages/" + url,
         success: function (data) {
             $(exports.globalContainer).html(data);
+            showLoader();
             fun();
         }
     });
@@ -54,3 +54,15 @@ function loadContent(id, type) {
     load(null, "Content", function () { content.prepareMessageContentDocument(id, type); });
 }
 exports.loadContent = loadContent;
+function hideLoader() {
+    $(".loader").hide();
+}
+exports.hideLoader = hideLoader;
+function showLoader() {
+    $(".loader").show();
+}
+exports.showLoader = showLoader;
+function enableTransition() {
+    $(transitor).addClass(transitorAcrivated);
+}
+exports.enableTransition = enableTransition;

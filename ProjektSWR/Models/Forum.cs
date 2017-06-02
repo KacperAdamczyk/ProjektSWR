@@ -18,9 +18,10 @@ namespace ProjektSWR.Models
         public int ID { get; set; }
         [Required] public string Name { get; set; }
         [Required] public string MainMessage { get; set; }
+        [Required] public string Email { get; set; }
         [Required] public Category CategoryID { get; set; }
         [Required] public ApplicationUser UserID { get; set; }
-        [Required] public Admin AdminID { get; set; }
+        
 
         public virtual ICollection<Reply> Replies { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }

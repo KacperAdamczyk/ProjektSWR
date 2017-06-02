@@ -4,8 +4,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<h2 style="margin-left: 100px; margin-right:50px; background-color:#003D82;color:white; border-radius:5px; height:38px;text-indent:10px">
+    @Model.Name
+</h2>
 
-<table class="table">
+
+<table class="table" style="margin-left:120px;width:1150px;border:solid;border-color:#9F9F9F;border-width:2px">
 
     @foreach (var th in Model.Threads)
     {
@@ -17,8 +21,9 @@
     }
 
 </table>
-<div>
-    @Html.ActionLink("Utwórz nowy wątek", "CreateThread")
+
+<div style="margin-left:100px">
+    @Html.ActionLink("Utwórz nowy wątek", "CreateThread", new { th = Model.ID }, Model.ID)
 </div>
 
 <!--

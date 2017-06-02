@@ -91,3 +91,42 @@ li {
 #notify {
     padding-top: 7px;
 }
+
+.notification {
+    padding: 12px;
+    font-size: 14px;
+    margin: 0 -14px;
+    border-bottom: 1px #ccc solid;
+    cursor: pointer;
+}
+
+.notification:first-child { margin-top: -9px; }
+.notification:last-child { margin-bottom: -11px; }
+
+.notification-unread {
+    background: #def;
+}
+
+.notification-read {
+    color: #777;
+}
+
+.notification-unread .notification-title {
+    font-weight: bold;
+}
+
+.notifications {
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.notification-mark-read {
+    color: #00a1ff;
+    padding: 2px 3px;
+    border-radius: 2px;
+}
+
+.notification-mark-read:hover {
+    background: #00a1ff;
+    color: #fff;
+}

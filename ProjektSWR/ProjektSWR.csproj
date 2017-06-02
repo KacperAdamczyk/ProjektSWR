@@ -204,6 +204,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
+    <Compile Include="Controllers\NotificationsController.cs" />
     <Compile Include="Controllers\PanelController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Global.asax.cs">
@@ -295,7 +296,12 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Scripts\Calendar\calendar_view.js" />
+    <Content Include="Scripts\Calendar\calendar_home_no_admin.js" />
+    <Content Include="Scripts\Calendar\calendar_home.js" />
     <Content Include="Scripts\Cathedral\cathedral.js" />
+    <Content Include="Scripts\Notifications.js" />
+    <Content Include="Scripts\Panel\confirm.js" />
     <Content Include="Scripts\Panel\index.js" />
     <Content Include="Scripts\Panel\katedry.js" />
     <Content Include="Scripts\Panel\lockedusers.js" />
@@ -456,7 +462,6 @@
     <Content Include="Views\Panel\ManageUsers.cshtml" />
     <Content Include="Views\Panel\Index.cshtml" />
     <Content Include="Views\Panel\ManageEvents.cshtml" />
-    <Content Include="Views\Panel\ManageForums.cshtml" />
     <Content Include="Views\Events\Create.cshtml" />
     <Content Include="Views\Events\Delete.cshtml" />
     <Content Include="Views\Events\Details.cshtml" />
@@ -479,6 +484,11 @@
     <Content Include="Views\Panel\EventsDetails.cshtml" />
     <Content Include="Views\Panel\EventsEdit.cshtml" />
     <Content Include="Views\Forum\CreateReply.cshtml" />
+    <Content Include="Views\Panel\UserList.cshtml" />
+    <Content Include="Views\Panel\UserProfile.cshtml" />
+    <Content Include="Views\Panel\ConfirmUsers.cshtml" />
+    <Content Include="Views\Notifications\Index.cshtml" />
+    <Content Include="Views\Notifications\UnreadBadge.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

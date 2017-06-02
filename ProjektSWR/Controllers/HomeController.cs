@@ -3,14 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ProjektSWR.Models;
+using Microsoft.AspNet.Identity;
 
 namespace ProjektSWR.Controllers
 {
     public class HomeController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
+
         public ActionResult Index()
-        {
-            return View();
+        {            
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+            if (currentUser != null)
+            {
+                ViewBag.isAdmin = currentUser.AdminID;
+            }
+            else
+            {
+                ViewBag.isAdmin = null;
+            }
+            return View(db.Events.Where(e => e.PrivateEventID == null).ToList());
         }
 
         public ActionResult Calendar()

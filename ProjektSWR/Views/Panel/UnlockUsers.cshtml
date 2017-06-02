@@ -1,7 +1,7 @@
 ﻿@model ProjektSWR.Models.ManageUsersModel
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewBag.Title = "LUL";
+    ViewBag.Title = "Odblokuj";
 }
 <script src="~/Scripts/Panel/lockedusers.js"></script>
 <script src="~/Scripts/Panel/show2.js"></script>
@@ -16,21 +16,22 @@
                 <a href="~/Panel/ManageUsers">Edytuj</a>
                 <a href="~/Panel/LockUsers">Blokuj</a>
                 <a href="~/Panel/UnlockUsers">Odblokuj</a>
+                <a href="~/Panel/UserList">Lista użytkowników</a>
+                <a href="~/Panel/ConfirmUsers">Autoryzuj</a>
             </div>
         </div>
         <div class="dropdown">
             <button class="dropbtn">Zdarzenia</button>
             <div class="dropdown-content">
-                <a href="#">Kalendarz</a>
-                <a href="#">Lista zdarzeń</a>
+                <a href="~/Panel/ManageEvents">Kalendarz</a>
+                <a href="~/Panel/EventsList">Lista zdarzeń</a>
             </div>
         </div>
         <div class="dropdown">
             <button class="dropbtn">Forum</button>
             <div class="dropdown-content">
-                <a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
+                <a href="/Forum/Cat?i=1">Forum główne</a>
+                <a href="/Forum/Cat?i=2">Forum techniczne</a>
             </div>
         </div>
     </div>

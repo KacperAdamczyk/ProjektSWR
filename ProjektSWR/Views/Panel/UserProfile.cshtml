@@ -1,0 +1,73 @@
+﻿@model ProjektSWR.Models.ApplicationUser
+
+@{
+    ViewBag.Title = "Szczegóły";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Profil użytkownika</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AcademicDegree)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AcademicDegree)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CathedralID.Department)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CathedralID.Department)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "UserList")
+</p>

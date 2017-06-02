@@ -1,6 +1,6 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var Quill = require("quill");
+var controller = require("./controller");
 require("quill/dist/quill.snow.css");
 exports.users = [];
 exports.combobox_cnt = 0;
@@ -8,6 +8,8 @@ function parseUsers(data, create) {
     exports.users = data;
     if (create)
         createCombobox();
+    controller.enableTransition();
+    controller.hideLoader();
 }
 exports.parseUsers = parseUsers;
 function loadContentInput() {
@@ -24,7 +26,7 @@ function loadContentInput() {
         [{ 'color': [] }, { 'background': [] }],
         [{ 'font': [] }],
         [{ 'align': [] }],
-        ['clean'] // remove formatting button
+        ['clean']
     ];
     exports.quill_editor = new Quill('#messageContent', {
         modules: {

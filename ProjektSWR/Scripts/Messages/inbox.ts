@@ -1,8 +1,10 @@
 ﻿import * as controller from "./controller";
 import * as alertifyjs from 'alertifyjs';
+import * as cookie from "js-cookie";
 
 let g_data;
 let new_msg_cnt = 0;
+cookie.set("interval", "not set");
 
 export function prepareInboxDocument() {
     $.getJSON("/Messages/MessageHeaders", parseMessages);
@@ -13,9 +15,12 @@ export function prepareInboxDocument() {
         else
             $("input:checkbox").prop("checked", false);
     });
-    var interval = setInterval(function() {
-        updateHeaders();
-    }, 5000);
+    if (cookie.get("interval") == "not set") {
+        var interval = setInterval(function() {
+            updateHeaders();
+        }, 10000);
+        cookie.set("interval", interval);
+    }
 }
 
 function parseMessages(data) {
@@ -50,11 +55,13 @@ function parseMessages(data) {
          tr.click(function() { controller.loadContent(this.id, "inbox"); });
          tr.first().children().first().click(function(e) { e.stopPropagation(); });
     }
-    $(controller.transitor).addClass(controller.transitorAcrivated);
     if (new_msg_cnt > 0)
         $("#inbox").html("Skrzynka odbiorcza (" + new_msg_cnt + ")");
     else 
         $("#inbox").html("Skrzynka odbiorcza");
+
+        controller.enableTransition();
+        controller.hideLoader();
 }
 
 function updateHeaders() {

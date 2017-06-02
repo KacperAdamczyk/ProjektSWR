@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 require("alertifyjs/build/css/alertify.css");
 require("alertifyjs/build/css/themes/bootstrap.css");
 var controller = require("./controller");
@@ -30,7 +29,6 @@ function prepareNewMessageDocument(responseTo, responseToId) {
         $("#users").append(line);
         $(".users_combobox").first().val(responseTo);
     }
-    $(controller.transitor).addClass(controller.transitorAcrivated);
     $(subject_id).change(function () { $(subject_id).css("border", "solid 1px black"); });
 }
 exports.prepareNewMessageDocument = prepareNewMessageDocument;
