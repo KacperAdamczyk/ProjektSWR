@@ -196,7 +196,7 @@ namespace ProjektSWR.Controllers
             ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
             var viewModel = new ManageUsersModel();
 
-            if (currentUser.AdminID != null)
+            if (true)
                 return View(viewModel);
             else
                 return RedirectToAction("../Home/Index");
@@ -211,9 +211,14 @@ namespace ProjektSWR.Controllers
         {
             if (ModelState.IsValid)
             {
+                
                 var db = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
                 var user = UserManager.FindById(model.Id);
                 Cathedral c = db.Cathedrals.FirstOrDefault(x => x.Department == model.CathedralName);
+                if (user.AdminID != null)
+                    model.isAdmin = true;
+                else
+                    model.isAdmin = false;
                 user.FirstName = model.FirstName;
                 user.LastName = model.LastName;
                 user.Email = model.Email;
@@ -229,7 +234,10 @@ namespace ProjektSWR.Controllers
                     user.AdminID = op;
                 }
                 else
+                {
                     user.AdminID = null;
+                }
+                    
                 //
 
 
