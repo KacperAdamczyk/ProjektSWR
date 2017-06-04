@@ -29,8 +29,15 @@
 }
 
 #text {
-    float: left;
+    padding-top: 5px;
     width: 125px;
+    float: left;
+}
+
+#otherText {
+    padding-top: 5px;
+    width: 50px;
+    word-wrap: normal;
 }
 
 #photo {
@@ -38,7 +45,15 @@
     width: 105px;
     border: solid;
     float: left;
+    overflow: hidden;
 }
+
+#photo img{
+    height: 100%;
+    width: 100%; /* makes image 100% width of the container */
+    position: relative; /* allows movement inside the container */
+}
+
 
 #swimmingpool {
     padding: 3px;

@@ -67,12 +67,14 @@ namespace ProjektSWR.Controllers
                 message == ManageMessageId.ChangePasswordSuccess ? "Hasło zostało zmienione pomyślnie." : "";
 
             var userId = User.Identity.GetUserId();
+            var catId = db.Users.Find(userId).CathedralID.ID;
             var m = new ManageViewModel
             {
+                Cathedrals = db.Cathedrals.ToList(),
                 HasPassword = HasPassword(),
                 Logins = await UserManager.GetLoginsAsync(userId),
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
-
+                ID = userId,
                 FirstName = db.Users.Find(userId).FirstName,
                 LastName = db.Users.Find(userId).LastName,
                 AcademicDegree = db.Users.Find(userId).AcademicDegree,
@@ -81,9 +83,8 @@ namespace ProjektSWR.Controllers
                 Description = db.Users.Find(userId).Description,
                 Email = db.Users.Find(userId).Email,
                 PhoneNumber = db.Users.Find(userId).PhoneNumber,
-                CathedralName = db.Cathedrals.Find(1).Department,
+                CathedralName = db.Cathedrals.Find(catId).Department,
             };
-
             return View(m);
         }
 
@@ -152,9 +153,10 @@ namespace ProjektSWR.Controllers
                 }
                 catch (RetryLimitExceededException)
                 {
-                    ModelState.AddModelError("", "Niemożliwa była zmiana danych. Skontaktuj się z Adamem Małyszem."); //PAMIETAJ ZEBY ZMIENIC TEN KOMUNIKAT GLUPKU
+                    ModelState.AddModelError("", "Niemożliwa była zmiana danych.");
                 }
             }
+            m.Cathedrals = db.Cathedrals.ToList();
             return View(m);
         }
 
@@ -184,9 +186,10 @@ namespace ProjektSWR.Controllers
                 }
                 catch (RetryLimitExceededException)
                 {
-                    ModelState.AddModelError("", "Niemożliwa była zmiana danych. Skontaktuj się z Adamem Małyszem."); //PAMIETAJ ZEBY ZMIENIC TEN KOMUNIKAT GLUPKU
+                    ModelState.AddModelError("", "Niemożliwa była zmiana danych.");
                 }
             }
+            m.Cathedrals = db.Cathedrals.ToList();
             return View(m);
         }
 
