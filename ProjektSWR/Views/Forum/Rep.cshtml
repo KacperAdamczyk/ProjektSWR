@@ -37,8 +37,7 @@
             <td>
                 @th.Answer
             </td>
-            <td>
-                @th.ID
+            <td>            
                 @Html.ActionLink("Usuń", "Delete", new { id = th.ID })
             </td>
         </tr>
@@ -46,10 +45,6 @@
 
 
     </table>
-<<<<<<< HEAD
-
-=======
->>>>>>> refs/heads/pr/53
 
 <div style="margin-left:100px">
     @Html.ActionLink("Dodaj nową odpowiedź", "CreateReply", new { th = Model.ID }, Model.ID)
