@@ -31,19 +31,19 @@
             <td>
                 @th.Answer
             </td>
+            <td>
+                @th.ID
+                @Html.ActionLink("Usuń", "Delete", new { id = th.ID })
+            </td>
         </tr>
     }
 
-<<<<<<< HEAD
+
     </table>
-<div>
-    @Html.ActionLink("Dodaj nową odpowiedź", "CreateReply", new { th = Model.ID }, Model.ID);
-=======
-</table>
 
 <div style="margin-left:100px">
     @Html.ActionLink("Dodaj nową odpowiedź", "CreateReply", new { th = Model.ID }, Model.ID)
->>>>>>> refs/heads/pr/40
+
 </div>
 
 <!--

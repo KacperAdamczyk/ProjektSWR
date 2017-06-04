@@ -178,16 +178,22 @@ namespace ProjektSWR.Controllers
         // GET: Forum/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+            if (currentUser.AdminID != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Forum forum = db.Forums.Find(id);
-            if (forum == null)
-            {
+                /*if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }*/
+                Forum forum = db.Forums.Find(id);
+                /*if (forum == null)
+                {
                 return HttpNotFound();
+                 }*/
+                return View(forum);
             }
-            return View(forum);
+            else
+                return RedirectToAction("Index");
         }
 
         // POST: Forum/Delete/5
@@ -195,8 +201,10 @@ namespace ProjektSWR.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Forum forum = db.Forums.Find(id);
-            db.Forums.Remove(forum);
+            
+
+            Reply forum = db.Replys.Find(id);
+            db.Replys.Remove(forum);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
