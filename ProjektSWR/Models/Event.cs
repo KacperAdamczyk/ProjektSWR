@@ -47,10 +47,15 @@ namespace ProjektSWR.Models
 
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
+        [Display(Name ="Tytuł")]
         [Required] public string Title { get; set; }
+        [Display(Name = "Data rozpoczęcia")]
         [Required] public DateTime StartDate { get; set; }
+        [Display(Name = "Data zakończenia")]
         public DateTime EndDate { get; set; }
+        [Display(Name = "Lokacja")]
         public string Location { get; set; }
+        [Display(Name = "Szczegóły")]
         public string Details { get; set; }
         public virtual GlobalEvent GlobalEventID { get; set; }
         public virtual PrivateEvent PrivateEventID { get; set; }

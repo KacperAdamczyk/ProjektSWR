@@ -15,10 +15,15 @@ namespace ProjektSWR.Models
         }
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
+        [Display(Name ="Nazwa")]
         [Required] public string Department { get; set; }
+        [Display(Name ="Adres")]
         [Required] public string Address { get; set; }
+        [Display(Name = "Strona domowa")]
         [Required] public string Page { get; set; }
+        [Display(Name = "Numer telefonu")]
         [Required] public string PhoneNumber { get; set; }
+        [Display(Name = "Email")]
         [Required] public string Email { get; set; }
 
         public virtual ICollection<ApplicationUser> Users { get; set; }

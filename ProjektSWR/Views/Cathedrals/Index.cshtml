@@ -5,10 +5,41 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<link rel="stylesheet" type="text/css" href="~/Content/Panel.css" />
+
+<div class="dropdown">
+    <button class="dropbtn">Użytkownicy</button>
+    <div class="dropdown-content">
+        <a href="~/Panel/ManageUsers">Edytuj</a>
+        <a href="~/Panel/LockUsers">Blokuj</a>
+        <a href="~/Panel/UnlockUsers">Odblokuj</a>
+        <a href="~/Panel/UserList">Lista użytkowników</a>
+        <a href="~/Panel/ConfirmUsers">Autoryzuj</a>
+    </div>
+</div>
+<div class="dropdown">
+    <button class="dropbtn">Zdarzenia</button>
+    <div class="dropdown-content">
+        <a href="~/Panel/ManageEvents">Kalendarz</a>
+        <a href="~/Panel/EventsList">Lista zdarzeń</a>
+    </div>
+</div>
+<div class="dropdown">
+    <button class="dropbtn">Forum</button>
+    <div class="dropdown-content">
+        <a href="/Forum/Cat?i=1">Forum główne</a>
+        <a href="/Forum/Cat?i=2">Forum techniczne</a>
+    </div>
+</div>
+<div class="dropdown">
+    <button class="dropbtn">Katedry</button>
+    <div class="dropdown-content">
+        <a href="/Cathedrals/Index">Edytuj/Dodaj katedry</a>
+    </div>
+</div>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Dodaj nową", "Create")
 </p>
 <table class="table">
     <tr>
@@ -48,9 +79,9 @@
             @Html.DisplayFor(modelItem => item.Email)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+            @Html.ActionLink("Edytuj", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Szczegóły", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Usuń", "Delete", new { id=item.ID })
         </td>
     </tr>
 }
