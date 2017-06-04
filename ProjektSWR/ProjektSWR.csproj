@@ -489,6 +489,8 @@
     <Content Include="Views\Panel\ConfirmUsers.cshtml" />
     <Content Include="Views\Notifications\Index.cshtml" />
     <Content Include="Views\Notifications\UnreadBadge.cshtml" />
+    <Content Include="Views\Forum\SearchReplies.cshtml" />
+    <Content Include="Views\Forum\SearchThread.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
