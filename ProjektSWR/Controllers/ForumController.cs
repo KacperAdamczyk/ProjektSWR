@@ -149,9 +149,23 @@ namespace ProjektSWR.Controllers
             forum.ThreadID = Thread;
             db.Replys.Add(forum);
             db.SaveChanges();
+            CreateReplyNotification(db.Users.Find(User.Identity.GetUserId()), forum, Thread);
             return RedirectToAction("Index");
         }
 
+        public void CreateReplyNotification(ApplicationUser u, Reply rep, Thread th)
+        {
+            if (th.Email != u.Email)
+            {
+                var n = new Notification();
+                n.ThreadID = th;
+                n.UserID = db.Users.Where(usr => usr.Email == th.Email).First();
+                n.Status = "unread";
+                n.Contents = String.Format("Nowa odpowiedź na wątek {0}", th.Name);
+                db.Notifications.Add(n);
+                db.SaveChanges();
+            }
+        }
 
 
         // GET: Forum/Edit/5
