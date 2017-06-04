@@ -47,31 +47,37 @@ namespace ProjektSWR.Controllers
             return currentPrivateEvent;
         }
 
-        // GET: Profile
-        public ActionResult Index()
+        //GET: Profile/Id
+        public ActionResult Index(string id)
         {
-            var db = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
-            ViewBag.Message = "Panel użytkownika";
-            
-            var userId = User.Identity.GetUserId();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var userId = id;
+            var user = db.Users.Find(userId);
+            if (user == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var catId = user.CathedralID.ID;
             var m = new ProfileModel
             {
                 FirstName = db.Users.Find(userId).FirstName,
                 LastName = db.Users.Find(userId).LastName,
                 AcademicDegree = db.Users.Find(userId).AcademicDegree,
                 Photo = db.Users.Find(userId).Photo,
-                //DateOfBirth = db.Users.Find(userId).DateOfBirth,
+                DateOfBirth = db.Users.Find(userId).DateOfBirth,
                 Description = db.Users.Find(userId).Description,
                 Email = db.Users.Find(userId).Email,
                 PhoneNumber = db.Users.Find(userId).PhoneNumber,
-                CathedralName = db.Cathedrals.Find(1).Department,
+                CathedralName = db.Cathedrals.Find(catId).Department,
+
             };
 
             ViewBag.EventsList = this.getCurrentPrivateEvent().Events.ToList();
-
             return View(m);
         }
-
 
     }
 }
