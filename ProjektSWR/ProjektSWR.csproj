@@ -478,6 +478,8 @@
     <Content Include="Views\Forum\Index.cshtml" />
     <Content Include="Views\Forum\Rep.cshtml" />
     <Content Include="Views\Forum\Thr.cshtml" />
+	<Content Include="Views\Forum\SearchReplies.cshtml" />
+	<Content Include="Views\Forum\SearchThread.cshtml" />
     <Content Include="Views\Messages\Content.cshtml" />
     <Content Include="Views\Panel\LockUsers.cshtml" />
     <Content Include="Views\Panel\UnlockUsers.cshtml" />
@@ -492,6 +494,7 @@
     <Content Include="Views\Panel\ConfirmUsers.cshtml" />
     <Content Include="Views\Notifications\Index.cshtml" />
     <Content Include="Views\Notifications\UnreadBadge.cshtml" />
+	<Content Include="Views\Search\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
