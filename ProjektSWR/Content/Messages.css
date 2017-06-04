@@ -252,7 +252,7 @@ div.messages {
     column-span: 5px;
 }
 
-input {
+#content input {
     height: 35px;
     font-size: 16px;
 }

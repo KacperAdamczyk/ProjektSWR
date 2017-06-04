@@ -16,34 +16,62 @@ namespace ProjektSWR.Controllers
     public class ProfileController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private PrivateEvent currentPEvent = new PrivateEvent();
 
-        public ActionResult Index(string id)
+        public PrivateEvent getCurrentPrivateEvent()
         {
-            if (id == null)
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+
+            PrivateEvent currentPrivateEvent = new PrivateEvent();
+            bool found = false;
+            foreach (PrivateEvent myEvent in db.PrivateEvents)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (myEvent.UserID == currentUser)
+                {
+                    currentPrivateEvent = myEvent;
+                    found = true;
+                    break;
+                }
             }
-            var userId = id;
-            var user = db.Users.Find(userId);
-            if (user == null)
+
+            if (!found)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                PrivateEvent newPrivateList = new PrivateEvent();
+                newPrivateList.UserID = currentUser;
+                newPrivateList.AdminID = db.Admins.FirstOrDefault();
+                db.PrivateEvents.Add(newPrivateList);
+                db.SaveChanges();
+                currentPrivateEvent = newPrivateList;
             }
-            var catId = user.CathedralID.ID;
+
+            return currentPrivateEvent;
+        }
+
+        // GET: Profile
+        public ActionResult Index()
+        {
+            var db = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
+            ViewBag.Message = "Panel użytkownika";
+            
+            var userId = User.Identity.GetUserId();
             var m = new ProfileModel
             {
                 FirstName = db.Users.Find(userId).FirstName,
                 LastName = db.Users.Find(userId).LastName,
                 AcademicDegree = db.Users.Find(userId).AcademicDegree,
                 Photo = db.Users.Find(userId).Photo,
-                DateOfBirth = db.Users.Find(userId).DateOfBirth,
+                //DateOfBirth = db.Users.Find(userId).DateOfBirth,
                 Description = db.Users.Find(userId).Description,
                 Email = db.Users.Find(userId).Email,
                 PhoneNumber = db.Users.Find(userId).PhoneNumber,
-                CathedralName = db.Cathedrals.Find(catId).Department,
-
+                CathedralName = db.Cathedrals.Find(1).Department,
             };
+
+            ViewBag.EventsList = this.getCurrentPrivateEvent().Events.ToList();
+
             return View(m);
         }
+
+
     }
 }
