@@ -10,7 +10,7 @@ namespace ProjektSWR.Models
     public class ProfileModel
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { get; set; }
+        public string ID { get; set; }
 
         [Required]
         public string FirstName { get; set; }
@@ -23,8 +23,11 @@ namespace ProjektSWR.Models
 
         public string Photo { get; set; }
 
+        [DataType(DataType.Date)]
+        [Display(Name = "Data urodzenia: ")]
         public DateTime? DateOfBirth { get; set; }
 
+        [Display(Name = "Opis: ")]
         public string Description { get; set; }
 
         [Required]

@@ -1,0 +1,16 @@
+﻿@model ProjektSWR.Models.Search
+
+@{ 
+    Layout = null;
+}
+<input id="list" list="users" name="userlist" style="color:black;" />
+<datalist id="users">
+    @foreach (var item in Model.users)
+    {
+        <option id=@item.Id> @Html.HiddenFor(model=>item.Id) @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)</option>
+    }
+</datalist>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="~/Scripts/Search/WhichSelected.js"></script>

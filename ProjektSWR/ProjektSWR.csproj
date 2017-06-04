@@ -221,6 +221,8 @@
     <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\Panel.cs" />
     <Compile Include="Models\ProfileModel.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
+    <Compile Include="Models\Search.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -308,6 +310,8 @@
     <Content Include="Scripts\Panel\manage.js" />
     <Content Include="Scripts\Panel\show.js" />
     <Content Include="Scripts\Panel\show2.js" />
+    <Content Include="Scripts\Search\Search.js" />
+    <Content Include="Scripts\Search\WhichSelected.js" />
     <Content Include="webpack.config.js" />
     <Content Include="package.json" />
     <Content Include="ClassDiagram.cd" />
@@ -489,6 +493,7 @@
     <Content Include="Views\Panel\ConfirmUsers.cshtml" />
     <Content Include="Views\Notifications\Index.cshtml" />
     <Content Include="Views\Notifications\UnreadBadge.cshtml" />
+    <Content Include="Views\Search\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

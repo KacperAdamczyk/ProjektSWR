@@ -14,10 +14,16 @@ namespace ProjektSWR
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "ProfileById",
+                url: "Profile/{id}",
+                defaults: new { controller = "Profile", action = "Index", id = UrlParameter.Optional }
+                );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
-            );
+            ); 
         }
     }
 }

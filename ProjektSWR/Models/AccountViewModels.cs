@@ -94,7 +94,7 @@ namespace ProjektSWR.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Powtórz hasło")]
-        [Compare("Password", ErrorMessage = "THasła nie sa takie same.")]
+        [Compare("Password", ErrorMessage = "Hasła nie sa takie same.")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }
