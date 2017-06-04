@@ -133,6 +133,7 @@ namespace ProjektSWR.Controllers
 
             return View(@event);
         }
+
         // POST: Events/AjaxCreate
           [HttpPost]
         [ValidateAntiForgeryToken]
@@ -143,6 +144,7 @@ namespace ProjektSWR.Controllers
                 //this.getCurrentPrivateEvent().Events.Add(@event);
                 db.Events.Add(@event);                
                 db.SaveChanges();
+                CreateEventNotification(@event);
                 return Json(@event);
             }
 
@@ -177,15 +179,19 @@ namespace ProjektSWR.Controllers
 
         private void CreateEventNotification(Event evnt)
         {
-            var notification = new Notification()
-            {
-                Status = "unread",
-                Contents = String.Format("Masz nowe wydarzenie: {0} dnia {1}",
+            foreach (var u in db.Users)
+            { 
+                var notification = new Notification()
+                {
+                    Status = "unread",
+                    Contents = String.Format("Masz nowe wydarzenie: {0} dnia {1}",
                     evnt.Title, evnt.StartDate),
-                EventID = evnt
-            };
-            db.Notifications.Add(notification);
-            db.SaveChanges();
+                    EventID = evnt,
+                    UserID = u
+                };
+                db.Notifications.Add(notification);
+                db.SaveChanges();
+            }
         }
 
         // GET: Events/Edit/5
