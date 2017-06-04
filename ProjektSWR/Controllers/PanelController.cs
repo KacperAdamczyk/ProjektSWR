@@ -450,9 +450,7 @@ namespace ProjektSWR.Controllers
             {
                 return HttpNotFound();
             }
-            return View(@user);
-
-            
+            return View(@user); 
         }
 
         public ActionResult ConfirmUsers()

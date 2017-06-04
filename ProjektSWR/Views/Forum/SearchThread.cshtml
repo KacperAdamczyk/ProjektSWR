@@ -1,0 +1,41 @@
+﻿@model IEnumerable<ProjektSWR.Models.Thread>
+@{
+    ViewBag.Title = "Thread";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2 style="margin-left: 100px; margin-right:50px; background-color:#003D82;color:white; border-radius:5px; height:38px;text-indent:10px">
+    Wyszukiwarka tematów
+</h2>
+
+
+@using (Html.BeginForm())
+{
+    <p>
+        Szukaj: @Html.TextBox("search")
+        <input type="submit" value="Search" />
+    </p>
+}
+
+
+<table class="table" style="margin-left:120px;width:1150px;border:solid;border-color:#9F9F9F;border-width:2px">
+    @foreach (var th in Model)
+    {
+        <tr>
+            <td>
+                @th.Email
+            </td>
+            <td>
+                @Html.ActionLink(th.Name, "Rep", new { th = th.ID }, th.ID)
+            </td>
+            <td>
+                @Html.ActionLink(th.MainMessage, "Rep", new { th = th.ID }, th.ID)
+            </td>
+        </tr>
+    }
+</table>
+
+
+<div style="margin-left:100px">
+
+    @Html.ActionLink("Wróć do forum", "../Forum/Index")
+</div>

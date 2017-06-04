@@ -13,12 +13,12 @@
 
 <table class="table" style="margin-left:120px;width:1150px;border:solid;border-color:#9F9F9F;border-width:2px">
 
-    @foreach (var t in Model.Categories)
+    @foreach (var th in Model.Categories)
     {
         <tr>
             <td>
 
-                @Html.ActionLink(t.Name, "Thr", new { t = t.ID }, t.ID)
+                @Html.ActionLink(th.Name, "Thr", new { th = th.ID }, th.ID)
             </td>
         </tr>
     }

@@ -8,6 +8,7 @@
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/Search/Search.js"></script>
 </head>
 <body>
     <nav class="navbar navbar-default navbar-static-top">
@@ -26,16 +27,24 @@
                 @Html.Partial("_LoginPartial")
                  <ul class="nav navbar-nav align-bottom">
                     <li>@Html.ActionLink("Home", "Index", "Home", null, new { @class = "white_link" })</li>
-                     <li>@Html.ActionLink("Forum", "Index", "Forum", null, new { @class = "white_link" })</li>
-
                      @if (Request.IsAuthenticated) {
                       <li>@Html.ActionLink("Wiadomości", "index", "Messages", null, new { @class="white_link" })</li>
                       <li>@Html.ActionLink("Kalendarz", "Index", "Events", null, new { @class = "white_link" })</li>
                       <li>@Html.ActionLink("Panel", "Index", "Panel", null, new { @class = "white_link" })</li>
-                    <li id="notify"><button type="button" class="btn btn-primary show-notifications">
+                      <li>@Html.ActionLink("Forum", "Index", "Forum/Index", null, new { @class = "white_link" })</li>
+                      <li id="notify"><button type="button" class="btn btn-primary show-notifications">
                         Powiadomienia
                         @Html.Action("UnreadBadge", "Notifications")
                         </button></li>
+                        <li>
+                            <div id ="search">
+                                <button type="button" id="search-data" class="btn btn-primary">
+                                    <span class="glyphicon glyphicon-search" aria-hidden="false"></span>
+                                </button>
+                                <div id="datalist" hidden></div>
+                            </div>
+                     </li>
+
                      }
                 </ul>
             </div>

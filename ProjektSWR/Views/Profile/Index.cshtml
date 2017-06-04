@@ -3,40 +3,75 @@
     ViewBag.Title = "Profile";
 }
 
-@Styles.Render("~/Content/UPPS/one.css")
-
 <div id="mainbeam">
     <h3>Dane personalne</h3>
 </div>
-<div id="space" style="padding-bottom: 20px;">
+<div id="space" style="padding-bottom: 40px">
     <div id="photo">
-        <img src="https://branzadziecieca.pl/wp-content/uploads/2016/10/anek-WhaWhaWhacky-Kaktus-web.jpg" alt=" "
-             height="142" width="97" />
+        @if (Model.Photo != null)
+            {
+            <img src="@Url.Content(Model.Photo)" alt=""
+                 height="144" width="99" />
+        }
+        else
+        {
+            <img src="https://www.ohio.edu/medicine/manage/images/No-Photo_5.jpg" alt=""
+                 height="144" width="99" />
+        }
     </div>
     <center>
         <div id="swimmingpool">
-            <h4>@Html.DisplayFor(m => m.AcademicDegree) @Html.DisplayFor(m => m.FirstName) @Html.DisplayFor(m => m.LastName)</h4>
+            <h4>
+                @if (Model.AcademicDegree != "brak")
+            {
+                    @Html.DisplayFor(m => m.AcademicDegree)
+                }
+                @Html.DisplayFor(m => m.FirstName) @Html.DisplayFor(m => m.LastName)
+            </h4>
         </div>
     </center>
     <div id="swimmingpool">
-        Katedra: @Html.DisplayFor(m => m.CathedralName)
+        Katedra:
+        @Html.DisplayFor(m => m.CathedralName)
     </div>
     <div id="swimmingpool">
-        Telefon: @Html.DisplayFor(m => m.PhoneNumber)
+        Telefon:
+        @Html.DisplayFor(m => m.PhoneNumber)
     </div>
     <div id="swimmingpool">
-        E-mail: @Html.DisplayFor(m => m.Email)
+        E-mail:
+        @Html.DisplayFor(m => m.Email)
     </div>
-    <div id="swimmingpool">
-        Data urodzenia: @Html.DisplayFor(m => m.DateOfBirth)
-    </div>
-    <div id="swimmingpool">
-        Opis: @Html.DisplayFor(m => m.Description)
-    </div>
-
 </div>
+
+@if (Model.Description != null || Model.DateOfBirth != null)
+{
+<div id="mainbeam">
+    <h3>Informacje dodatkowe</h3>
+</div>
+<div id="space" style="padding-bottom: 20px; padding-left: 0; float:left">
+    <div id="swimmingpool">
+        @if (Model.DateOfBirth != null)
+        {
+            <div>Data urodzenia: @Html.DisplayFor(m => m.DateOfBirth)</div>
+        }
+    </div>
+    <div id="swimmingpool">
+        @if (Model.Description != null)
+        {
+            <div id="otherText">
+                Opis:
+            </div>
+            @Html.DisplayFor(m => m.Description, "otherText")
+        }
+    </div>
+</div>
+}
 
 <div id="mainbeam">
     <h3>Kalendarz</h3>
-
 </div>
+
+
+
+    @Styles.Render("~/Content/UPPS/one.css")

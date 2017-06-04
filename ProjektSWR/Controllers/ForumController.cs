@@ -21,6 +21,16 @@ namespace ProjektSWR.Controllers
             return View(db.Forums.ToList());
         }
 
+        public ActionResult SearchReplies(string search)
+        {
+            return View(db.Replys.Where(x => x.Answer.Contains(search) || search == null).ToList());
+        }
+
+        public ActionResult SearchThread(string search)
+        {
+            return View(db.Threads.Where(x => x.Name.Contains(search) | x.MainMessage.Contains(search) || search == null).ToList());
+        }
+
         // GET: Forum/Details/5
         public ActionResult Cat(int? i)
         {
@@ -36,13 +46,13 @@ namespace ProjektSWR.Controllers
             return View(forum);
         }
 
-        public ActionResult Thr(int? t)
+        public ActionResult Thr(int? th)
         {
-            if (t == null)
+            if (th == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Category forum = db.Categories.Find(t);
+            Category forum = db.Categories.Find(th);
             if (forum == null)
             {
                 return HttpNotFound();
@@ -67,7 +77,6 @@ namespace ProjektSWR.Controllers
         // GET: Forum/Create
         public ActionResult CreateThread(int? th)
         {
-            int x = 0;
             if (th == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             var Category = db.Categories.Find(th);
@@ -80,7 +89,8 @@ namespace ProjektSWR.Controllers
             {
                 UserID = currentUser,
                 Email = currentUser?.Email,
-                CategoryID = Category
+                CategoryID = Category,
+                // User_ID = currentUser.Id
             };
             return View(thread);
 
@@ -115,11 +125,12 @@ namespace ProjektSWR.Controllers
             if (th == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             var Category = db.Categories.Find(th);
+            var userID = User.Identity.GetUserId();
             if (Category == null)
                 return HttpNotFound();
 
             forum.CategoryID = Category;
-
+            forum.UserID = db.Users.Find(userID);
             db.Threads.Add(forum);
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -178,16 +189,22 @@ namespace ProjektSWR.Controllers
         // GET: Forum/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+            if (currentUser.AdminID != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Forum forum = db.Forums.Find(id);
-            if (forum == null)
-            {
+                /*if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }*/
+                Forum forum = db.Forums.Find(id);
+                /*if (forum == null)
+                {
                 return HttpNotFound();
+                 }*/
+                return View(forum);
             }
-            return View(forum);
+            else
+                return RedirectToAction("Index");
         }
 
         // POST: Forum/Delete/5
@@ -195,8 +212,10 @@ namespace ProjektSWR.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Forum forum = db.Forums.Find(id);
-            db.Forums.Remove(forum);
+            
+
+            Reply forum = db.Replys.Find(id);
+            db.Replys.Remove(forum);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -127,6 +127,7 @@ namespace ProjektSWR.Controllers
             {
                 db.Events.Add(@event);
                 db.SaveChanges();
+                CreateEventNotification(@event);
                 return RedirectToAction("Index");
             }
 
@@ -172,6 +173,19 @@ namespace ProjektSWR.Controllers
             {
                 return Json(ModelState.Keys);
             }
+        }
+
+        private void CreateEventNotification(Event evnt)
+        {
+            var notification = new Notification()
+            {
+                Status = "unread",
+                Contents = String.Format("Masz nowe wydarzenie: {0} dnia {1}",
+                    evnt.Title, evnt.StartDate),
+                EventID = evnt
+            };
+            db.Notifications.Add(notification);
+            db.SaveChanges();
         }
 
         // GET: Events/Edit/5

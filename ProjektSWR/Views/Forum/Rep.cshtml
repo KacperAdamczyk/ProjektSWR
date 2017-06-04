@@ -10,10 +10,14 @@
 
 
 <table class="table" style="margin-left:120px;width:1150px;border:solid;border-color:#9F9F9F;border-width:2px">
+
+
     <tr>
         <td width="50">
             <b>
                 @Model.Email
+                 <!--@Html.ActionLink(Model.Email, "../Panel/UserProfile/"+ Model.UserID)-->
+
             </b>
         </td>
         <td>
@@ -22,28 +26,34 @@
             </b>
         </td>
     </tr>
+
     @foreach (var th in Model.Replies)
     {
         <tr>
             <td>
                 @th.Email
+              <!-- @Html.ActionLink(th.Email, "../Panel/UserProfile/", Model.UserID)-->
             </td>
             <td>
                 @th.Answer
             </td>
+            <td>
+                @th.ID
+                @Html.ActionLink("Usuń", "Delete", new { id = th.ID })
+            </td>
         </tr>
     }
 
-<<<<<<< HEAD
+
     </table>
-<div>
-    @Html.ActionLink("Dodaj nową odpowiedź", "CreateReply", new { th = Model.ID }, Model.ID);
+<<<<<<< HEAD
+
 =======
-</table>
+>>>>>>> refs/heads/pr/53
 
 <div style="margin-left:100px">
     @Html.ActionLink("Dodaj nową odpowiedź", "CreateReply", new { th = Model.ID }, Model.ID)
->>>>>>> refs/heads/pr/40
+
 </div>
 
 <!--
