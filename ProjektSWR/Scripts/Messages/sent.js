@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var controller = require("./controller");
 var alertifyjs = require("alertifyjs");
 function prepareSentDocument() {

@@ -24,8 +24,12 @@ namespace ProjektSWR.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var userId = id;
-
-            var catId = db.Users.Find(userId).CathedralID.ID;
+            var user = db.Users.Find(userId);
+            if (user == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var catId = user.CathedralID.ID;
             var m = new ProfileModel
             {
                 FirstName = db.Users.Find(userId).FirstName,
