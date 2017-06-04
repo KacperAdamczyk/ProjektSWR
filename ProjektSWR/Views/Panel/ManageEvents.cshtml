@@ -9,7 +9,7 @@
     var eventsList= [
 @foreach (var item in Model) {
     @("{")
-        @:title: "@item.Title", //You will need ID here to identify object for EDIT it must be taken from DB
+        @:title: "@item.Title", 
         @:start: "@item.StartDate",
         @:end: "@item.EndDate",
         @:location: "@item.Location",
@@ -24,7 +24,7 @@
 <link href='~/Content/fullcalendar.print.css' rel='stylesheet' media='print' />
 <script src='~/Scripts/moment.js'></script>
 <script src='~/Scripts/Calendar/fullcalendar.min.js'></script>
-<script src="~/Scripts/Calendar/calendar.js"></script>
+<script src="~/Scripts/Calendar/calendar_home_no_admin.js"></script>
 <script src="~/Scripts/locale-all.js"></script>
 <div id='calendar'></div>
 
@@ -40,31 +40,31 @@
                 @Html.AntiForgeryToken()
                 <form class="form-horizontal">
                     <div class="form-group">
-                        <label class="control-label col-md-2" for="Title">Title</label>
+                        <label class="control-label col-md-2" for="Title">Tytuł</label>
                         <div class="col-md-10">
-                            <input name="title" class="form-control text-box single-line" data-val="true" data-val-required="Pole Title jest wymagane." id="Title" name="Title" type="text" value="" />
+                            <input name="title" class="form-control text-box single-line" data-val="true" data-val-required="Pole 'tytuł' jest wymagane." id="Title" name="Title" type="text" value="" />
                             <span class="field-validation-valid text-danger" data-valmsg-for="Title" data-valmsg-replace="true"></span>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-md-2" for="StartDate">StartDate</label>
+                        <label class="control-label col-md-2" for="StartDate">Data rozpoczęcia</label>
                         <div class="col-md-10">
-                            <input name="startDate" class="form-control text-box single-line" data-val="true" data-val-date="The field StartDate must be a date." data-val-required="Pole StartDate jest wymagane." id="StartDate" name="StartDate" type="datetime" value="" />
+                            <input name="startDate" class="form-control text-box single-line" data-val="true" data-val-date="The field StartDate must be a date." data-val-required="Pole 'Data rozpoczęcia' jest wymagane." id="StartDate" name="StartDate" type="datetime" value="" />
                             <span class="field-validation-valid text-danger" data-valmsg-for="StartDate" data-valmsg-replace="true"></span>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-md-2" for="EndDate">EndDate</label>
+                        <label class="control-label col-md-2" for="EndDate">Data zakończenia</label>
                         <div class="col-md-10">
-                            <input name="endDate" class="form-control text-box single-line" data-val="true" data-val-date="The field EndDate must be a date." data-val-required="Pole EndDate jest wymagane." id="EndDate" name="EndDate" type="datetime" value="" />
+                            <input name="endDate" class="form-control text-box single-line" data-val="true" data-val-date="The field EndDate must be a date." data-val-required="Pole 'Data zakończenia' jest wymagane." id="EndDate" name="EndDate" type="datetime" value="" />
                             <span class="field-validation-valid text-danger" data-valmsg-for="EndDate" data-valmsg-replace="true"></span>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-md-2" for="Location">Location</label>
+                        <label class="control-label col-md-2" for="Location">Lokalizacja</label>
                         <div class="col-md-10">
                             <input name="location" class="form-control text-box single-line" id="Location" type="text" value="" />
                             <span class="field-validation-valid text-danger" data-valmsg-for="Location" data-valmsg-replace="true"></span>
@@ -72,19 +72,19 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-md-2" for="Details">Details</label>
+                        <label class="control-label col-md-2" for="Details">Szczegóły</label>
                         <div class="col-md-10">
                             <input name="details" class="form-control text-box single-line" id="Details" type="text" value="" />
                             <span class="field-validation-valid text-danger" data-valmsg-for="Details" data-valmsg-replace="true"></span>
                         </div>
                     </div>
 
-                    </form>
-</div>
+                </form>
+            </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger pull-left hidden delete-btn" data-dismiss="modal">Delete <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" name = "saveChanges" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+                <button type="button" class="btn btn-danger pull-left hidden delete-btn" data-dismiss="modal">Usuń<span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Zamknij</button>
+                <button type="button" name="saveChanges" class="btn btn-primary" data-dismiss="modal">Zapisz</button>
             </div>
         </div>
     </div>

@@ -15,12 +15,12 @@ $(document).ready(function () {
 
             if (temporaryEvent == null) {
                 eventData = {
-                    id: null, //title + location + start, //ID needs to be unique best way would be to generate uuid and save it to db
+                    id: null, 
                     title: title,
                     details: details,
                     location: location,
                     start: start,
-                    end: end
+                    end: end,
                 };
 
                 //Using structure valid with model in Events/Create
@@ -30,13 +30,12 @@ $(document).ready(function () {
                     Details: details,
                     Location: location,
                     startDate: start,
-                    endDate: end
+                    endDate: end,
                 };
 
                 //Sending POST request to action Events/Create
                 $.post("/Events/AjaxCreate", eventDataPost, function (response) {
                     if (typeof response.ID !== "undefined") {
-                        //alert("Dobre miejsce");
                         eventData.id = response.ID;
                         $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
                     } else {
@@ -52,7 +51,7 @@ $(document).ready(function () {
                     Details: details, 
                     Location: location,
                     startDate: start,
-                    endDate: end
+                    endDate: end,
                 };
 
                 console.info(temporaryEvent);
@@ -131,7 +130,6 @@ $(document).ready(function () {
             $('[name="location"]').val(calEvent.location);
             $('[name="startDate"]').val(calEvent.start.format());
             $('[name="endDate"]').val(calEvent.end.format());
-
             temporaryEvent = calEvent;
             $('#myModal').modal('show');
 
@@ -143,7 +141,7 @@ $(document).ready(function () {
                 Details: calEvent.details,
                 Location: calEvent.location,
                 startDate: calEvent.start.format(),
-                endDate: calEvent.end.format()
+                endDate: calEvent.end.format(),
             };
 
             $.post("/Events/AjaxEdit/" + calEvent.id, eventDataPost, function (response) {
@@ -156,7 +154,7 @@ $(document).ready(function () {
                 Details: calEvent.details,
                 Location: calEvent.location,
                 startDate: calEvent.start.format(),
-                endDate: calEvent.end.format()
+                endDate: calEvent.end.format(),
             };
 
             $.post("/Events/AjaxEdit/" + calEvent.id, eventDataPost, function (response) {

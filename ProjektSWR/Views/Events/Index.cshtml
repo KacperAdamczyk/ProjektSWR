@@ -32,55 +32,7 @@
 
 
 
-@*<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StartDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EndDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Location)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Details)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StartDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EndDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Location)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Details)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
-}
-
-</table>*@
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -92,31 +44,31 @@
                 @Html.AntiForgeryToken()
                 <form class="form-horizontal">
                     <div class="form-group">
-                        <label class="control-label col-md-2" for="Title">Title</label>
+                        <label class="control-label col-md-2" for="Title">Tytu³</label>
                         <div class="col-md-10">
-                            <input name="title" class="form-control text-box single-line" data-val="true" data-val-required="Pole Title jest wymagane." id="Title" name="Title" type="text" value="" />
+                            <input name="title" class="form-control text-box single-line" data-val="true" data-val-required="Pole 'tytu³' jest wymagane." id="Title" name="Title" type="text" value="" />
                             <span class="field-validation-valid text-danger" data-valmsg-for="Title" data-valmsg-replace="true"></span>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-md-2" for="StartDate">StartDate</label>
+                        <label class="control-label col-md-2" for="StartDate">Data rozpoczêcia</label>
                         <div class="col-md-10">
-                            <input name="startDate" class="form-control text-box single-line" data-val="true" data-val-date="The field StartDate must be a date." data-val-required="Pole StartDate jest wymagane." id="StartDate" name="StartDate" type="datetime" value="" />
+                            <input name="startDate" class="form-control text-box single-line" data-val="true" data-val-date="The field StartDate must be a date." data-val-required="Pole 'Data rozpoczêcia' jest wymagane." id="StartDate" name="StartDate" type="datetime" value="" />
                             <span class="field-validation-valid text-danger" data-valmsg-for="StartDate" data-valmsg-replace="true"></span>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-md-2" for="EndDate">EndDate</label>
+                        <label class="control-label col-md-2" for="EndDate">Data zakoñczenia</label>
                         <div class="col-md-10">
-                            <input name="endDate" class="form-control text-box single-line" data-val="true" data-val-date="The field EndDate must be a date." data-val-required="Pole EndDate jest wymagane." id="EndDate" name="EndDate" type="datetime" value="" />
+                            <input name="endDate" class="form-control text-box single-line" data-val="true" data-val-date="The field EndDate must be a date." data-val-required="Pole 'Data zakoñczenia' jest wymagane." id="EndDate" name="EndDate" type="datetime" value="" />
                             <span class="field-validation-valid text-danger" data-valmsg-for="EndDate" data-valmsg-replace="true"></span>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-md-2" for="Location">Location</label>
+                        <label class="control-label col-md-2" for="Location">Lokalizacja</label>
                         <div class="col-md-10">
                             <input name="location" class="form-control text-box single-line" id="Location" type="text" value="" />
                             <span class="field-validation-valid text-danger" data-valmsg-for="Location" data-valmsg-replace="true"></span>
@@ -124,19 +76,19 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-md-2" for="Details">Details</label>
+                        <label class="control-label col-md-2" for="Details">Szczegó³y</label>
                         <div class="col-md-10">
                             <input name="details" class="form-control text-box single-line" id="Details" type="text" value="" />
                             <span class="field-validation-valid text-danger" data-valmsg-for="Details" data-valmsg-replace="true"></span>
                         </div>
                     </div>
 
-                    </form>
-</div>
+                </form>
+            </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger pull-left hidden delete-btn" data-dismiss="modal">Delete<span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" name = "saveChanges" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+                <button type="button" class="btn btn-danger pull-left hidden delete-btn" data-dismiss="modal">Usuñ<span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Zamknij</button>
+                <button type="button" name="saveChanges" class="btn btn-primary" data-dismiss="modal">Zapisz</button>
             </div>
         </div>
     </div>
