@@ -9,12 +9,9 @@
     var eventsList= [
 @foreach (var item in Model) {
     @("{")
-<<<<<<< HEAD
         @:id: "@item.ID",
         @:title: "@item.Title", //You will need ID here to identify object for EDIT it must be taken from DB
-=======
         @:title: "@item.Title", 
->>>>>>> refs/heads/pr/52
         @:start: "@item.StartDate",
         @:end: "@item.EndDate",
         @:location: "@item.Location",
@@ -31,12 +28,9 @@
 <link href='~/Content/fullcalendar.print.css' rel='stylesheet' media='print' />
 <script src='~/Scripts/moment.js'></script>
 <script src='~/Scripts/Calendar/fullcalendar.min.js'></script>
-<<<<<<< HEAD
 <!--<script src="~/Scripts/Calendar/calendar_view.js"></script> -->
 <script src="~/Scripts/Calendar/calendar.js"></script>  
-=======
 <script src="~/Scripts/Calendar/calendar_home_no_admin.js"></script>
->>>>>>> refs/heads/pr/52
 <script src="~/Scripts/locale-all.js"></script>
 <div>
     <div class="dropdown">
@@ -61,6 +55,12 @@
         <div class="dropdown-content">
             <a href="/Forum/Cat?i=1">Forum główne</a>
             <a href="/Forum/Cat?i=2">Forum techniczne</a>
+        </div>
+    </div>
+    <div class="dropdown">
+        <button class="dropbtn">Katedry</button>
+        <div class="dropdown-content">
+            <a href="/Cathedrals/Index">Edytuj/Dodaj katedry</a>
         </div>
     </div>
 </div>
@@ -121,15 +121,9 @@
                 </form>
             </div>
             <div class="modal-footer">
-<<<<<<< HEAD
-                <button type="button" class="btn btn-danger pull-left hidden delete-btn" data-dismiss="modal">Delete<span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" name="saveChanges" class="btn btn-primary" data-dismiss="modal">Save changes</button>
-=======
                 <button type="button" class="btn btn-danger pull-left hidden delete-btn" data-dismiss="modal">Usuń<span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Zamknij</button>
                 <button type="button" name="saveChanges" class="btn btn-primary" data-dismiss="modal">Zapisz</button>
->>>>>>> refs/heads/pr/52
             </div>
         </div>
     </div>
