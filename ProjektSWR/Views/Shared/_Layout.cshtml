@@ -26,7 +26,7 @@
             <div class="navbar-collapse collapse">
                 @Html.Partial("_LoginPartial")
                  <ul class="nav navbar-nav align-bottom">
-                    <li>@Html.ActionLink("Home", "Index", "Home", null, new { @class = "white_link" })</li>
+                    <li>@Html.ActionLink("Wydarzenia", "Index", "Home", null, new { @class = "white_link" })</li>
                      @if (Request.IsAuthenticated) {
                       <li>@Html.ActionLink("Wiadomości", "index", "Messages", null, new { @class="white_link" })</li>
                       <li>@Html.ActionLink("Kalendarz", "Index", "Events", null, new { @class = "white_link" })</li>
