@@ -21,7 +21,7 @@ function prepareNewMessageDocument(responseTo, responseToId) {
     }
     else {
         $("#add_user").hide();
-        $("remove_user").hide();
+        $("#remove_user").hide();
         $("#send_button").click(function () { sendMessage(responseToId); });
         var c = "<input list='users" + "' class='users_combobox'>" +
             "<datalist id='users" + "'></datalist>";

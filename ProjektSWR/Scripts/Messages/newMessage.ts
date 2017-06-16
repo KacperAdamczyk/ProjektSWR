@@ -20,7 +20,7 @@ export function prepareNewMessageDocument(responseTo : string, responseToId : nu
         $("#remove_user").click(function(){ input.removeLastCombobox(); });
     } else {
         $("#add_user").hide();
-        $("remove_user").hide();
+        $("#remove_user").hide();
         $("#send_button").click(function(){ sendMessage(responseToId); });
         let c = "<input list='users" + "' class='users_combobox'>" +
             "<datalist id='users" + "'></datalist>";
